@@ -6,17 +6,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "br.java.projeto.poo.src.App",
+            "projectName": "Projeto-POO_919bd12d",
+            "vmArgs": "--module-path C:/Users/jeman/Códigos/Projects/javafx-sdk-21/lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
         },
-        {
-            "type": "java",
-            "name": "App",
-            "request": "launch",
-            "mainClass": "br.java.projeto.poo.src.App",
-            "projectName": "ProjetoPOO_e8a2300",
-            "vmArgs": "--module-path /home/pedro/Documentos/Projetos/ProjetoPOO/br/java/projeto/poo/lib --add-modules javafx.controls,javafx.fxml"
-        }
+        
     ]
 }
