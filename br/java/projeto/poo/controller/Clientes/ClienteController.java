@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Clientes;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -8,9 +7,6 @@ import br.java.projeto.poo.controller.BaseController;
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.ClienteBO;
 import br.java.projeto.poo.models.VO.ClienteVO;
-//import br.java.projeto.poo.models.VO.EnderecoVO;
-//import br.java.projeto.poo.models.VO.TelefoneVO;
-import br.java.projeto.poo.src.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -188,7 +184,7 @@ public class ClienteController extends BaseController{
         // showControl.exibirEndereco.setText(cliente.getEndereco().toString());
         // showControl.exibirEndereco.setVisible(true);
         // showControl.nomeClienteMenu.setText(cliente.getNome());
-    
+        
     } 
 
 
@@ -197,7 +193,6 @@ public class ClienteController extends BaseController{
     private void inicializarTabela() throws SQLException {
         columnNome.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("nome"));
         columnCPF.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("cpf"));
-        //columnIdCliente.setCellValueFactory(new PropertyValueFactory<ClienteVO, Integer>("id"));
         columnEnd.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("endereco"));
         columnTel.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("telefone"));
         tabelaClientes.setItems(clientesDisponiveis);
