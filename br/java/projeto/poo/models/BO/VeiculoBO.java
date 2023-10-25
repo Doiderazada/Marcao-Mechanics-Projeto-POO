@@ -4,8 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import br.java.projeto.poo.exceptions.InvalidCpfException;
-import br.java.projeto.poo.exceptions.InvalidPlacaException;
+//import br.java.projeto.poo.exceptions.InvalidCpfException;
 import br.java.projeto.poo.exceptions.UsuarioNaoEncontradoException;
 import br.java.projeto.poo.DAO.VeiculoDao;
 import br.java.projeto.poo.models.VO.VeiculoVO;
@@ -78,10 +77,6 @@ public class VeiculoBO {
 
     public boolean inserir(VeiculoVO veiculo) throws Exception {
         try {
-            if(!validarPlaca(veiculo.getPlaca())) {
-                throw new InvalidPlacaException("O fomato da placa deve ser ABC-1234");
-            }
-
             return veiculoDao.inserir(veiculo);
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {
@@ -100,10 +95,6 @@ public class VeiculoBO {
 
             if (!verificarVeiculo.next() || vo.getId() == 0) {
                 throw new UsuarioNaoEncontradoException("Usuario não encontrado");
-            }
-
-            if (!this.validarPlaca(vo.getPlaca())) {
-                throw new InvalidCpfException("O fomato da placa deve ser ABC-1234");
             }
 
             return veiculoDao.atualizar(vo);
@@ -129,8 +120,4 @@ public class VeiculoBO {
         }
     }
 
-
-    private boolean validarPlaca(String placa) {
-        return placa.matches("[A-Za-z]{3}-\\d{4}");
-    }
 }

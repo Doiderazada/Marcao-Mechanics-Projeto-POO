@@ -25,7 +25,7 @@
             <VBox spacing="3.0">
                <children>
                   <Label text="Nome" />
-                  <TextField fx:id="campoNomeCliente" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="300.0" promptText="Ex.: João Pedro" />
+                  <TextField fx:id="campoNomeCliente" prefHeight="40.0" prefWidth="300.0" promptText="Ex.: João Pedro" />
                </children>
                <padding>
                   <Insets bottom="5.0" />
@@ -36,7 +36,7 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="CPF" />
-                        <TextField fx:id="campoCPFCliente" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
+                        <TextField fx:id="campoCPFCliente" onKeyReleased="#autoComplete" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -45,7 +45,7 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Telefone" />
-                        <TextField fx:id="campoTelefone" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 84 91234-5678" />
+                        <TextField fx:id="campoTelefone" onKeyReleased="#autoComplete" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 84 91234-5678" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -58,7 +58,7 @@
                   <VBox layoutX="14.0" layoutY="-6.0" spacing="3.0">
                      <children>
                         <Label text="Endereço" />
-                        <TextField fx:id="campoEndCliente" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Rua Teste, XX, Cidade/Estado" />
+                        <TextField fx:id="campoEndCliente" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Rua Teste, XX, Cidade/Estado" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -102,7 +102,7 @@
             <VBox spacing="3.0">
                <children>
                   <Label text="Modelo do veículo" />
-                  <TextField fx:id="campoModVeic" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Hoda Civic" />
+                  <TextField fx:id="campoModVeic" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Hoda Civic" />
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" />
@@ -113,13 +113,13 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Ano do veículo" />
-                        <TextField fx:id="campoAnoVeic" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 2010" />
+                        <TextField fx:id="campoAnoVeic" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 2010" />
                      </children>
                   </VBox>
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Quilometragem" />
-                        <TextField fx:id="campoKMVeic" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 10000" />
+                        <TextField fx:id="campoKMVeic" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 10000" />
                      </children>
                   </VBox>
                </children>
@@ -132,13 +132,13 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Placa do veículo" />
-                        <TextField fx:id="campoPlacCliente" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 1AB2C34" />
+                        <TextField fx:id="campoPlacVeic" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 1AB2C34" />
                      </children>
                   </VBox>
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Cor do veículo" />
-                        <TextField fx:id="campoCorVeic" onMouseClicked="#setInvisibleCad" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: Vermelho" />
+                        <TextField fx:id="campoCorVeic" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: Vermelho" />
                      </children>
                   </VBox>
                </children>
