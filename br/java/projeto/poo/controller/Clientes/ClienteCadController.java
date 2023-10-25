@@ -152,6 +152,15 @@ public class ClienteCadController {
             }
             
         });
+        campoEndCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                setInvisibleCad();
+                campoEndCliente.setStyle(null);
+            }
+            
+        });
         campoModVeic.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
