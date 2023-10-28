@@ -264,7 +264,7 @@ public class ClienteCadController {
                 endereco = campoEndCliente.getText();
                 modelo = campoModVeic.getText();
                 nome = campoNomeCliente.getText();
-                placa = campoPlacVeic.getText();
+                placa = campoPlacVeic.getText().toUpperCase();
                 quilometragem = Double.parseDouble(campoKMVeic.getText());
                 telefone = this.campoTelefone.getText();
                 tipoV = this.tipoVeic.getValue();
@@ -333,25 +333,6 @@ public class ClienteCadController {
         }
 
 
-        if(campoEndCliente.getText().isEmpty()){
-            mensagemErroCad.setText("O endereço não pode ser vazio");
-            mensagemErroCad.setVisible(true);
-            campoEndCliente.setStyle(textFieldStyle);
-            new animatefx.animation.Shake(campoEndCliente).play();
-            return false;
-        }else{
-            if (campoEndCliente.getText().matches("^[a-zA-Z\\s^áãàéêèíóõú.,]{1,50}[\\d^,]{1,5}[a-zA-Z\\s^áãàéêèíóõú,]{1,50}"))
-                System.out.println("campo endereço válido");
-            else{
-                mensagemErroCad.setText("O endereço não pode conter símbolos");
-                mensagemErroCad.setVisible(true);
-                campoEndCliente.setStyle(textFieldStyle);
-                new animatefx.animation.Shake(campoEndCliente).play();
-                return false;
-            }
-
-        }
-
 
         if(campoCPFCliente.getText().isEmpty()){
             mensagemErroCad.setText("O cpf não pode ser vazio");
@@ -388,6 +369,26 @@ public class ClienteCadController {
                 new animatefx.animation.Shake(campoTelefone).play();
                 return false;
             }
+        }
+        
+
+        if(campoEndCliente.getText().isEmpty()){
+            mensagemErroCad.setText("O endereço não pode ser vazio");
+            mensagemErroCad.setVisible(true);
+            campoEndCliente.setStyle(textFieldStyle);
+            new animatefx.animation.Shake(campoEndCliente).play();
+            return false;
+        }else{
+            if (campoEndCliente.getText().matches("^[a-zA-Z\\s^áãàéêèíóõú.,]{1,50}[\\d^,]{1,5}[a-zA-Z\\s^áãàéêèíóõú,]{1,50}"))
+                System.out.println("campo endereço válido");
+            else{
+                mensagemErroCad.setText("O endereço não pode conter símbolos");
+                mensagemErroCad.setVisible(true);
+                campoEndCliente.setStyle(textFieldStyle);
+                new animatefx.animation.Shake(campoEndCliente).play();
+                return false;
+            }
+
         }
 
 

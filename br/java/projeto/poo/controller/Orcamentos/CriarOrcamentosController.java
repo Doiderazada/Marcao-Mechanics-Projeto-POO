@@ -124,6 +124,7 @@ public class CriarOrcamentosController extends BaseController{
             } else {
                 salvarNovoOrcamento.setDisable(true);
                 dadosCliente.setText("");
+                dadosCliente.setStyle(null);
             }
         } catch (Exception e) {
             dadosCliente.setStyle("-fx-text-fill: red;");
@@ -299,6 +300,11 @@ public class CriarOrcamentosController extends BaseController{
         App.navegarEntreTelas("orcamentos");
     }
 
+    public void setDadosCliente(String text){
+        dadosCliente.setText(text);
+        dadosCliente.setVisible(true);
+        dadosCliente.setStyle("-fx-text-fill: black;-fx-font-weight: bold;");
+    }
 
     public void setBuscarVeic(String text){
         buscarVeiculo.setText(text);

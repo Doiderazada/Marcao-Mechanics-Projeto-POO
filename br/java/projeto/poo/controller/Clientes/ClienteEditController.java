@@ -326,7 +326,7 @@ public class ClienteEditController {
     }
 
     
-    @FXML
+    
     void setInvisibleEdit(){
         this.mensagemErroEdit.setVisible(false);
     }

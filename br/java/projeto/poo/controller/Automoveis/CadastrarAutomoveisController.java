@@ -128,7 +128,7 @@ public class CadastrarAutomoveisController {
             this.validarCamposVazios();
             EnderecoVO enderecoCliente = new EnderecoVO().pegarValoresComoString(endereco.getText());
             
-            VeiculoVO veiculoVO = new VeiculoVO(0, placa.getText(), cor.getText(), modelo.getText(), cpf.getText(), tipo.getValue(), ano.getText(), Double.valueOf(km.getText()));
+            VeiculoVO veiculoVO = new VeiculoVO(0, placa.getText().toUpperCase(), cor.getText(), modelo.getText(), cpf.getText(), tipo.getValue(), ano.getText(), Double.valueOf(km.getText()));
             ArrayList<VeiculoVO> listaVeiculos = new ArrayList<VeiculoVO>();
             listaVeiculos.add(veiculoVO);
             String cpfNull = null;

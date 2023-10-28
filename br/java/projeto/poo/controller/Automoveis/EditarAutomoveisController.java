@@ -128,7 +128,7 @@ public class EditarAutomoveisController {
     void editarVeiculo(ActionEvent event) {
         try {
             VeiculoVO veiculo = new VeiculoVO(Integer.valueOf(id.getText()),
-            placa.getText(),
+            placa.getText().toUpperCase(),
             cor.getText(),
             modelo.getText(),
             cpfDono, tipo.getValue(), ano.getText(), Double.valueOf(km.getText()));

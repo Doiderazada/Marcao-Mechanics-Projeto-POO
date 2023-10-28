@@ -34,7 +34,7 @@ import javafx.stage.Window;
 
 public class ClienteController extends BaseController{
 
-    // ====== campos da tela principal de clientes ======
+    
     private ClienteBO clienteBO = new ClienteBO();
     static ArrayList<ClienteVO> listaClientes = new ArrayList<ClienteVO>();
     static ObservableList<ClienteVO> clientesDisponiveis;
@@ -49,7 +49,7 @@ public class ClienteController extends BaseController{
     @FXML private TableColumn<ClienteVO, Integer> columnIdCliente;
     @FXML private TableColumn<ClienteVO, String>  columnNome;
     @FXML private TableColumn<ClienteVO, String>  columnTel;
-    // ==================================================
+    
 
     @Override
     public void initialize() throws Exception{
@@ -167,6 +167,8 @@ public class ClienteController extends BaseController{
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            ModalsController modalsController = new ModalsController();
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
@@ -203,7 +205,6 @@ public class ClienteController extends BaseController{
 
 
     
-
     private void exibirCliente(ClienteVO cliente) throws Exception {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
@@ -242,6 +243,7 @@ public class ClienteController extends BaseController{
             {
                 btnEdit.getStyleClass().add("btn-edit");
                 btnDelete.getStyleClass().add("btn-delete");
+                
                 btnEdit.setOnAction(event -> {
                     try {
                         ClienteVO cliente = getTableView().getItems().get(getIndex());

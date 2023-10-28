@@ -119,7 +119,7 @@ public class AdicionarAutomovelController {
                 modelo = modeloNovoV.getText();
                 ano = anoNovoV.getText();
                 cor = corNovoV.getText();
-                placa = placaNovoV.getText();
+                placa = placaNovoV.getText().toUpperCase();
                 km = Double.parseDouble(kmNovoV.getText());
                 tipo = tipoNovoV.getValue();
 

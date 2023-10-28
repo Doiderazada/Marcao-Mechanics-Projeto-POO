@@ -1,5 +1,6 @@
 package br.java.projeto.poo.controller.Clientes;
 
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -7,9 +8,7 @@ import br.java.projeto.poo.controller.BaseController;
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.controller.Automoveis.AdicionarAutomovelController;
 import br.java.projeto.poo.controller.Automoveis.EditarAutomoveisController;
-
-// import br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController;
-
+import br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController;
 import br.java.projeto.poo.models.BO.VeiculoBO;
 import br.java.projeto.poo.models.VO.ClienteVO;
 import br.java.projeto.poo.models.VO.VeiculoVO;
@@ -181,6 +180,8 @@ public class ClienteShowController extends BaseController{
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            ModalsController modalsController = new ModalsController();
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
@@ -240,9 +241,7 @@ public class ClienteShowController extends BaseController{
 
             @Override
             public void handle(MouseEvent arg0){
-                
                 abrirEditCli();
-                
             }
             
         });
@@ -291,14 +290,12 @@ public class ClienteShowController extends BaseController{
                 btnDelete.getStyleClass().add("btn-delete");
                 btnDelete.setPrefSize(25, 25);
 
-                // Ainda não está funcionando
+                
                 btnOrc.setOnAction(event -> {
                     try {
-                        // VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        // System.out.println(veiculo.getCpfDono());
-                        // System.out.println(veiculo.getModelo());
-                        // System.out.println(veiculo.getPlaca());
-                        // novoOrcamento(veiculo.getPlaca());
+                        VeiculoVO veiculo = getTableView().getItems().get(getIndex());
+                        
+                        novoOrcamento(veiculo.getPlaca());
                         
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -348,12 +345,27 @@ public class ClienteShowController extends BaseController{
 
 
 
-    // private void novoOrcamento(String placa){
-    //     CriarOrcamentosController controller = new CriarOrcamentosController();
-    //     controller.setBuscarVeic(placa);
+    private void novoOrcamento(String placa){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Orcamentos/NovoOrcamento.fxml"));
+            Parent root = loader.load();
 
-    //     App.navegarEntreTelas("novoOrcamento");
-    // }
+            CriarOrcamentosController controller = loader.getController();
+            controller.setBuscarVeic(placa);
+            controller.setDadosCliente("Pressione ENTER para confirmar o veículo");
+            
+            Stage palco = new Stage();
+            Scene cena = new Scene(root);
+            palco  = (Stage)novoVeic.getScene().getWindow();
+            palco.setScene(cena);
+            palco.show();
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            ModalsController modalsController = new ModalsController();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
+    }
 
 
 
@@ -396,7 +408,6 @@ public class ClienteShowController extends BaseController{
             veiculosDoCliente.setAll(listaVeiculos);
         }
     }
-
 
 
 
