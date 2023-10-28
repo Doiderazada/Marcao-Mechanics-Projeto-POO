@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" styleClass="pane" stylesheets="@../css/Modals.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.java.projeto.poo.controller.Automoveis.AdicionarAutomovelController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="20.0" text="Adicionar veiculo">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <padding>
+            <Insets left="25.0" />
+         </padding>
+      </Label>
+      <Separator layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="500.0" />
+      <Group layoutX="40.0" layoutY="91.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="269.0" prefWidth="420.0" spacing="5.0">
+               <children>
+                  <VBox spacing="3.0">
+                     <children>
+                        <Label text="Tipo" />
+                        <ChoiceBox fx:id="tipoNovoV" prefHeight="30.0" prefWidth="420.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
+                  </VBox>
+                  <VBox spacing="3.0">
+                     <children>
+                        <Label text="Modelo do veículo" />
+                        <TextField fx:id="modeloNovoV" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Hoda Civic" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox spacing="20.0">
+                     <children>
+                        <VBox spacing="3.0">
+                           <children>
+                              <Label text="Ano do veículo" />
+                              <TextField fx:id="anoNovoV" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 2010" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="3.0">
+                           <children>
+                              <Label text="Quilometragem" />
+                              <TextField fx:id="kmNovoV" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 10000" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox spacing="20.0">
+                     <children>
+                        <VBox spacing="3.0">
+                           <children>
+                              <Label text="Placa do veículo" />
+                              <TextField fx:id="placaNovoV" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 1AB2C34" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="3.0">
+                           <children>
+                              <Label text="Cor do veículo" />
+                              <TextField fx:id="corNovoV" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: Vermelho" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label fx:id="msgErroNovoV" alignment="CENTER" contentDisplay="CENTER" text="Os campos não podem ser vazios" textFill="RED" visible="false">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children></Group>
+      <Separator layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="500.0" />
+      <HBox alignment="CENTER" layoutY="367.0" prefHeight="85.0" prefWidth="500.0" spacing="20.0">
+         <children>
+            <Button fx:id="cancelarAddV" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelarAddV" prefHeight="50.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="addNovoV" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addNovoV" prefHeight="50.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Adicionar veículo">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</Pane>

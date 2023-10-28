@@ -40,7 +40,7 @@ public class ClienteBO {
             TelefoneVO telefone;
             while (clientesBuscados.next()) {
                 endereco = enderecoBO.buscarPorCliente(clientesBuscados.getString("cpf"));
-                telefone = telefoneBO.buscarPorCliente(cpf);
+                telefone = telefoneBO.buscarPorCliente(clientesBuscados.getString("cpf"));
                 ArrayList<VeiculoVO> listaVeiculos = veiculo.buscarPorDono(clientesBuscados.getString("cpf"));
                 clientes.add(new ClienteVO(
                     clientesBuscados.getInt("id"), 

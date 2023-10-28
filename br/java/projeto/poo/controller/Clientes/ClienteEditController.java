@@ -24,7 +24,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 public class ClienteEditController {
-    ModalsController modalsController = new ModalsController();
+    // ModalsController modalsController = new ModalsController();
     private EnderecoBO enderecoBO = new EnderecoBO();
     private ClienteBO clienteBO = new ClienteBO();
     private TelefoneBO telefoneBO = new TelefoneBO();
@@ -45,7 +45,7 @@ public class ClienteEditController {
         
         clienteEditar = new ClienteVO();
         clienteEditar = cliente;
-        this.preencherCampos(cliente, index);
+        this.preencherCampos(clienteEditar, index);
         this.acaoTextField();
             
     }
@@ -321,6 +321,9 @@ public class ClienteEditController {
     }
 
 
+    public ClienteVO pegarClienteEditado(){
+        return this.clienteEditar;
+    }
 
     
     @FXML

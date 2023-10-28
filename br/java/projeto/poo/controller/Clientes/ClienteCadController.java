@@ -491,7 +491,7 @@ public class ClienteCadController {
 
 
 
-    @FXML
+    
     void setInvisibleCad(){
         this.mensagemErroCad.setVisible(false);
     }

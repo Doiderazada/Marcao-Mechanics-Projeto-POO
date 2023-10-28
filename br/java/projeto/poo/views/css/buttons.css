@@ -146,18 +146,45 @@
 .btn-delete {
     -fx-background-image: url("../../public/DeleteButtomOriginal.png");
     -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+    -fx-background-size: 25px, 25px;
     -fx-background-position: center;
 }
 
 .btn-delete:hover {
     -fx-background-image: url("../../public/DeleteButtomHover.png");
+    -fx-background-size: 25px, 25px;
+    -fx-background-color: #ff707070;
 }
 
 .btn-edit {
     -fx-background-image: url("../../public/EditButtomOriginal.png");
+    -fx-background-color: transparent;
+    -fx-background-size: 25px, 25px;
     -fx-background-repeat: no-repeat;
 }
 
 .btn-edit:hover {
     -fx-background-image: url("../../public/EditButtomHover.png");
+    -fx-background-color: #0077ff70;
+    -fx-background-size: 25px, 25px;
+    -fx-background-repeat: no-repeat;
+}
+
+.btn-orc {
+    -fx-background-image:url('../../public/ButtomCash.png');
+    -fx-background-position:center;
+    -fx-background-color:transparent;
+    -fx-background-size: 25px, 25px;
+    -fx-background-repeat:no-repeat;
+    -fx-border-color:transparent;
+}
+
+.btn-orc:hover {
+    -fx-background-image:url('../../public/ButtomCash.png');
+    -fx-background-position:center;
+    -fx-background-color:#70dd7070;
+    -fx-background-size: 25px, 25px;
+    -fx-background-repeat:no-repeat;
+    -fx-border-color:transparent;
 }

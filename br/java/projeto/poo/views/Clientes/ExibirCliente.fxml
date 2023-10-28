@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" styleClass="celulaTabela" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.java.projeto.poo.controller.OrcamentosController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" styleClass="celulaTabela" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.java.projeto.poo.controller.Clientes.ClienteShowController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -28,62 +33,62 @@
             </ImageView>
             <HBox alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="730.0" spacing="15.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label onMouseClicked="#carregarClientes" text="Clientes" textOverrun="CLIP">
+                  <Label fx:id="nClie" onMouseClicked="#carregarClientes" text="Clientes" textFill="#064eb9" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Label>
-                  <Label onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label onMouseClicked="#carregarAutomoveis" text="Automóveis" textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label onMouseClicked="#carregarPecas" text="Peças" textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label onMouseClicked="#carregarOrcamentos" text="Orçamentos" textFill="#064eb9" textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Label>
-                  <Label onMouseClicked="#carregarFuncionarios" text="Funcionários" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nAuto" onMouseClicked="#carregarAutomoveis" text="Automóveis" textOverrun="CLIP">
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nPecas" onMouseClicked="#carregarPecas" text="Peças" textOverrun="CLIP">
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nOrcamentos" onMouseClicked="#carregarOrcamentos" text="Orçamentos" textOverrun="CLIP">
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nFunc" onMouseClicked="#carregarFuncionarios" text="Funcionários" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
@@ -114,14 +119,11 @@
       </HBox>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="30.0" right="30.0" />
-         </BorderPane.margin>
+      <VBox prefHeight="698.0" prefWidth="966.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="49.0" prefWidth="951.0">
+            <HBox prefWidth="1920.0">
                <children>
-                  <VBox minWidth="-Infinity">
+                  <VBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
                         <HBox>
                            <children>
@@ -129,7 +131,7 @@
                               <Label text=" &gt; " />
                               <Label text="Clientes" />
                               <Label text=" &gt; " />
-                              <Label text="Cliente 1" />
+                              <Label fx:id="nomeClienteMenu" text="Cliente 1" />
                            </children>
                         </HBox>
                         <Label minHeight="-Infinity" minWidth="-Infinity" text="Exibir cliente">
@@ -142,209 +144,183 @@
                         <Insets top="5.0" />
                      </padding>
                   </VBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="620.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="1920.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                      <children>
-                        <Button id="ButtonBack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Voltar">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        <Button id="ButtonBack" fx:id="telaInicial" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Voltar">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
                      </children>
-                     <HBox.margin>
-                        <Insets left="115.0" />
-                     </HBox.margin>
-                  </HBox>
+                  </VBox>
                </children>
                <VBox.margin>
-                  <Insets bottom="10.0" />
+                  <Insets />
                </VBox.margin>
                <padding>
-                  <Insets right="15.0" />
+                  <Insets bottom="10.0" />
                </padding>
             </HBox>
-            <ScrollPane fitToWidth="true" prefHeight="600.0" prefWidth="960.0">
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0">
                <content>
-                  <VBox prefHeight="877.0" prefWidth="949.0">
+                  <VBox alignment="CENTER">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="949.0" spacing="10.0">
+                        <GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="950.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="45.0" prefWidth="949.0">
-                                 <children>
-                                    <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="900.0" text="Informações do cliente" textFill="#535f6b">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" styleClass="btn-edit" stylesheets="@../css/buttons.css" />
-                                 </children>
-                              </HBox>
-                              <Group>
-                                 <children>
-                                    <Rectangle arcHeight="8.0" arcWidth="8.0" fill="WHITE" height="190.0" layoutY="9.0" stroke="#8d8d8d" strokeType="INSIDE" width="949.0" />
-                                    <VBox layoutY="9.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="190.0" prefWidth="949.0">
-                                       <children>
-                                          <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="949.0">
-                                             <children>
-                                                <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="474.0" text="Nome" textFill="#677788">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                </Label>
-                                                <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="474.0" text="Endereço" textFill="#677788">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="949.0">
-                                             <children>
-                                                <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="474.0" text="Nome do cliente">
-                                                   <font>
-                                                      <Font name="System Bold" size="20.0" />
-                                                   </font>
-                                                   <padding>
-                                                      <Insets left="30.0" />
-                                                   </padding>
-                                                </Label>
-                                                <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="474.0" text="Endereço do cliente">
-                                                   <font>
-                                                      <Font name="System Bold" size="20.0" />
-                                                   </font>
-                                                   <padding>
-                                                      <Insets left="30.0" />
-                                                   </padding>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="949.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="474.0" text="CPF" textFill="#677788">
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </Group>
+                              <Label prefHeight="30.0" prefWidth="223.0" text="Informações do cliente" textFill="#535f6b" GridPane.halignment="LEFT">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="editarCliente" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" styleClass="btn-edit" stylesheets="@../css/buttons.css" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                            </children>
+                           <padding>
+                              <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                           </padding>
                            <VBox.margin>
-                              <Insets bottom="15.0" top="10.0" />
+                              <Insets />
                            </VBox.margin>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="949.0" spacing="10.0">
+                        </GridPane>
+                        <GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="950.0" styleClass="pane" stylesheets="@../css/Modals.css">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="45.0" prefWidth="949.0">
-                                 <children>
-                                    <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="900.0" text="Informações do automóvel" textFill="#535f6b">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" styleClass="btn-edit" stylesheets="@../css/buttons.css" />
-                                 </children>
-                              </HBox>
-                              <Group>
-                                 <children>
-                                    <Rectangle arcHeight="8.0" arcWidth="8.0" fill="WHITE" height="650.0" stroke="#8d8d8d" strokeType="INSIDE" width="949.0" />
-                                    <VBox>
-                                       <children>
-                                          <HBox prefHeight="100.0" prefWidth="949.0">
-                                             <children>
-                                                <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="474.0" text="Cor" textFill="#677788">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets />
-                                                   </HBox.margin>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                </Label>
-                                                <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="474.0" text="Placa do veículo" textFill="#677788">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="949.0">
-                                             <children>
-                                                <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="474.0" text="Modelo do veículo" textFill="#677788">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets />
-                                                   </HBox.margin>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                </Label>
-                                                <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="474.0" text="Quilometragem" textFill="#677788">
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding>
-                                                   <HBox.margin>
-                                                      <Insets />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="474.0" text="Ano do veículo" textFill="#677788">
-                                             <padding>
-                                                <Insets left="15.0" />
-                                             </padding>
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </VBox>
-                                    <Button id="NovoAutomovel" alignment="CENTER" layoutX="612.0" layoutY="250.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Novo automóvel">
-                                       <graphic>
-                                          <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../public/carAdd-symbol.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button id="NovoOrcamento" layoutX="785.0" layoutY="250.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Novo orçamento">
-                                       <graphic>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../public/cashAdd-symbol.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </Group>
+                              <Label prefHeight="40.0" prefWidth="474.0" text="Nome" textFill="#677788" GridPane.halignment="LEFT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="40.0" prefWidth="474.0" text="Endereço" textFill="#677788" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="exibirNome" text="Nome do cliente" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="exibirEndereco" text="Endereço do cliente" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="17.0" prefWidth="474.0" text="CPF" textFill="#677788" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="17.0" prefWidth="474.0" text="Telefone" textFill="#677788" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="exibirCPF" text="CPF do cliente" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="exibirTelefone" text="Telefone do cliente" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </Label>
                            </children>
-                        </VBox>
+                        </GridPane>
+                        <GridPane minHeight="-Infinity" minWidth="-Infinity" prefWidth="950.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="450.0" text="Informações do automóvel" textFill="#535f6b" GridPane.halignment="LEFT">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button id="NovoAutomovel" fx:id="novoVeic" alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" stylesheets="@../css/buttons.css" text="Novo automóvel" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                 <styleClass>
+                                    <String fx:value="btn-primary" />
+                                    <String fx:value="btn-car-icon" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </GridPane>
+                        <TableView fx:id="tabelaAuto" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="950.0">
+                          <columns>
+                            <TableColumn fx:id="columnModeloV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" text="Modelo" />
+                              <TableColumn fx:id="columnPlacaV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Placa" />
+                              <TableColumn fx:id="columnTipoV" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="100.0" resizable="false" text="Tipo" />
+                              <TableColumn fx:id="columnKMV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Quilometragem" />
+                            <TableColumn fx:id="columnAnoV" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" resizable="false" text="Ano" />
+                              <TableColumn fx:id="columnCorV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" text="Cor" />
+                              <TableColumn fx:id="columnButA" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" resizable="false" text="Ações" />
+                          </columns>
+                           <stylesheets>
+                              <URL value="@../css/tabela.css" />
+                              <URL value="@../css/buttons.css" />
+                           </stylesheets>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </TableView>
                      </children>
                   </VBox>
                </content>
@@ -353,6 +329,12 @@
                </opaqueInsets>
             </ScrollPane>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="30.0" right="30.0" />
+         </padding>
       </VBox>
    </center>
 </BorderPane>

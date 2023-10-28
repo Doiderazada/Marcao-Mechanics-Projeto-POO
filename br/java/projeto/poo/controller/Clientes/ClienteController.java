@@ -9,14 +9,17 @@ import br.java.projeto.poo.models.BO.ClienteBO;
 import br.java.projeto.poo.models.VO.ClienteVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,6 +40,7 @@ public class ClienteController extends BaseController{
     static ObservableList<ClienteVO> clientesDisponiveis;
 
     @FXML protected Button novoCliente;
+    @FXML private Label mensagemErroBusca;
     @FXML private TextField campoBusca;
     @FXML protected TableView<ClienteVO> tabelaClientes;
     @FXML private TableColumn<ClienteVO, String>  columnBut;
@@ -53,7 +57,8 @@ public class ClienteController extends BaseController{
             super.initialize();;
             listaClientes = this.clienteBO.listar();
             clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
-            this.inicializarTabela(); 
+            this.inicializarTabela();
+            linhaSelecionada();
         }catch(Exception ex){
             System.out.println("Erro do initialize: " + ex.getMessage() + "\n");
         }
@@ -146,12 +151,19 @@ public class ClienteController extends BaseController{
                 if (this.campoBusca.getText().matches("^\\d{3}.*")) {
                     clienteVOs = clienteBO.buscarPorCPF(this.campoBusca.getText());
                     clientesDisponiveis.setAll(clienteVOs);
+                    if (clienteVOs.isEmpty()) {
+                        mensagemErroBusca.setVisible(true);
+                    }
                 } else {
                     clienteVOs = clienteBO.buscarPorNome(this.campoBusca.getText());
                     clientesDisponiveis.setAll(clienteVOs);
+                    if (clienteVOs.isEmpty()) {
+                        mensagemErroBusca.setVisible(true);
+                    }
                 }
             } else {
                clientesDisponiveis.setAll(listaClientes);
+               mensagemErroBusca.setVisible(false);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -161,31 +173,53 @@ public class ClienteController extends BaseController{
 
 
     
-    @FXML
-    void colunaSelecionada(MouseEvent event) throws Exception{
-        ClienteVO clienteSelecionado = tabelaClientes.getSelectionModel().getSelectedItem();
-        //System.out.println(clienteSelecionado.getNome() + "\n" + clienteSelecionado.getCpf() + "\n" + clienteSelecionado.getEndereco().toString());
-        this.exibirCliente(clienteSelecionado);
+    
+    void linhaSelecionada() throws Exception{
+        
+        tabelaClientes.setRowFactory(event -> {
+            TableRow<ClienteVO> myRow = new TableRow<>();
+            myRow.setOnMouseClicked( new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent arg0) {
+                    ClienteVO clienteSelecionado = myRow.getItem();
+                    if (!(myRow.isEmpty())) {
+                        try{
+                            exibirCliente(clienteSelecionado);
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                            ModalsController modalsController = new ModalsController();
+                            modalsController.abrirModalFalha(e.getMessage());
+                        }
+                    } 
+                }
+                
+            });
+            return myRow;
+        });
+        
+        
     }
 
 
-    // Ainda não está funcionando bem
-    private void exibirCliente(ClienteVO cliente)throws Exception {
-        // App.navegarEntreTelas("exibirClientes");
-        // //System.out.println(cliente.getNome() + "\n" + cliente.getCpf() + "\n" + cliente.getEndereco().toString());
-        // FXMLLoader loader = new FXMLLoader(getClass().getResource("../ClienteShowController.java"));
-        // ClienteShowController showControl = loader.getController();
+    
 
-
-        // showControl.exibirNome.setText(cliente.getNome());
-        // showControl.exibirNome.setVisible(true);
-        // showControl.exibirCPF.setText(cliente.getCpf());
-        // showControl.exibirCPF.setVisible(true);
-        // showControl.exibirEndereco.setText(cliente.getEndereco().toString());
-        // showControl.exibirEndereco.setVisible(true);
-        // showControl.nomeClienteMenu.setText(cliente.getNome());
+    private void exibirCliente(ClienteVO cliente) throws Exception {
         
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
+        Parent root = loader.load();
+
+        ClienteShowController controller = loader.getController();
+        controller.initialize(cliente);
+        
+        Stage palco = new Stage();
+        Scene cena = new Scene(root);
+        palco  = (Stage)novoCliente.getScene().getWindow();
+        palco.setScene(cena);
+        palco.show();
     } 
+
+
 
 
 
@@ -227,7 +261,6 @@ public class ClienteController extends BaseController{
                 btnDelete.setOnAction(event -> {
                     try{
                         ClienteVO cliente = getTableView().getItems().get(getIndex());
-                        //funcs.remove(cliente);
                         abrirExclusao(cliente, getIndex());
                         
                     } catch(Exception e){
@@ -241,7 +274,6 @@ public class ClienteController extends BaseController{
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    //btnContainer.setStyle("-fx-padding: 0 20 0 20;");
                     btnContainer.setSpacing(10);
                     btnContainer.setAlignment(Pos.CENTER);
                     setGraphic(btnContainer);
@@ -254,12 +286,11 @@ public class ClienteController extends BaseController{
     
 
 
+
     private void realizarExclusao(ClienteVO cliente, int index) throws Exception {
         ClienteBO clienteExcluido = new ClienteBO();
             if(!clienteExcluido.deletar(cliente)){
                 clientesDisponiveis.remove(index);
-                //listaClientes.remove(cliente);
-                //tabelaClientes.refresh();
             }
     }
 

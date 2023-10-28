@@ -298,4 +298,9 @@ public class CriarOrcamentosController extends BaseController{
     public void voltaTelaInicial() throws Exception {
         App.navegarEntreTelas("orcamentos");
     }
+
+
+    public void setBuscarVeic(String text){
+        buscarVeiculo.setText(text);
+    }
 }

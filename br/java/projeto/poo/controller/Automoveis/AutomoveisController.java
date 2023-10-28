@@ -96,6 +96,10 @@ public class AutomoveisController extends BaseController{
             modalStage.setX(centralizarEixoX);
             modalStage.setY(centralizarEixoY);
             modalStage.showAndWait();
+
+            listaAutomoveis = this.veiculoB0.listar();
+            automoveisDisponiveis.setAll(listaAutomoveis);
+            
             
         } catch (Exception e) {
             System.out.println(e.getMessage());

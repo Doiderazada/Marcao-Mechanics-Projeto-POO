@@ -134,9 +134,6 @@ public class EditarAutomoveisController {
             cpfDono, tipo.getValue(), ano.getText(), Double.valueOf(km.getText()));
 
             veiculoBO.atualizar(veiculo);
-
-            AutomoveisController.listaAutomoveis.set(indice, veiculo);
-            AutomoveisController.automoveisDisponiveis.set(indice, veiculo);
             
             this.fecharModal();
             abrirModalSucess("Veículo editado com sucesso.");
