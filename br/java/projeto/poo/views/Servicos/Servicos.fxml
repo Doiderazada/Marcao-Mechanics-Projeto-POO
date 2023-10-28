@@ -41,17 +41,6 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textFill="#064eb9" textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </Label>
                   <Label fx:id="nAuto" onMouseClicked="#carregarAutomoveis" text="Automóveis" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
@@ -61,6 +50,17 @@
                      </cursor>
                      <font>
                         <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textFill="#064eb9" textOverrun="CLIP">
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
                   <Label fx:id="nPecas" onMouseClicked="#carregarPecas" text="Peças" textOverrun="CLIP">
@@ -141,6 +141,11 @@
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" spacing="25.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Label fx:id="msgErroBusca" text="Serviço não encontrado" textFill="RED">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                         <TextField fx:id="buscarServico" onKeyReleased="#buscarServico" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por nome" styleClass="searchField" stylesheets="@../css/buttons.css">
                            <HBox.margin>
                               <Insets />

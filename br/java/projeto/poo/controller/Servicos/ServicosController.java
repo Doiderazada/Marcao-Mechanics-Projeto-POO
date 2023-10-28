@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,9 +33,10 @@ public class ServicosController extends BaseController{
     private ServicoBO servicoBO = new ServicoBO();
     public static ArrayList<ServicoVO> listaServicos;
     public static ObservableList<ServicoVO> servicosDisponiveis;
+    
     @FXML private Button novoServico;
+    @FXML private Label msgErroBusca;
     @FXML private TextField buscarServico;
-
     @FXML private TableView<ServicoVO> tabelaServicos;
     @FXML private TableColumn<ServicoVO, String> columnBut;
     @FXML private TableColumn<ServicoVO, String> columnServ;
@@ -45,6 +47,7 @@ public class ServicosController extends BaseController{
         listaServicos = this.servicoBO.listar();
         servicosDisponiveis = FXCollections.observableArrayList(listaServicos);
         this.inicializarTabela();
+        msgErroBusca.setVisible(false);
     }
 
 
@@ -59,7 +62,7 @@ public class ServicosController extends BaseController{
         palco.setScene(janelaCad);
         Window wNS = novoServico.getScene().getWindow();
         double centralizarEixoX = (wNS.getX() + wNS.getWidth()/2) - 200;
-        double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 200;
+        double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 150;
         palco.setX(centralizarEixoX);
         palco.setY(centralizarEixoY);
         palco.showAndWait();
@@ -81,7 +84,7 @@ public class ServicosController extends BaseController{
         palco.setScene(janelaCad);
         Window wNS = novoServico.getScene().getWindow();
         double centralizarEixoX = (wNS.getX() + wNS.getWidth()/2) - 200;
-        double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 200;
+        double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 150;
         palco.setX(centralizarEixoX);
         palco.setY(centralizarEixoY);
         palco.showAndWait();
@@ -121,6 +124,33 @@ public class ServicosController extends BaseController{
 
 
 
+
+
+    @FXML
+    void buscarServico(KeyEvent event){
+        try {
+            ArrayList<ServicoVO> servicos;
+            if (this.buscarServico.getText().length() > 2) {
+                ServicoVO vo = new ServicoVO(1, buscarServico.getText(), 0);
+                servicos = servicoBO.buscarPorNome(vo);
+                if (servicos.isEmpty()) {
+                    msgErroBusca.setVisible(true);
+                    servicosDisponiveis.setAll(servicos);
+                }else servicosDisponiveis.setAll(servicos);
+                
+            } else {
+               servicosDisponiveis.setAll(listaServicos);
+               msgErroBusca.setVisible(false);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+
+
     private void inicializarTabela() throws SQLException {
         columnServ.setCellValueFactory(new PropertyValueFactory<ServicoVO, String>("nome"));
         columnVal.setCellValueFactory(new PropertyValueFactory<ServicoVO, Double>("valor"));
@@ -149,7 +179,6 @@ public class ServicosController extends BaseController{
                 btnDelete.setOnAction(event -> {
                     try{
                         ServicoVO servico = getTableView().getItems().get(getIndex());
-                        //funcs.remove(cliente);
                         abrirExclusao(servico, getIndex());
                         
                     } catch(Exception e){
@@ -163,7 +192,6 @@ public class ServicosController extends BaseController{
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    //btnContainer.setStyle("-fx-padding: 0 20 0 20;");
                     btnContainer.setSpacing(10);
                     btnContainer.setAlignment(Pos.CENTER);
                     setGraphic(btnContainer);
@@ -172,21 +200,9 @@ public class ServicosController extends BaseController{
         });
     }
 
-    @FXML
-    void buscarServico(KeyEvent event){
-        try {
-            ArrayList<ServicoVO> servicos;
-            if (this.buscarServico.getText().length() > 2) {
-                ServicoVO vo = new ServicoVO(1, buscarServico.getText(), 0);
-                servicos = servicoBO.buscarPorNome(vo);
-                servicosDisponiveis.setAll(servicos);
-            } else {
-               servicosDisponiveis.setAll(listaServicos);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    
+
+
 
 
     private void realizarExclusao(ServicoVO servico, int index) throws Exception {
@@ -194,7 +210,6 @@ public class ServicosController extends BaseController{
             if(!servicoExcluido.deletar(servico)){
                 listaServicos.remove(index);
                 servicosDisponiveis.remove(index);
-                //tabelaClientes.refresh();
             }
     }
 

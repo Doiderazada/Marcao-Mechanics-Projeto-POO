@@ -122,17 +122,6 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
                   <Label fx:id="nAuto" onMouseClicked="#carregarAutomoveis" text="Automóveis" textFill="#064eb9" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
@@ -142,6 +131,17 @@
                      </cursor>
                      <font>
                         <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="15.0" />
                      </font>
                   </Label>
                   <Label fx:id="nPecas" onMouseClicked="#carregarPecas" text="Peças" textOverrun="CLIP">
