@@ -27,7 +27,9 @@ public class VeiculoDao extends BaseDao <VeiculoVO>{
             ps.setString(5, veiculo.getTipo());
             ps.setString(6, veiculo.getAno());
             ps.setDouble(7, veiculo.getKm());
-            return ps.execute();
+            ps.execute();
+
+            return true;
 
         } catch (SQLException e) {
             throw e;

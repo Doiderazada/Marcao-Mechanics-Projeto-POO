@@ -21,6 +21,8 @@ public class VeiculoVO {
         setKm(km);
     }
 
+    public VeiculoVO(){};
+
     public long getId() {
         return this.id;
     }

@@ -23,59 +23,35 @@ public class EditarAutomoveisController {
     VeiculoBO veiculoBO = new VeiculoBO();
     int indice = 0;
     String cpfDono;
-    
-    @FXML
-    private Label id;
+    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    String[] tipoVeicArray = {"Carro", "Moto"};
+    VeiculoVO veiculoEditar = new VeiculoVO();
+
+    @FXML private TextField ano;
+    @FXML private Button cadastrar;
+    @FXML private Button cancelar;
+    @FXML private TextField cor;
+    @FXML private TextField km;
+    @FXML private TextField modelo;
+    @FXML private Label msgErro;
+    @FXML private TextField placa;
+    @FXML private ChoiceBox<String> tipo;
 
     @FXML
-    private TextField ano;
-
-    @FXML
-    private Button cadastrar;
-
-    @FXML
-    private Button cancelar;
-
-    @FXML
-    private TextField cor;
-
-    @FXML
-    private TextField km;
-
-    @FXML
-    private TextField modelo;
-
-    @FXML
-    private Label msgErro;
-
-    @FXML
-    private TextField placa;
-
-    @FXML 
-    private ChoiceBox<String> tipo;
-
-    @FXML
-    void initialize() {
-        this.id.setVisible(false);
+    public void initialize(VeiculoVO veiculo) {
         this.msgErro.setVisible(false);
-        tipo.getItems().addAll("Carro", "Moto");
-        tipo.setValue("Carro");
+        tipo.getItems().addAll(tipoVeicArray);
+        tipo.setValue(tipoVeicArray[0]);
+        veiculoEditar = veiculo;
+        preencherCampos(veiculoEditar);
     }
 
-    @FXML
-    void cancelar(ActionEvent event) {
-        this.fecharModal();
-    }
-
-    private void fecharModal() {
-        Stage stage = (Stage) this.cancelar.getScene().getWindow();
-        stage.close();
-    }
+    
 
 
 
 
-    @FXML
+    
     void abrirModalFail(String mensagem) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
         Parent root = loader.load();
@@ -98,7 +74,7 @@ public class EditarAutomoveisController {
 
     }
 
-    @FXML
+    
     void abrirModalSucess(String mensagem) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
         Parent root = loader.load();
@@ -127,16 +103,19 @@ public class EditarAutomoveisController {
     @FXML
     void editarVeiculo(ActionEvent event) {
         try {
-            VeiculoVO veiculo = new VeiculoVO(Integer.valueOf(id.getText()),
-            placa.getText().toUpperCase(),
-            cor.getText(),
-            modelo.getText(),
-            cpfDono, tipo.getValue(), ano.getText(), Double.valueOf(km.getText()));
-
-            veiculoBO.atualizar(veiculo);
-            
-            this.fecharModal();
-            abrirModalSucess("Veículo editado com sucesso.");
+            if(validarCampos()){
+                veiculoEditar.setAno(ano.getText());
+                veiculoEditar.setCor(cor.getText());
+                veiculoEditar.setKm(Double.parseDouble(km.getText()));
+                veiculoEditar.setModelo(modelo.getText());
+                veiculoEditar.setPlaca(placa.getText());
+                veiculoEditar.setTipo(tipo.getValue());
+                
+                veiculoBO.atualizar(veiculoEditar);
+                
+                this.fecharModal();
+                abrirModalSucess("Veículo editado com sucesso.");
+            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -145,13 +124,25 @@ public class EditarAutomoveisController {
         }
     }
 
-    public void setDados(VeiculoVO vo, int indice) {
-        try {
-            if (Long.valueOf(vo.getId()) <= 0) { // verifica se o funcionario possui um id válido
-                this.id.setText(String.valueOf(veiculoBO.buscarPorPlaca(vo.getPlaca()).get(0).getId()));
-            } else {
-                this.id.setText(String.valueOf(vo.getId()));   
-            } 
+    @FXML
+    void cancelar(ActionEvent event) {
+        this.fecharModal();
+    }
+
+    private void fecharModal() {
+        Stage stage = (Stage) this.cancelar.getScene().getWindow();
+        stage.close();
+    }
+
+
+
+
+
+
+    
+
+    public void preencherCampos(VeiculoVO vo) {
+        try { 
 
             ano.setText(vo.getAno());
             placa.setText(vo.getPlaca());
@@ -160,10 +151,113 @@ public class EditarAutomoveisController {
             cor.setText(vo.getCor());
             km.setText(String.valueOf(vo.getKm()));
             cpfDono = vo.getCpfDono();
-            this.indice = indice;
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+
+
+
+
+
+    boolean validarCampos(){
+        
+        if(modelo.getText().isEmpty()){
+            msgErro.setText("O modelo do veículo não pode ser vazio");
+            msgErro.setVisible(true);
+            modelo.setStyle(textFieldStyle);
+            new animatefx.animation.Shake(modelo).play();
+            return false;
+        }else{
+            if (modelo.getText().matches("^[a-zA-Z\\s^áéíóúãêõô]{1,45}[\\d^.]{0,3}$")) 
+                System.out.println("campo modelo válido");
+            else{
+                msgErro.setText("Formato inválido de modelo");
+                msgErro.setVisible(true);
+                modelo.setStyle(textFieldStyle);
+                new animatefx.animation.Shake(modelo).play();
+                return false;
+            }
+        }
+        
+        
+        if(ano.getText().isEmpty()){
+            msgErro.setText("O ano do veículo não pode ser vazio");
+            msgErro.setVisible(true);
+            ano.setStyle(textFieldStyle);
+            new animatefx.animation.Shake(ano).play();
+            return false;
+        }else{
+            if (ano.getText().matches("[\\d]{1,4}")) 
+                System.out.println("campo ano válido");
+            else{
+                msgErro.setText("Formato inválido de de ano");
+                msgErro.setVisible(true);
+                ano.setStyle(textFieldStyle);
+                new animatefx.animation.Shake(ano).play();
+                return false;
+            }
+        }
+        
+        
+        if(km.getText().isEmpty()){
+            msgErro.setText("A quilometragem não pode ser vazia");
+            msgErro.setVisible(true);
+            km.setStyle(textFieldStyle);
+            new animatefx.animation.Shake(km).play();
+            return false;
+        }else{
+            if (km.getText().matches("[\\d^.]{1,9}")) 
+                System.out.println("campo quilometragem válido");
+            else{
+                msgErro.setText("Formato inválido de quilometragem");
+                msgErro.setVisible(true);
+                km.setStyle(textFieldStyle);
+                new animatefx.animation.Shake(km).play();
+                return false;
+            }
+        }
+        
+        
+        if(placa.getText().isEmpty()){
+            msgErro.setText("A placa não pode ser vazia");
+            msgErro.setVisible(true);
+            placa.setStyle(textFieldStyle);
+            new animatefx.animation.Shake(placa).play();
+            return false;
+        }else{
+            if (placa.getText().matches("^[a-zA-Z]{3}[-|0-9]{1}[0-9|a-zA-Z]{1}[0-9]{2,3}$")) 
+                System.out.println("campo placa válido");
+            else{
+                msgErro.setText("Formato inválido de placa");
+                msgErro.setVisible(true);
+                placa.setStyle(textFieldStyle);
+                new animatefx.animation.Shake(placa).play();
+                return false;
+            }
+        }
+        
+        
+        if(cor.getText().isEmpty()){
+            msgErro.setText("A cor não pode ser vazia");
+            msgErro.setVisible(true);
+            cor.setStyle(textFieldStyle);
+            new animatefx.animation.Shake(cor).play();
+            return false;
+        }else{
+            if (cor.getText().matches("^[a-zA-Z\\s^-]{1,20}$")) 
+                System.out.println("campo cor válido");
+            else{
+                msgErro.setText("Formato inválido de cor");
+                msgErro.setVisible(true);
+                cor.setStyle(textFieldStyle);
+                new animatefx.animation.Shake(cor).play();
+                return false;
+            }
+        }
+
+        return true;
     }
 }

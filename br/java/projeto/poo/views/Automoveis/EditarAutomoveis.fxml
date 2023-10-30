@@ -80,7 +80,7 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label fx:id="msgErro" alignment="CENTER" contentDisplay="CENTER" text="Os campos não podem ser vazios" textFill="RED" visible="false">
+                  <Label fx:id="msgErro" alignment="CENTER" contentDisplay="CENTER" text="Os campos não podem ser vazios" textFill="RED">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -103,7 +103,6 @@
             </Button>
          </children>
       </HBox>
-      <Label fx:id="id" layoutX="211.0" layoutY="34.0" maxHeight="0.0" maxWidth="0.0" text="Tipo" />
       <Separator layoutY="373.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="520.0" />
    </children>
 </Pane>

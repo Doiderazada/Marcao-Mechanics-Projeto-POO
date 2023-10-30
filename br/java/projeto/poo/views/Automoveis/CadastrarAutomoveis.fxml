@@ -43,7 +43,7 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="CPF" />
-                        <TextField fx:id="cpf" onKeyReleased="#buscarCliente" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
+                        <TextField fx:id="cpf" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -52,7 +52,7 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Telefone" />
-                        <TextField fx:id="telefone" onKeyReleased="#buscarCliente" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 84 91234-5678" />
+                        <TextField fx:id="telefone" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 84 91234-5678" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -139,7 +139,7 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label fx:id="msgErro" alignment="CENTER" contentDisplay="CENTER" text="Os campos não podem ser vazios" textFill="RED" visible="false">
+                  <Label fx:id="msgErro" alignment="CENTER" contentDisplay="CENTER" text="Os campos não podem ser vazios" textFill="RED">
                      <font>
                         <Font size="15.0" />
                      </font>

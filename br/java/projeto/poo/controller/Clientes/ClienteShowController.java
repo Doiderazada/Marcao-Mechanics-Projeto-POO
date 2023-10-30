@@ -63,7 +63,7 @@ public class ClienteShowController extends BaseController{
 
 
     
-    void initialize(ClienteVO cliente){
+    public void initialize(ClienteVO cliente){
         try{
             clienteExibido = new ClienteVO();
             clienteExibido = cliente;
@@ -164,15 +164,17 @@ public class ClienteShowController extends BaseController{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Automoveis/EditarAutomoveis.fxml"));
             Parent root = loader.load();
             EditarAutomoveisController editarController = loader.getController();
-            editarController.setDados(vo, indice);
-            Scene modalScene = new Scene(root);
-            modalStage.setScene(modalScene);
+            editarController.initialize(vo);
+            
             Window wNV = novoVeic.getScene().getWindow();
             double centralizarEixoX, centralizarEixoY;
             centralizarEixoX = (wNV.getX() + wNV.getWidth()/2) - 260;
             centralizarEixoY = (wNV.getY() + wNV.getHeight()/2) - 230;
             modalStage.setX(centralizarEixoX);
             modalStage.setY(centralizarEixoY);
+            
+            Scene modalScene = new Scene(root);
+            modalStage.setScene(modalScene);
             modalStage.showAndWait();
 
             listaVeiculos = veiculoBO.buscarPorDono(clienteExibido.getCpf());
