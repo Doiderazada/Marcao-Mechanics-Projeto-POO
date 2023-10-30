@@ -41,13 +41,13 @@ public class ClienteShowController extends BaseController{
     static ObservableList<VeiculoVO> veiculosDoCliente;
     static ArrayList<VeiculoVO> listaVeiculos;
 
-    @FXML private Label exibirCPF;
-    @FXML private Label exibirTelefone;
-    @FXML private Label exibirEndereco; 
-    @FXML private Label exibirNome;
     @FXML private Button editarCliente; 
     @FXML private Button novoVeic;
     @FXML private Button telaInicial;
+    @FXML private Label exibirCPF;
+    @FXML private Label exibirEndereco; 
+    @FXML private Label exibirNome;
+    @FXML private Label exibirTelefone;
     @FXML private Label nomeClienteMenu;
     @FXML private TableColumn<VeiculoVO, String> columnAnoV;
     @FXML private TableColumn<VeiculoVO, String> columnButA;
@@ -82,8 +82,8 @@ public class ClienteShowController extends BaseController{
 
 
     
-    @FXML
-    void abrirCadVeic() {
+    
+    private void abrirCadVeic() {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -115,7 +115,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    @FXML
+    
     private void abrirEditCli() {
 
         try {
@@ -128,7 +128,7 @@ public class ClienteShowController extends BaseController{
             Parent root = loader.load();
 
             ClienteEditController controller = loader.getController();
-            controller.initialize(clienteExibido, 0);
+            controller.initialize(clienteExibido);
 
             Scene janelaEdit = new Scene(root);
             palco.setScene(janelaEdit);
@@ -155,7 +155,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    void abrirEditVeic(VeiculoVO vo, int indice) throws Exception {
+    private void abrirEditVeic(VeiculoVO vo, int indice) throws Exception {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -229,7 +229,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    void acaoDosBotoes() throws Exception {
+    private void acaoDosBotoes() throws Exception {
         telaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -373,7 +373,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    void preencherCampos(ClienteVO cliente){
+    private void preencherCampos(ClienteVO cliente){
         try{
             exibirNome.setText(cliente.getNome());
             exibirNome.setVisible(true);
@@ -417,8 +417,8 @@ public class ClienteShowController extends BaseController{
 
 
 
-    @FXML
-    void voltaTelaInicial(){
+    
+    private void voltaTelaInicial(){
         App.navegarEntreTelas("clientes");
     }
 

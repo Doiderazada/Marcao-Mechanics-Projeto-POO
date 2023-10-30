@@ -36,8 +36,8 @@ public class ClienteController extends BaseController{
 
     
     private ClienteBO clienteBO = new ClienteBO();
-    static ArrayList<ClienteVO> listaClientes = new ArrayList<ClienteVO>();
-    static ObservableList<ClienteVO> clientesDisponiveis;
+    private static ArrayList<ClienteVO> listaClientes = new ArrayList<ClienteVO>();
+    private static ObservableList<ClienteVO> clientesDisponiveis;
 
     @FXML protected Button novoCliente;
     @FXML private Label mensagemErroBusca;
@@ -59,6 +59,7 @@ public class ClienteController extends BaseController{
             clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
             mensagemErroBusca.setVisible(false);
             this.inicializarTabela();
+            acaoDosBotoes();
             linhaSelecionada();
         }catch(Exception ex){
             System.out.println("Erro do initialize: " + ex.getMessage() + "\n");
@@ -66,8 +67,13 @@ public class ClienteController extends BaseController{
         
     }
 
-    @FXML
-    void abrirCadastro() throws Exception {
+
+
+
+    
+
+    
+    private void abrirCadastro() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/CadastrarCliente.fxml"));
         Parent root = loader.load();
         Scene janelaCad = new Scene(root);
@@ -87,16 +93,13 @@ public class ClienteController extends BaseController{
     }
 
 
-
-
-    @FXML
     private void abrirEdicao(ClienteVO cliente, int i) throws Exception {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/EditarCliente.fxml"));
         Parent root = loader.load();
 
         ClienteEditController controller = loader.getController();
-        controller.initialize(cliente, i);
+        controller.initialize(cliente);
 
         Scene janelaEdit = new Scene(root);
         Stage palco = new Stage();
@@ -144,8 +147,46 @@ public class ClienteController extends BaseController{
     }
 
 
-    @FXML
-    void buscarCliente(KeyEvent event){
+
+
+
+
+
+
+
+    private void acaoDosBotoes(){
+        novoCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try{abrirCadastro();}
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+        campoBusca.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                try {buscarCliente();} 
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+    }
+
+
+
+    
+    private void buscarCliente(){
         try {
             ArrayList<ClienteVO> clienteVOs;
             if (this.campoBusca.getText().length() > 2) {
@@ -178,7 +219,7 @@ public class ClienteController extends BaseController{
 
     
     
-    void linhaSelecionada() throws Exception{
+    private void linhaSelecionada() throws Exception{
         
         tabelaClientes.setRowFactory(event -> {
             TableRow<ClienteVO> myRow = new TableRow<>();
@@ -250,11 +291,6 @@ public class ClienteController extends BaseController{
                     try {
                         ClienteVO cliente = getTableView().getItems().get(getIndex());
                         abrirEdicao(cliente, getIndex());
-                        System.out.println(cliente.getNome() + "\n" + 
-                                           cliente.getCpf() + "\n" + 
-                                           cliente.getTelefone() + "\n" + 
-                                           cliente.getEndereco() + "\n" + 
-                                           cliente.getVeiculo() + "\n");
                         tabelaClientes.refresh();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -297,6 +333,4 @@ public class ClienteController extends BaseController{
                 clientesDisponiveis.remove(index);
             }
     }
-
-
 }

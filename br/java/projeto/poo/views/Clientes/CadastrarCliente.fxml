@@ -36,7 +36,7 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="CPF" />
-                        <TextField fx:id="campoCPFCliente" onKeyReleased="#autoComplete" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
+                        <TextField fx:id="campoCPFCliente" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -45,7 +45,7 @@
                   <VBox spacing="3.0">
                      <children>
                         <Label text="Telefone" />
-                        <TextField fx:id="campoTelefone" onKeyReleased="#autoComplete" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 84 91234-5678" />
+                        <TextField fx:id="campoTelefone" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 84 91234-5678" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -76,12 +76,12 @@
       <Separator layoutY="564.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="500.0" />
       <HBox alignment="CENTER" layoutY="565.0" prefHeight="85.0" prefWidth="500.0" spacing="20.0">
          <children>
-            <Button fx:id="cancelarCadastro" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelarCadastro" prefHeight="50.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar">
+            <Button fx:id="cancelarCadastro" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="cadastrarCliente" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cadastrarCliente" prefHeight="50.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Cadastrar cliente">
+            <Button fx:id="cadastrarCliente" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Cadastrar cliente">
                <font>
                   <Font size="15.0" />
                </font>

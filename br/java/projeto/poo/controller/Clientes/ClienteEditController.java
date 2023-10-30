@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,35 +25,35 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 public class ClienteEditController {
-    // ModalsController modalsController = new ModalsController();
+    
     private EnderecoBO enderecoBO = new EnderecoBO();
     private ClienteBO clienteBO = new ClienteBO();
     private TelefoneBO telefoneBO = new TelefoneBO();
     private ClienteVO clienteEditar = new ClienteVO();
     private String nome = null, cpf = null, endereco = null, telefone = null;
-    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
 
+    @FXML private Button cancelarEdicao;
+    @FXML private Button salvarEdicao;
+    @FXML private Label mensagemErroEdit;
     @FXML private TextField campoEditCPF;
     @FXML private TextField campoEditEnd;
     @FXML private TextField campoEditNome;
     @FXML private TextField campoEditTel;
-    @FXML private Button cancelarEdicao;
-    @FXML private Label mensagemErroEdit;
-    @FXML private Button salvarEdicao;
     
     
-    void initialize(ClienteVO cliente, int index){
+    public void initialize(ClienteVO cliente){
         
         clienteEditar = new ClienteVO();
         clienteEditar = cliente;
-        this.preencherCampos(clienteEditar, index);
-        this.acaoTextField();
+        this.preencherCampos(clienteEditar);
+        this.acaoCompTela();
             
     }
     
 
-    @FXML
-    void abrirModalFail(Label mensagem, Button b) throws Exception{
+    
+    private void abrirModalFail(Label mensagem, Button b) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
         Parent root = loader.load();
 
@@ -78,8 +79,8 @@ public class ClienteEditController {
 
 
 
-    @FXML
-    void abrirModalSucess(Label mensagem, Button b, ClienteVO cliente) throws IOException{
+    
+    private void abrirModalSucess(Label mensagem, Button b, ClienteVO cliente) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
         Parent root = loader.load();
         
@@ -104,7 +105,7 @@ public class ClienteEditController {
 
 
 
-    void acaoTextField(){
+    private void acaoCompTela(){
         campoEditNome.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -123,6 +124,14 @@ public class ClienteEditController {
             }
             
         });
+        campoEditCPF.setOnKeyReleased(new EventHandler<KeyEvent>(){
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                autoComplete();
+            }
+            
+        });
         campoEditTel.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -132,13 +141,48 @@ public class ClienteEditController {
             }
             
         });
+        campoEditTel.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                autoComplete();
+            }
+            
+        });
+        
+        cancelarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try{cancelarEdicao();}
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+        salvarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try{editarCliente();}
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
     }
 
 
 
 
-    @FXML
-    void autoComplete(){
+    
+    private void autoComplete(){
         // auto-complete cpf
         if(campoEditCPF.getText().length() == 3){
             campoEditCPF.setText(campoEditCPF.getText() + ".");
@@ -172,8 +216,8 @@ public class ClienteEditController {
     
     
     
-    @FXML
-    void editarCliente() throws Exception{
+    
+    private void editarCliente() throws Exception{
         
         try{
             
@@ -213,8 +257,8 @@ public class ClienteEditController {
         }
     }
 
-    @FXML
-    void cancelarEdicao() throws Exception{
+    
+    private void cancelarEdicao() throws Exception{
         Stage palco = (Stage) this.cancelarEdicao.getScene().getWindow();
         palco.close();
     }
@@ -222,7 +266,7 @@ public class ClienteEditController {
 
 
 
-    boolean validarCampos(){
+    private boolean validarCampos(){
         
         if(campoEditNome.getText().isEmpty()){
             mensagemErroEdit.setText("O nome não pode ser vazio");
@@ -307,7 +351,7 @@ public class ClienteEditController {
 
 
 
-    void preencherCampos(ClienteVO cliente, int index){
+    private void preencherCampos(ClienteVO cliente){
         
         try{
 
@@ -327,7 +371,7 @@ public class ClienteEditController {
 
     
     
-    void setInvisibleEdit(){
+    private void setInvisibleEdit(){
         this.mensagemErroEdit.setVisible(false);
     }
 

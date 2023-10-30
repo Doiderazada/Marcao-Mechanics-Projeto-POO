@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -29,20 +30,19 @@ import javafx.stage.Window;
 
 public class ClienteCadController {
     
-    EnderecoVO nEnderecoVO = new EnderecoVO();
-    ClienteBO clienteBO = new ClienteBO();
-    VeiculoBO nVeiculoBO = new VeiculoBO();
-    String ano = null, cor = null, cpf = null, endereco = null, modelo = null, nome = null, placa = null, tipoV = null, telefone = null;
-    double quilometragem = 0;
-    long id = 0;
-    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    private EnderecoVO nEnderecoVO = new EnderecoVO();
+    private ClienteBO clienteBO = new ClienteBO();
+    private VeiculoBO nVeiculoBO = new VeiculoBO();
+    private String ano = null, cor = null, cpf = null, endereco = null, modelo = null, nome = null, placa = null, tipoV = null, telefone = null;
+    private double quilometragem = 0;
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    private String[] tipoVeic_Array = {"Carro","Moto"};
 
     @FXML private Button cadastrarCliente;
     @FXML private Button cancelarCadastro;
     @FXML private ChoiceBox<String> tipoVeic;
     @FXML private Label mensagemErroCad;
     @FXML private Pane cadastroCliente;
-    private String[] tipoVeic_Array = {"Carro","Moto"};
     @FXML private TextField campoAnoVeic;
     @FXML private TextField campoCPFCliente;
     @FXML private TextField campoCorVeic;
@@ -55,8 +55,8 @@ public class ClienteCadController {
     
 
 
-    @FXML
-    void initialize(){
+    
+    public void initialize(){
 
         tipoVeic.getItems().addAll(tipoVeic_Array);
         tipoVeic.setValue(tipoVeic_Array[0]);
@@ -70,8 +70,8 @@ public class ClienteCadController {
 
 
 
-    @FXML
-    void abrirModalFail(Label mensagem, Button b) throws Exception{
+
+    private void abrirModalFail(Label mensagem, Button b) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
         Parent root = loader.load();
 
@@ -97,8 +97,8 @@ public class ClienteCadController {
 
 
 
-    @FXML
-    void abrirModalSucess(Label mensagem, Button b, ClienteVO cliente) throws IOException{
+
+    private void abrirModalSucess(Label mensagem, Button b, ClienteVO cliente) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
         Parent root = loader.load();
         
@@ -124,7 +124,7 @@ public class ClienteCadController {
 
 
 
-    void acaoTextField(){
+    private void acaoTextField(){
         campoNomeCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -143,12 +143,28 @@ public class ClienteCadController {
             }
             
         });
+        campoCPFCliente.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                autoComplete();
+            }
+            
+        });
         campoTelefone.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
                 setInvisibleCad();
                 campoTelefone.setStyle(null);
+            }
+            
+        });
+        campoTelefone.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                autoComplete();
             }
             
         });
@@ -206,7 +222,34 @@ public class ClienteCadController {
             }
             
         });
-        
+
+
+        cadastrarCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try {cadastrarCliente();} 
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+        cancelarCadastro.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try {cancelarCadastro();} 
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
     }
 
 
@@ -214,8 +257,8 @@ public class ClienteCadController {
 
 
 
-    @FXML
-    void autoComplete(){
+    
+    private void autoComplete(){
         // auto-complete cpf
         if(campoCPFCliente.getText().length() == 3){
             campoCPFCliente.setText(campoCPFCliente.getText() + ".");
@@ -252,8 +295,8 @@ public class ClienteCadController {
 
 
 
-    @FXML
-    void cadastrarCliente() throws Exception{
+    
+    private void cadastrarCliente() throws Exception{
         
         try{
 
@@ -273,12 +316,12 @@ public class ClienteCadController {
 
                 ArrayList<VeiculoVO> listaveiculos = new ArrayList<VeiculoVO>();
 
-                VeiculoVO veiculo = new VeiculoVO(id, placa, cor, modelo, cpf, tipoV, ano, quilometragem);
+                VeiculoVO veiculo = new VeiculoVO(0, placa, cor, modelo, cpf, tipoV, ano, quilometragem);
                 listaveiculos.add(veiculo);
                 String cpfNull = null;
 
-                TelefoneVO telefoneVO = new TelefoneVO(id, cpf, cpfNull, telefone);
-                ClienteVO nClienteVO = new ClienteVO(id, nome, cpf, nEnderecoVO, listaveiculos, telefoneVO);
+                TelefoneVO telefoneVO = new TelefoneVO(0, cpf, cpfNull, telefone);
+                ClienteVO nClienteVO = new ClienteVO(0, nome, cpf, nEnderecoVO, listaveiculos, telefoneVO);
 
                 
                 if(clienteBO.inserir(nClienteVO)){
@@ -300,8 +343,8 @@ public class ClienteCadController {
         }
     }
     
-    @FXML
-    void cancelarCadastro() throws Exception{
+    
+    private void cancelarCadastro() throws Exception{
         Stage palco = (Stage) this.cancelarCadastro.getScene().getWindow();
         palco.close();
     }
@@ -312,7 +355,7 @@ public class ClienteCadController {
 
 
 
-    boolean validarCampos(){
+    private boolean validarCampos(){
         
         if(campoNomeCliente.getText().isEmpty()){
             mensagemErroCad.setText("O nome não pode ser vazio");
@@ -493,7 +536,7 @@ public class ClienteCadController {
 
 
     
-    void setInvisibleCad(){
+    private void setInvisibleCad(){
         this.mensagemErroCad.setVisible(false);
     }
 

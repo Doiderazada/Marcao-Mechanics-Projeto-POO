@@ -152,12 +152,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="campoBusca" onKeyReleased="#buscarCliente" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por CPF ou nome" styleClass="searchField" stylesheets="@../css/buttons.css">
+                        <TextField fx:id="campoBusca" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por CPF ou nome" styleClass="searchField" stylesheets="@../css/buttons.css">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <Button fx:id="novoCliente" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#abrirCadastro" prefHeight="40.0" prefWidth="135.0" stylesheets="@../css/buttons.css" text="Novo Cliente  " textAlignment="RIGHT" textFill="#064eb9">
+                        <Button fx:id="novoCliente" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" stylesheets="@../css/buttons.css" text="Novo Cliente  " textAlignment="RIGHT" textFill="#064eb9">
                            <padding>
                               <Insets bottom="10.0" left="35.0" right="10.0" top="10.0" />
                            </padding>
