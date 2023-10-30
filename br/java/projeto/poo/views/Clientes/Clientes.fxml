@@ -147,7 +147,7 @@
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefWidth="762.0" spacing="25.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="mensagemErroBusca" text="Cliente não encontrado" textFill="RED" visible="false">
+                        <Label fx:id="mensagemErroBusca" text="Cliente não encontrado" textFill="RED">
                            <font>
                               <Font size="18.0" />
                            </font>

@@ -56,7 +56,7 @@
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <Button fx:id="cadastrar" alignment="CENTER_RIGHT" ellipsisString="" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#abrirModalCadastro" prefHeight="40.0" prefWidth="140.0" stylesheets="@../css/buttons.css" text="Novo Veiculo" textOverrun="CLIP" HBox.hgrow="ALWAYS">
+                        <Button fx:id="cadastrar" alignment="CENTER_RIGHT" ellipsisString="" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#abrirModalCadastro" prefHeight="40.0" prefWidth="135.0" stylesheets="@../css/buttons.css" text="Novo Veiculo" textOverrun="CLIP" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

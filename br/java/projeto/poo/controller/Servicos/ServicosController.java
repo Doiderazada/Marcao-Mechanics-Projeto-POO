@@ -136,7 +136,10 @@ public class ServicosController extends BaseController{
                 if (servicos.isEmpty()) {
                     msgErroBusca.setVisible(true);
                     servicosDisponiveis.setAll(servicos);
-                }else servicosDisponiveis.setAll(servicos);
+                }else {
+                    servicosDisponiveis.setAll(servicos);
+                    msgErroBusca.setVisible(false);
+                }
                 
             } else {
                servicosDisponiveis.setAll(listaServicos);

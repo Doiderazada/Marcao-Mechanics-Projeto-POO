@@ -57,6 +57,7 @@ public class ClienteController extends BaseController{
             super.initialize();;
             listaClientes = this.clienteBO.listar();
             clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
+            mensagemErroBusca.setVisible(false);
             this.inicializarTabela();
             linhaSelecionada();
         }catch(Exception ex){
@@ -148,6 +149,7 @@ public class ClienteController extends BaseController{
         try {
             ArrayList<ClienteVO> clienteVOs;
             if (this.campoBusca.getText().length() > 2) {
+                mensagemErroBusca.setVisible(false);
                 if (this.campoBusca.getText().matches("^\\d{3}.*")) {
                     clienteVOs = clienteBO.buscarPorCPF(this.campoBusca.getText());
                     clientesDisponiveis.setAll(clienteVOs);
