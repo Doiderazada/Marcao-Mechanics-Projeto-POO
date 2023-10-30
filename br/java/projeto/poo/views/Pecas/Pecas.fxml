@@ -141,12 +141,17 @@
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" spacing="25.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField fx:id="buscarPeca" onKeyReleased="#buscarPeca" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por fabricante ou nome" styleClass="searchField" stylesheets="@../css/buttons.css">
+                        <Label fx:id="msgErroBusca" text="Peça não encontrada" textFill="RED">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="buscarPeca" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por fabricante ou nome" styleClass="searchField" stylesheets="@../css/buttons.css">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <Button id="NovaPeca" fx:id="novaPeca" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#abrirCadastro" prefHeight="40.0" prefWidth="125.0" stylesheets="@../css/buttons.css" text="Nova Peça  " textAlignment="CENTER">
+                        <Button id="NovaPeca" fx:id="novaPeca" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" stylesheets="@../css/buttons.css" text="Nova Peça    " textAlignment="CENTER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -172,8 +177,8 @@
                <columns>
                   <TableColumn fx:id="columnNome" maxWidth="800.0" prefWidth="252.0" text="Peça" />
                   <TableColumn fx:id="columnFab" maxWidth="800.0" prefWidth="230.0" text="Fabricante" />
-                  <TableColumn fx:id="columnVal" maxWidth="400.0" prefWidth="158.0" text="Valor" />
-                  <TableColumn fx:id="columnQuant" maxWidth="400.0" prefWidth="162.0" text="Quantidade" />
+                  <TableColumn fx:id="columnVal" maxWidth="400.0" prefWidth="120.0" resizable="false" text="Valor" />
+                  <TableColumn fx:id="columnQuant" maxWidth="400.0" prefWidth="120.0" resizable="false" text="Quantidade" />
                   <TableColumn fx:id="columnBut" maxWidth="185.0" prefWidth="75.0" resizable="false" text="Açoes" />
                </columns>
                <columnResizePolicy>

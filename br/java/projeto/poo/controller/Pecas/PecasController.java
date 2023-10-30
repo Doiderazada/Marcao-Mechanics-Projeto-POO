@@ -9,18 +9,21 @@ import br.java.projeto.poo.models.BO.PecaBO;
 import br.java.projeto.poo.models.VO.PecaVo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,9 +36,10 @@ public class PecasController extends BaseController {
     static ArrayList<PecaVo> listaPecas;
     static ObservableList<PecaVo> pecasDisponiveis;
 
-    @FXML private TextField buscarPeca;
+    
     @FXML private Button novaPeca;
-
+    @FXML private Label msgErroBusca;
+    @FXML private TextField buscarPeca;
     @FXML private TableColumn<PecaVo, String> columnBut;
     @FXML private TableColumn<PecaVo, String> columnFab;
     @FXML private TableColumn<PecaVo, String> columnNome;
@@ -50,15 +54,19 @@ public class PecasController extends BaseController {
     @Override
     public void initialize() throws Exception {
         super.initialize();
+        msgErroBusca.setVisible(false);
         listaPecas = this.pecaBO.listar();
         pecasDisponiveis = FXCollections.observableArrayList(listaPecas);
         this.inicializarTabela();
+        acaoDosBotoes();
     }
 
 
 
 
-    @FXML
+
+
+    
     void abrirCadastro() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/CadastrarPeca.fxml"));
         Parent root = loader.load();
@@ -73,15 +81,18 @@ public class PecasController extends BaseController {
         palco.setY(centralizarEixoY);
         palco.showAndWait();
 
+
+        listaPecas = pecaBO.listar();
+        pecasDisponiveis.setAll(listaPecas);
     }
 
-    @FXML
+    
     void abrirEdicao(PecaVo peca, int index) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/EditarPeca.fxml"));
         Parent root = loader.load();
 
         PecasEditController controller = loader.getController();
-        controller.initialize(peca, index);
+        controller.initialize(peca);
 
         Scene janelaCad = new Scene(root);
         Stage palco = new Stage(StageStyle.UNDECORATED);
@@ -130,28 +141,76 @@ public class PecasController extends BaseController {
 
 
 
+
+
+
+
+    private void acaoDosBotoes(){
+        novaPeca.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try {abrirCadastro();} 
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+        buscarPeca.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                try {
+                    buscarPeca(arg0);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    ModalsController modalsController = new ModalsController();
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+    }
+
+
+
+
+
+
     
 
-    @FXML
+    
     void buscarPeca(KeyEvent event) {
         try {
             ArrayList<PecaVo> pecasVO;
             if (this.buscarPeca.getText().length() > 2) {
                 PecaVo peca = new PecaVo(1, buscarPeca.getText(), buscarPeca.getText(), 0, 0);
                 pecasVO = pecaBO.buscarPorNome(peca);
+                msgErroBusca.setVisible(false);
                 if(pecasVO.isEmpty()){
                     pecasVO = pecaBO.buscarPorFabricante(peca);
                     pecasDisponiveis.setAll(pecasVO);
+                    if (pecasVO.isEmpty()) {
+                        msgErroBusca.setVisible(true);
+                    }
                 }
                 pecasDisponiveis.setAll(pecasVO);
                 
             } else {
                pecasDisponiveis.setAll(listaPecas);
+               msgErroBusca.setVisible(false);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
+
+
+
 
 
 
@@ -187,9 +246,7 @@ public class PecasController extends BaseController {
                 btnDelete.setOnAction(event -> {
                     try{
                         PecaVo peca = getTableView().getItems().get(getIndex());
-                        //funcs.remove(cliente);
                         abrirExclusao(peca, getIndex());
-                        
                     } catch(Exception e){
                         System.out.println(e.getMessage());
                     }
@@ -201,7 +258,6 @@ public class PecasController extends BaseController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    //btnContainer.setStyle("-fx-padding: 0 20 0 20;");
                     btnContainer.setSpacing(10);
                     setGraphic(btnContainer);
                     btnContainer.setAlignment(Pos.CENTER);
@@ -217,8 +273,7 @@ public class PecasController extends BaseController {
     private void realizarExclusao(PecaVo peca, int index) throws Exception {
         PecaBO pecaExcluida = new PecaBO();
             if(!pecaExcluida.deletar(peca)){
-                pecasDisponiveis.remove(peca);
-                //tabelaClientes.refresh();
+                pecasDisponiveis.remove(index);
             }
     }
   
