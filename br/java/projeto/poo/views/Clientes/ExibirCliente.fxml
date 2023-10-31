@@ -31,7 +31,7 @@
                   <Insets left="40.0" right="10.0" />
                </HBox.margin>
             </ImageView>
-            <HBox alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="730.0" spacing="15.0" HBox.hgrow="ALWAYS">
+            <HBox fx:id="menu" alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="730.0" spacing="15.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label fx:id="nClie" onMouseClicked="#carregarClientes" text="Clientes" textFill="#064eb9" textOverrun="CLIP">
                      <padding>
@@ -164,11 +164,11 @@
                   <Insets bottom="10.0" />
                </padding>
             </HBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0">
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="620.0">
                <content>
                   <VBox alignment="CENTER">
                      <children>
-                        <GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="950.0">
+                        <GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="948.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -191,7 +191,7 @@
                               <Insets />
                            </VBox.margin>
                         </GridPane>
-                        <GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="950.0" styleClass="pane" stylesheets="@../css/Modals.css">
+                        <GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="948.0" styleClass="pane" stylesheets="@../css/Modals.css">
                            <columnConstraints>
                               <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
                               <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
@@ -269,7 +269,7 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <GridPane minHeight="-Infinity" minWidth="-Infinity" prefWidth="950.0">
+                        <GridPane minHeight="-Infinity" minWidth="-Infinity" prefWidth="948.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -297,7 +297,7 @@
                               <Insets />
                            </VBox.margin>
                         </GridPane>
-                        <TableView fx:id="tabelaAuto" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="950.0">
+                        <TableView fx:id="tabelaAuto" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="948.0">
                           <columns>
                             <TableColumn fx:id="columnModeloV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" text="Modelo" />
                               <TableColumn fx:id="columnPlacaV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Placa" />

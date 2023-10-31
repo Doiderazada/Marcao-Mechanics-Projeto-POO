@@ -106,6 +106,9 @@ public class ClienteShowController extends BaseController{
             modalStage.setY(centralizarEixoY);
             
             modalStage.showAndWait();
+            listaVeiculos = veiculoBO.buscarPorDono(clienteExibido.getCpf());
+            veiculosDoCliente.setAll(listaVeiculos);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             ModalsController modalsController = new ModalsController();
