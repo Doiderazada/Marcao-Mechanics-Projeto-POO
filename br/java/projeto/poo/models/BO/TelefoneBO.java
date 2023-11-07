@@ -29,7 +29,7 @@ public class TelefoneBO {
         try {
             ResultSet selectTelefone = telefoneDao.buscarPorCpfFuncionario(new TelefoneVO(0,null, cpf, null));
             if(selectTelefone.next()) {
-                return new TelefoneVO(0, 
+                return new TelefoneVO(selectTelefone.getInt("id"), 
                     selectTelefone.getString("cpfCliente"),
                     selectTelefone.getString("cpfFuncionario"),
                     selectTelefone.getString("numero")

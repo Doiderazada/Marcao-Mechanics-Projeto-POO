@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -11,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="EditarFuncionario" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.java.projeto.poo.controller.Funcionarios.EditarFuncionariosController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="pane" stylesheets="@../css/Modals.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.java.projeto.poo.controller.Funcionarios.EditarFuncionariosController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="14.0" text="Atualizar Funcionario">
          <font>
@@ -21,58 +20,39 @@
       <Separator layoutY="50.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="500.0" />
       <VBox layoutX="39.0" layoutY="78.0" maxHeight="800.0" maxWidth="600.0" spacing="5.0">
          <children>
-            <Group>
+            <VBox spacing="3.0">
                <children>
-                  <VBox spacing="3.0">
-                     <children>
-                        <Label text="Nome" />
-                        <TextField fx:id="nome" prefHeight="40.0" prefWidth="300.0" promptText="Ex.: João" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </VBox>
+                  <Label text="Nome" />
+                  <TextField fx:id="nome" prefHeight="40.0" prefWidth="300.0" promptText="Ex.: João" />
                </children>
-            </Group>
-            <Group>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </VBox>
+            <VBox spacing="3.0">
                <children>
-                  <VBox spacing="3.0">
-                     <children>
-                        <Label text="CPF" />
-                        <TextField fx:id="cpf" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </VBox>
+                  <Label text="CPF" />
+                  <TextField fx:id="cpf" prefHeight="40.0" prefWidth="200.0" promptText="Ex.: 123.456.789-10" />
                </children>
-            </Group>
-            <Group>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </VBox>
+            <VBox spacing="3.0">
                <children>
-                  <VBox layoutX="14.0" layoutY="-6.0" spacing="3.0">
-                     <children>
-                        <Label text="Endereço" />
-                        <TextField fx:id="endereco" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Rua Teste, XX, Cidade/Estado" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </VBox>
+                  <Label text="Endereço" />
+                  <TextField fx:id="endereco" prefHeight="40.0" prefWidth="420.0" promptText="Ex.: Rua Teste, XX, Cidade/Estado" />
                </children>
-            </Group>
-            <Group>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </VBox>
+            <VBox>
                <children>
-                  <VBox layoutX="14.0" layoutY="-6.0" spacing="3.0">
-                     <children>
-                        <Label text="Nivel" />
-                        <TextField fx:id="nivel" prefHeight="40.0" prefWidth="420.0" promptText="Ex: 1" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </VBox>
+                  <Label text="Nivel" />
+                  <TextField fx:id="nivel" prefHeight="40.0" prefWidth="420.0" promptText="Ex: 1" />
                </children>
-            </Group>
+            </VBox>
             <VBox spacing="3.0">
                <children>
                   <Label text="Telefone" />
@@ -82,43 +62,36 @@
                   <Insets bottom="5.0" />
                </padding>
             </VBox>
-            <Group>
+            <VBox spacing="3.0">
                <children>
-                  <VBox layoutX="14.0" layoutY="-6.0" spacing="3.0">
-                     <children>
-                        <Label text="Salario" />
-                        <TextField fx:id="salario" prefHeight="40.0" prefWidth="420.0" promptText="Ex: 2000" />
-                        <TextField fx:id="dataDeAdmissao" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="0.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </VBox>
+                  <Label text="Salario" />
+                  <TextField fx:id="salario" prefHeight="40.0" prefWidth="420.0" promptText="Ex: 2000" />
                </children>
-            </Group>
-            <Group>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </VBox>
+            <HBox alignment="CENTER" spacing="50.0">
                <children>
-                  <HBox alignment="CENTER" layoutY="1.0" spacing="50.0">
-                     <children>
-                        <Label fx:id="mensagemDeErro" text="Falha ao atualizar funcionario" textFill="#a80404" />
-                     </children>
-                  </HBox>
+                  <Label fx:id="mensagemDeErro" text="Falha ao atualizar funcionario" textFill="RED">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
                </children>
-            </Group>
-            <Group />
+            </HBox>
          </children>
       </VBox>
-      <TextField fx:id="id" layoutX="242.0" layoutY="13.0" maxHeight="0.0" maxWidth="0.0" minHeight="0.0" prefHeight="0.0" prefWidth="0.0" promptText="id" />
+      <Separator layoutX="-1.0" layoutY="528.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="500.0" />
       <HBox alignment="CENTER" layoutY="536.0" prefHeight="50.0" prefWidth="500.0" spacing="20.0">
          <children>
-            <Button fx:id="fechar" mnemonicParsing="false" onAction="#fecharModal" prefHeight="45.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar" />
-            <Button fx:id="cadastrar" mnemonicParsing="false" onAction="#atualizarFuncionario" prefHeight="45.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Editar">
+            <Button fx:id="fechar" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar" />
+            <Button fx:id="cadastrar" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Editar">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
-      <Separator layoutX="-1.0" layoutY="528.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="500.0" />
    </children>
 </Pane>

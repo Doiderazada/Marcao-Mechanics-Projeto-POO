@@ -65,31 +65,28 @@ public class FuncionarioDao extends BaseDao <FuncionarioVO> {
     }
 
     public FuncionarioVO atualizar(FuncionarioVO funcionario) throws SQLException {
-        String query = "UPDATE funcionarios SET nome = ?, cpf = ?, salario = ?, dataDeAdmissao = ?, nivel = ? WHERE id = ?";
+        String query = "UPDATE funcionarios SET nome = ?, cpf = ?, salario = ?, dataDeAdmissao = ?, nivel = ?, senha = ? WHERE id = ?";
         PreparedStatement ps = null;
 
         try {
             ps = this.db.prepareStatement(query);
-            ps.setLong(6, funcionario.getId());
+            ps.setLong(7, funcionario.getId());
             ps.setString(1, funcionario.getNome());
             ps.setString(2, funcionario.getCpf());
             ps.setDouble(3, funcionario.getSalario());
             ps.setString(4, funcionario.getDataDeAdimissao());
             ps.setInt(5, funcionario.getNivel());
+            ps.setString(6, funcionario.getSenha());
             ps.executeUpdate();
 
-            if (ps.executeUpdate() > 0 && funcionario.getEndereco() != null) {
+            if (funcionario.getEndereco() != null) {
                 EnderecoDao endereco = new EnderecoDao();
-                funcionario.getEndereco().setCpfFuncionario(funcionario.getCpf());
-                endereco.deletarPorCPFFuncionario(funcionario);
-                endereco.inserir(funcionario.getEndereco());
+                endereco.atualizar(funcionario.getEndereco());
             }
 
-            if (ps.executeUpdate() > 0 && funcionario.getTelefone() != null) {
-                TelefoneDao telefoneDao = new TelefoneDao();
-                funcionario.getTelefone().setCpfFuncionario(funcionario.getCpf());
-                telefoneDao.deletarPorCPFFuncionario(funcionario);
-                telefoneDao.inserir(funcionario.getTelefone());
+            if (funcionario.getTelefone() != null) {
+                TelefoneDao telefone = new TelefoneDao();
+                telefone.atualizar(funcionario.getTelefone());
             }
 
             return funcionario;

@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.exceptions.ErroDeAuthenticacaoException;
-import br.java.projeto.poo.exceptions.InvalidCpfException;
-import br.java.projeto.poo.exceptions.UsuarioNaoEncontradoException;
 import br.java.projeto.poo.DAO.FuncionarioDao;
 import br.java.projeto.poo.models.VO.EnderecoVO;
 import br.java.projeto.poo.models.VO.FuncionarioVO;
@@ -26,15 +24,15 @@ public class FuncionarioBO {
                 TelefoneVO selectTelefone = telefoneBO.buscarPorFuncionario(selectFuncionarios.getString("cpf"));
 
                 funcionarios.add(new FuncionarioVO(
-                    selectFuncionarios.getInt("id"), 
+                    selectFuncionarios.getLong("id"), 
                     selectFuncionarios.getString("nome"),
                     selectFuncionarios.getString("cpf"),
                     selectFuncionarios.getDouble("salario"),
                     selectFuncionarios.getString("dataDeAdmissao"),
-                    selectEndereco,
                     selectFuncionarios.getInt("nivel"),
+                    selectEndereco,
                     selectTelefone,
-                    null));
+                    selectFuncionarios.getString("senha")));
             }
             
             return funcionarios;
@@ -51,12 +49,18 @@ public class FuncionarioBO {
             ResultSet funcionario = funcionarioDao.buscarPorCPF(vo);
             ArrayList<FuncionarioVO> funcionarios = new ArrayList<>();
             while (funcionario.next()) {
+                EnderecoVO selectEndereco = enderecoBO.buscarPorFuncionario(funcionario.getString("cpf"));
+                TelefoneVO selectTelefone = telefoneBO.buscarPorFuncionario(funcionario.getString("cpf"));
+
                 funcionarios.add(new FuncionarioVO(funcionario.getLong("id"),
                 funcionario.getString("nome"),
                 funcionario.getString("cpf"),
                 funcionario.getFloat("salario"),
                 funcionario.getString("dataDeAdmissao"),
-                funcionario.getInt("nivel")));
+                funcionario.getInt("nivel"),
+                selectEndereco,
+                selectTelefone,
+                funcionario.getString("senha")));
             }
 
             return funcionarios;
@@ -74,12 +78,18 @@ public class FuncionarioBO {
 
             ArrayList<FuncionarioVO> funcionarios = new ArrayList<>();
             while (funcionario.next()) {
+                EnderecoVO selectEndereco = enderecoBO.buscarPorFuncionario(funcionario.getString("cpf"));
+                TelefoneVO selectTelefone = telefoneBO.buscarPorFuncionario(funcionario.getString("cpf"));
+
                 funcionarios.add(new FuncionarioVO(funcionario.getLong("id"),
                 funcionario.getString("nome"),
                 funcionario.getString("cpf"),
                 funcionario.getFloat("salario"),
                 funcionario.getString("dataDeAdmissao"),
-                funcionario.getInt("nivel")));
+                funcionario.getInt("nivel"),
+                selectEndereco,
+                selectTelefone,
+                funcionario.getString("senha")));
             }
 
             return funcionarios;
@@ -91,14 +101,6 @@ public class FuncionarioBO {
 
     public boolean inserir(FuncionarioVO vo) throws Exception {
         try {
-            if (!this.validarCpf(vo.getCpf())) {
-                throw new InvalidCpfException("CPF inválido o formato deve ser ***.***.***-**");
-            }
-
-            if(!this.validarNumero(vo.getTelefone().getNumero())) {
-                throw new Exception("Numero inválido o formato deve ser ** *****-****");
-            }
-
             return funcionarioDao.inserir(vo);
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {
@@ -114,20 +116,6 @@ public class FuncionarioBO {
 
     public FuncionarioVO atualizar(FuncionarioVO vo) throws Exception {
         try {
-            ResultSet verificarFuncionario = funcionarioDao.buscarPorId(vo);
-
-            if (!verificarFuncionario.next() || vo.getId() == 0) {
-                throw new UsuarioNaoEncontradoException("Usuario não encontrado");
-            }
-
-            if (!this.validarCpf(vo.getCpf())) {
-                throw new InvalidCpfException("CPF inválido o formato deve ser ***.***.***-**");
-            }
-
-            if(!this.validarNumero(vo.getTelefone().getNumero())) {
-                throw new Exception("Numero inválido o formato deve ser ** *****-****");
-            }
-
             return funcionarioDao.atualizar(vo);
         } 
         catch (SQLException e) {
@@ -141,10 +129,8 @@ public class FuncionarioBO {
         }
     }
 
-    public Boolean deletar(long id) {
+    public Boolean deletar(FuncionarioVO vo) {
         try {
-            FuncionarioVO vo = new FuncionarioVO();
-            vo.setId(id);
             return funcionarioDao.deletar(vo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,7 +142,7 @@ public class FuncionarioBO {
         try {
             ResultSet funcionario = funcionarioDao.buscarPorCPF(vo);
             if (funcionario == null) {
-                throw new ErroDeAuthenticacaoException("Usuario não encontrado");
+                throw new ErroDeAuthenticacaoException("Usuario não encontrado1");
             }
             if (funcionario.next()) { // se existir retorna os dados do usuario
                 System.out.println(funcionario.getString("senha").equals(vo.getSenha()));
@@ -176,13 +162,5 @@ public class FuncionarioBO {
             e.printStackTrace();
             throw new ErroDeAuthenticacaoException(e.getMessage());
         }
-    }
-
-    private boolean validarCpf(String cpf) {
-        return cpf.matches("\\b\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}\\b");
-    }
-
-    private boolean validarNumero(String numero) {
-        return numero.matches("\\b\\d{1}.*");
     }
 }

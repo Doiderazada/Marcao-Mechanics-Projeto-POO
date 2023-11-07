@@ -188,3 +188,25 @@
     -fx-background-repeat:no-repeat;
     -fx-border-color:transparent;
 }
+
+.btn-senha-shown {
+    -fx-background-image: url('../../public/show-25px.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets:2px;
+    -fx-background-color: #0066ff60;
+    -fx-background-position: center;
+    -fx-border-color:#064eb9;
+    -fx-border-radius:5px;
+    -fx-border-width:2px;
+}
+
+.btn-senha-hiden {
+    -fx-background-image: url('../../public/hide-25px.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets:2px;
+    -fx-background-color: #0066ff60;
+    -fx-background-position: center;
+    -fx-border-color:#064eb9;
+    -fx-border-radius:5px;
+    -fx-border-width:2px;
+}

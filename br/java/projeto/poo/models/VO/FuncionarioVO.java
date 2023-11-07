@@ -9,7 +9,7 @@ public class FuncionarioVO extends PessoaVO {
         super();
     }
 
-    public FuncionarioVO(long id, String nome, String cpf, double salario, String dataDeAdimissao, EnderecoVO endereco, int nivel, TelefoneVO telefone, String senha) throws Exception {
+    public FuncionarioVO(long id, String nome, String cpf, double salario, String dataDeAdimissao, int nivel, EnderecoVO endereco,  TelefoneVO telefone, String senha) throws Exception {
         super(id, nome, cpf);
         setSalario(salario);
         setDataDeAdimissao(dataDeAdimissao);

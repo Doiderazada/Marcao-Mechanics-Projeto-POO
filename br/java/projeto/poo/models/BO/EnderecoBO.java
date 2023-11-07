@@ -29,7 +29,7 @@ public class EnderecoBO {
         try {
             ResultSet selectEndereco = enderecoDao.buscarPorFuncionario(new EnderecoVO(null, cpf));
             if(selectEndereco.next()) {
-                return new EnderecoVO(0, 
+                return new EnderecoVO(selectEndereco.getInt("id"), 
                     selectEndereco.getString("cpfCliente"),
                     selectEndereco.getString("cpfFuncionario"),
                     selectEndereco.getString("rua"), 
