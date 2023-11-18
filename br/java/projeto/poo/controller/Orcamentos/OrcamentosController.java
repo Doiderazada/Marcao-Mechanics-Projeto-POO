@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Orcamentos;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.BaseController;
@@ -10,17 +9,23 @@ import br.java.projeto.poo.models.VO.OrcamentoVO;
 import br.java.projeto.poo.src.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,31 +33,121 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 public class OrcamentosController extends BaseController {
+    
     private OrcamentoBO orcamentoBO = new OrcamentoBO();
     static ArrayList<OrcamentoVO> listaOrcamentos;
     static ObservableList<OrcamentoVO> orcamentosDisponiveis;
     private ModalsController modalsController = new ModalsController();
 
+    private String[] situacoes = {"Em aberto", "Todos"};
+    private ObservableList<String> listaSituacao = FXCollections.observableArrayList(situacoes);
+
     @FXML private Button novoOrcamento;
     @FXML private Button gerarRelatorio;
+    @FXML private ChoiceBox<String> cbSituacao;
+    @FXML private Label msgErroBusca;
     @FXML private TableView<OrcamentoVO> tbOrcamentos;
     @FXML private TableColumn<OrcamentoVO, Double> valor;
     @FXML private TableColumn<OrcamentoVO, String> proprietario;
-    @FXML private TableColumn<OrcamentoVO, String> funcionario;
+    @FXML private TableColumn<OrcamentoVO, String> situacao;
     @FXML private TableColumn<OrcamentoVO, String> placa;
     @FXML private TableColumn<OrcamentoVO, String> acoes;
     @FXML private TextField buscar;
 
+
+
+
+
     @FXML
     public void initialize() throws Exception {
         super.initialize();
-        listaOrcamentos = this.orcamentoBO.listar();
-        orcamentosDisponiveis = FXCollections.observableArrayList(listaOrcamentos); // pega os funcionarios disponiveis no banco de dados
-        this.inicializarTabela(); // inicializa os valores da tabela
+        acaoDosBotoes();
+        cbSituacao.setItems(listaSituacao);
+        cbSituacao.setValue(listaSituacao.get(0));
+        msgErroBusca.setVisible(false);
+        listaOrcamentos = this.orcamentoBO.listarEmAberto();
+        orcamentosDisponiveis = FXCollections.observableArrayList(listaOrcamentos); 
+        this.inicializarTabela(0);
     }
 
-    @FXML
-    public void gerarRelatorio() throws Exception {
+
+
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void acaoDosBotoes(){
+    
+        novoOrcamento.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try {
+                    novoOrcamento();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+
+        gerarRelatorio.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                try {
+                    gerarRelatorio();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    modalsController.abrirModalFalha(e.getMessage());
+                }
+            }
+            
+        });
+
+        buscar.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarOrcamentos();
+            }
+            
+        });
+
+        cbSituacao.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                int i = cbSituacao.getSelectionModel().getSelectedIndex();
+                try{
+                    if (i == 1) {
+                        listaOrcamentos = orcamentoBO.listarTodos();
+                        orcamentosDisponiveis.setAll(listaOrcamentos);
+                    }else{
+                        listaOrcamentos = orcamentoBO.listarEmAberto();
+                        orcamentosDisponiveis.setAll(listaOrcamentos);
+                    }
+
+                    inicializarTabela(i);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
+            }
+            
+        });
+        
+    }
+
+
+
+    /**
+     * <p> Opens up a Popup for creating a report.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void gerarRelatorio() {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -69,46 +164,97 @@ public class OrcamentosController extends BaseController {
             modalStage.showAndWait();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
-    @FXML
-    void buscarOrcamentos(KeyEvent event) {
+
+    
+    /**
+     * <p> Searches an {@code orcamento} on the database with the given name in TextField the {@link br.java.projeto.poo.controller.Orcamentos.OrcamentosController#buscar buscar}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void buscarOrcamentos() {
         try {
             if (buscar.getText().length() > 2) {
-                if(buscar.getText().matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-                    orcamentosDisponiveis.setAll(orcamentoBO.buscarPorData(buscar.getText()));
-                } else if (buscar.getText().matches("^\\d{3}.*") ){
-                    orcamentosDisponiveis.setAll(orcamentoBO.buscarPorCPFCliente(buscar.getText()));
+                msgErroBusca.setVisible(false);
+                if (buscar.getText().matches("^\\d{3}.*") ){
+                    ArrayList<OrcamentoVO> listaTemporaria = orcamentoBO.buscarPorCPFCliente(buscar.getText());
+                    for (OrcamentoVO orcamento : listaTemporaria){
+                        if (cbSituacao.getSelectionModel().getSelectedIndex() == 0 && orcamento.getStatus() == 1) {
+                            listaTemporaria.remove(orcamento);
+                        }
+                    }
+                    orcamentosDisponiveis.setAll(listaTemporaria);
+                    if (orcamentosDisponiveis.isEmpty()) {
+                        msgErroBusca.setVisible(true);
+                    }
                 } else {
-                    orcamentosDisponiveis.setAll(orcamentoBO.buscarPorVeiculo(buscar.getText()));
+                    ArrayList<OrcamentoVO> listaTemporaria = orcamentoBO.buscarPorVeiculo(buscar.getText());
+                    for (OrcamentoVO orcamento : listaTemporaria){
+                        if (cbSituacao.getSelectionModel().getSelectedIndex() == 0 && orcamento.getStatus() == 1) {
+                            listaTemporaria.remove(orcamento);
+                        }
+                    }
+                    orcamentosDisponiveis.setAll(listaTemporaria);
+                    if (orcamentosDisponiveis.isEmpty()) {
+                        msgErroBusca.setVisible(true);
+                    }
                 }
             } else {
-                listaOrcamentos = this.orcamentoBO.listar();
+                // listaOrcamentos = this.orcamentoBO.listarEmAberto();
                 orcamentosDisponiveis.setAll(listaOrcamentos);
+                msgErroBusca.setVisible(false);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    @FXML
-    public void novoOrcamento() throws Exception {
+
+    
+    /**
+     * <p> Calls the Method {@link br.java.projeto.poo.src.App#navegarEntreTelas(String) navegarEntreTelas} to switch from the actual active screen 
+     * to the screen {@code novoOrcamento}.
+     * 
+     * <p> This method has no parameters. 
+     */
+    public void novoOrcamento(){
         App.navegarEntreTelas("novoOrcamento");
     }
 
-    // inicializa a tabela
-    private void inicializarTabela() throws SQLException {
+
+
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Orcamentos.OrcamentosController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
+     * that sets the buttons on it.
+     * 
+     * @param sit the situation related to the selected value on {@code cbSituacao}.
+     */
+    private void inicializarTabela(int sit){
         proprietario.setCellValueFactory(new PropertyValueFactory<OrcamentoVO, String>("cpfCliente"));
-        funcionario.setCellValueFactory(new PropertyValueFactory<OrcamentoVO, String>("cpfFuncionario"));
         valor.setCellValueFactory(new PropertyValueFactory<OrcamentoVO, Double>("valor"));
         placa.setCellValueFactory(new PropertyValueFactory<OrcamentoVO, String>("placaVeiculo"));
+        situacao.setVisible(false);
+
+        if (sit == 1) {
+            situacao.setCellValueFactory(new PropertyValueFactory<OrcamentoVO, String>("statusString"));
+            situacao.setVisible(true);
+        }
+        
         tbOrcamentos.setItems(orcamentosDisponiveis);
-        this.inicializarBotoesDeAcao(orcamentosDisponiveis);
+        this.inicializarBotoesDeAcao();
     }
 
-    // inicializa os botões de ação
-    private void inicializarBotoesDeAcao (ObservableList<OrcamentoVO> funcs) {
+
+
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void inicializarBotoesDeAcao () {
         acoes.setCellFactory(param -> new TableCell<>() {
             private final Button btnFinalizar = new Button();
             private final Button btnEdit = new Button();
@@ -117,8 +263,23 @@ public class OrcamentosController extends BaseController {
 
             {
                 btnEdit.getStyleClass().add("btn-edit");
+                btnEdit.setPrefSize(25, 25);
+
                 btnDelete.getStyleClass().add("btn-delete");
+                btnDelete.setPrefSize(25, 25);
+
                 btnFinalizar.getStyleClass().add("btn-encerrar");
+                btnFinalizar.setPrefSize(25, 25);
+
+                btnContainer.setOnMouseEntered(event -> {
+                    OrcamentoVO orcamento = getTableView().getItems().get(getIndex());
+                    if (orcamento.getStatus() == 1) {
+                        btnFinalizar.setDisable(true);
+                        btnEdit.setDisable(true);
+                        btnDelete.setDisable(true);
+                    }
+                });
+                
 
                 btnFinalizar.setOnAction(event -> {
                     try {
@@ -135,7 +296,7 @@ public class OrcamentosController extends BaseController {
                 btnEdit.setOnAction(event -> {
                     try {
                         OrcamentoVO orcamentoVO = getTableView().getItems().get(getIndex());
-                        abrirTelaEditar(orcamentoVO, getIndex());
+                        abrirTelaEditar(orcamentoVO);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -160,7 +321,8 @@ public class OrcamentosController extends BaseController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    btnContainer.setStyle("-fx-padding: 0 20 0 5;");
+                    // btnContainer.setStyle("-fx-padding: 0 20 0 5;");
+                    btnContainer.setAlignment(Pos.CENTER);
                     btnContainer.setSpacing(10);
                     setGraphic(btnContainer);
                 }
@@ -168,19 +330,31 @@ public class OrcamentosController extends BaseController {
         });
     }
 
-    void abrirTelaEditar(OrcamentoVO vo, int indice) throws Exception {
+
+
+    /**
+     * <p> change the actual screen to {@code EditarOrcamento}, passing an {@code orcamento} as parameter.
+     * 
+     * @param orcamento the budget to be shown and edited on the screen.
+     */
+    private void abrirTelaEditar(OrcamentoVO orcamento){
         try {
             Stage stage = (Stage) this.novoOrcamento.getScene().getWindow();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Orcamentos/EditarOrcamento.fxml"));
             Parent root = loader.load();
+
             EditarOrcamentosController editarController = loader.getController();
-            editarController.setDados(vo.getId());
+            
+            editarController.initialize(orcamento);
+
             Scene modalScene = new Scene(root);
             stage.setScene(modalScene);
-            stage.showAndWait();
+            stage.show();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            modalsController.abrirModalFalha("Erro ao abrir edição: " + e.getMessage());
         }
     }
 }

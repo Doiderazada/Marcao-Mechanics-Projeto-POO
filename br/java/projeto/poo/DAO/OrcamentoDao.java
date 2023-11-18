@@ -21,7 +21,7 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
     }
 
     public boolean inserir(OrcamentoVO orcamento) throws SQLException {
-        String query = "INSERT INTO orcamentos (placaVeiculo, valor, cpfResponsavel, cpfCliente, dataDeCriacao) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO orcamentos (placaVeiculo, valor, cpfCliente, dataDeCriacao) VALUES (?, ?, ?, ?)";
         String queryPecas = "INSERT INTO pecas_orcamentos (idOrcamento, idPeca, quantidade) VALUES (?, ?, ?)";
         String queryServicos = "INSERT INTO servicos_orcamentos (idOrcamento, idServico) values (?, ?)";
         PreparedStatement ps = null;
@@ -34,9 +34,8 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
             ps = this.db.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, orcamento.getPlacaVeiculo());
             ps.setDouble(2, orcamento.getValor());
-            ps.setString(3, orcamento.getCpfFuncionario());
-            ps.setString(4, orcamento.getCpfCliente());
-            ps.setDate(5, sqlDate);
+            ps.setString(3, orcamento.getCpfCliente());
+            ps.setDate(4, sqlDate);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (!rs.next()) {
@@ -168,7 +167,7 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
     }
 
     public ResultSet buscarPorVeiculo(OrcamentoVO orcamento) throws SQLException {
-        String query = "Select * from orcamentos where placaVeiculo like '%'|| ? ||'%' and status = 0";
+        String query = "Select * from orcamentos where placaVeiculo like '%'|| ? ||'%'";
         PreparedStatement ps = null;
         try {
             ps = this.db.prepareStatement(query);
@@ -182,7 +181,7 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
     }
 
     public ResultSet buscarPorCPFCliente(OrcamentoVO orcamento) throws SQLException {
-        String query = "Select * from orcamentos where cpfCLiente like '%'|| ? ||'%' and status = 0";
+        String query = "Select * from orcamentos where cpfCLiente like '%'|| ? ||'%'";
         PreparedStatement ps = null;
         try {
             ps = this.db.prepareStatement(query);
@@ -196,7 +195,7 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
     }
 
     public ResultSet buscarPorData(OrcamentoVO orcamento) throws SQLException {
-        String query = "Select * from orcamentos where dataDeCriacao >= (?) and status = 0";
+        String query = "Select * from orcamentos where dataDeCriacao >= (?)";
         PreparedStatement ps = null;
         try {
             ps = this.db.prepareStatement(query);
@@ -213,39 +212,21 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
         try {
             PreparedStatement ps = null;
             String query;
-            if (!orcamento.getCpfFuncionario().isEmpty()) {
-                query = "Select * from orcamentos where dataDeCriacao >= (?) and cpfResponsavel = (?)";
+            if (orcamento.getStatus() == 0) {
+                query = "Select * from orcamentos where status = 0 and dataDeCriacao >= (?)";
                 ps = this.db.prepareStatement(query);
                 ps.setDate(1, orcamento.getDataDeCriação());
-                ps.setString(2, orcamento.getCpfFuncionario());
-            } else if (orcamento.getStatus() == 0) {
-                query = "Select * from orcamentos where status = (?) and dataDeCriacao >= (?)";
-                ps = this.db.prepareStatement(query);
-                ps.setInt(1, orcamento.getStatus());
-                ps.setDate(2, orcamento.getDataDeCriação());
-            } else if (orcamento.getStatus() == 1) {
-                query = "Select * from orcamentos where status = (?) and dataDeCriacao >= (?) and dataDeEncerramento <= (?)";
-                ps = this.db.prepareStatement(query);
-                ps.setInt(1, orcamento.getStatus());
-                ps.setDate(2, orcamento.getDataDeCriação());
-                ps.setDate(3, orcamento.getDataDeEncerramento());
-            } else if (!orcamento.getCpfFuncionario().isEmpty() && orcamento.getStatus() != 3) {
-                query = "Select * from orcamentos where status = (?) and dataDeCriacao >= (?) and dataDeEncerramento <= (?) and cpfResponsavel = (?)";
-                ps = this.db.prepareStatement(query);
-                ps.setInt(1, orcamento.getStatus());
-                ps.setDate(2, orcamento.getDataDeCriação());
-                ps.setDate(3, orcamento.getDataDeEncerramento());
-                ps.setString(4, orcamento.getCpfFuncionario());
             } else {
                 if (orcamento.getStatus() == 1) {
-                    query = "Select * from orcamentos where dataDeCriacao >= (?) and dataDeEncerramento <= (?)";
+                    query = "Select * from orcamentos where status = 1 and dataDeCriacao >= (?) and dataDeEncerramento <= (?)";
                     ps = this.db.prepareStatement(query);
                     ps.setDate(1, orcamento.getDataDeCriação());
                     ps.setDate(2, orcamento.getDataDeEncerramento());
                 } else {
-                    query = "Select * from orcamentos where dataDeCriacao >= (?)";
+                    query = "Select * from orcamentos where dataDeCriacao >= (?) and (dataDeEncerramento <= (?) or dataDeEncerramento is null)";
                     ps = this.db.prepareStatement(query);
                     ps.setDate(1, orcamento.getDataDeCriação());
+                    ps.setDate(2, orcamento.getDataDeEncerramento());
                 }
             }
             return ps.executeQuery();
@@ -256,8 +237,27 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
         }
     }
 
+    @Override
+    @Deprecated
     public ResultSet listar() throws SQLException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'listar'");
+    }
+
+    public ResultSet listarEmAberto() throws SQLException {
         String query = "Select * from relatorios where status = 0";
+        PreparedStatement ps = null;
+        try {
+            ps = this.db.prepareStatement(query);
+            return ps.executeQuery();
+
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+    
+    public ResultSet listarTodos() throws SQLException {
+        String query = "Select * from relatorios";
         PreparedStatement ps = null;
         try {
             ps = this.db.prepareStatement(query);
@@ -351,4 +351,5 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
             return false;
         }
     }
+
 }

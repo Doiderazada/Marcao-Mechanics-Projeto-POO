@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class OrcamentoVO {
     long id;
-    String placaVeiculo, cpfCliente, cpfFuncionario;
+    String placaVeiculo, cpfCliente, statusString;
     double valor;
     ArrayList<PecaVo> pecas;
     ArrayList<ServicoVO> Servicos;
@@ -76,20 +76,26 @@ public class OrcamentoVO {
         this.cpfCliente = cpfCliente;
     }
 
-    public String getCpfFuncionario() {
-        return this.cpfFuncionario;
-    }
-
-    public void setCpfFuncionario(String cpfFuncionario) {
-        this.cpfFuncionario = cpfFuncionario;
-    }
-
     public int getStatus() {
         return this.status;
     }
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getStatusString(){
+        return this.statusString;
+    }
+
+    public void setStatusString(int status){
+        if (status == 0) {
+            this.statusString = "Em aberto";
+        }
+
+        if (status == 1) {
+            this.statusString = "Finalizado";
+        }
     }
     
 }

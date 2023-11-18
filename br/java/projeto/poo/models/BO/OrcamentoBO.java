@@ -12,9 +12,9 @@ import br.java.projeto.poo.models.VO.ServicoVO;
 public class OrcamentoBO {
     OrcamentoDao orcamentoDao = new OrcamentoDao();
 
-    public ArrayList<OrcamentoVO> listar() throws Exception {
+    public ArrayList<OrcamentoVO> listarEmAberto() throws Exception {
         try {
-            ResultSet orcamentos = orcamentoDao.listar();
+            ResultSet orcamentos = orcamentoDao.listarEmAberto();
             ArrayList<OrcamentoVO> listarOrcamentos = new ArrayList<OrcamentoVO>();
             while(orcamentos.next()) {
                 OrcamentoVO orcamento = new OrcamentoVO();
@@ -24,7 +24,32 @@ public class OrcamentoBO {
                 orcamento.setDataDeCriação(orcamentos.getDate("dataDeCriacao"));
                 orcamento.setDataDeEncerramento(orcamentos.getDate("dataDeEncerramento"));
                 orcamento.setCpfCliente(orcamentos.getString("cpfCliente"));
-                orcamento.setCpfFuncionario(orcamentos.getString("cpfResponsavel"));
+                orcamento.setStatus(orcamentos.getInt("status"));
+                orcamento.setStatusString(orcamento.getStatus());
+                listarOrcamentos.add(orcamento);
+            }
+
+            return listarOrcamentos;
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public ArrayList<OrcamentoVO> listarTodos() throws Exception {
+        try {
+            ResultSet orcamentos = orcamentoDao.listarTodos();
+            ArrayList<OrcamentoVO> listarOrcamentos = new ArrayList<OrcamentoVO>();
+            while(orcamentos.next()) {
+                OrcamentoVO orcamento = new OrcamentoVO();
+                orcamento.setId(orcamentos.getLong("id"));
+                orcamento.setPlacaVeiculo(orcamentos.getString("placaVeiculo"));
+                orcamento.setValor(orcamentos.getDouble("valor"));
+                orcamento.setDataDeCriação(orcamentos.getDate("dataDeCriacao"));
+                orcamento.setDataDeEncerramento(orcamentos.getDate("dataDeEncerramento"));
+                orcamento.setCpfCliente(orcamentos.getString("cpfCliente"));
+                orcamento.setStatus(orcamentos.getInt("status"));
+                orcamento.setStatusString(orcamento.getStatus());
                 listarOrcamentos.add(orcamento);
             }
 
@@ -35,6 +60,8 @@ public class OrcamentoBO {
         }
     }
 
+
+
     public boolean inserir(OrcamentoVO vo) throws Exception {
         try {
             return this.orcamentoDao.inserir(vo); 
@@ -43,6 +70,8 @@ public class OrcamentoBO {
         }
     }
 
+
+
     public OrcamentoVO atualizar(OrcamentoVO VO) throws Exception {
         try {
            return orcamentoDao.atualizar(VO);
@@ -50,6 +79,8 @@ public class OrcamentoBO {
             throw e;
         }
     }
+
+
 
     public boolean deletar(long id) throws Exception {
         try {
@@ -61,10 +92,12 @@ public class OrcamentoBO {
         }
     }
 
-    public OrcamentoVO buscarPorId(long id) throws Exception {
+
+
+    public OrcamentoVO buscarPorId(OrcamentoVO orcamento) throws Exception {
         try {
             OrcamentoVO orcamentoVO = new OrcamentoVO();
-            orcamentoVO.setId(id);
+            orcamentoVO.setId(orcamento.getId());
             ResultSet orcamentoBuscado = orcamentoDao.buscarPorId(orcamentoVO);
             ResultSet pecasBuscadas, servicosBuscados;
             ArrayList<PecaVo> pecas = new ArrayList<>();
@@ -72,7 +105,6 @@ public class OrcamentoBO {
             if(orcamentoBuscado.next()) {
                 orcamentoVO.setId(orcamentoBuscado.getLong("id"));
                 orcamentoVO.setCpfCliente(orcamentoBuscado.getString("cpfCliente"));
-                orcamentoVO.setCpfFuncionario(orcamentoBuscado.getString("cpfResponsavel"));
                 orcamentoVO.setPlacaVeiculo(orcamentoBuscado.getString("placaVeiculo"));
                 orcamentoVO.setValor(orcamentoBuscado.getDouble("valor"));
                 pecasBuscadas = orcamentoDao.listarPecas(orcamentoVO);
@@ -84,7 +116,7 @@ public class OrcamentoBO {
                     pecasBuscadas.getString("fabricante"),
                     pecasBuscadas.getDouble("preco"),
                     0);
-                    peca.setQuantidade(orcamentoDao.contarPecas(peca, id));
+                    peca.setQuantidade(orcamentoDao.contarPecas(peca, orcamento.getId()));
                     pecas.add(peca);
                 }
 
@@ -103,6 +135,8 @@ public class OrcamentoBO {
         }
     }
 
+
+
     public ArrayList<OrcamentoVO> buscarPorVeiculo(String placa) throws Exception {
         try {
             OrcamentoVO orcamentoVO = new OrcamentoVO();
@@ -117,7 +151,8 @@ public class OrcamentoBO {
                 orcamento.setDataDeCriação(orcamentosBuscados.getDate("dataDeCriacao"));
                 orcamento.setDataDeEncerramento(orcamentosBuscados.getDate("dataDeEncerramento"));
                 orcamento.setCpfCliente(orcamentosBuscados.getString("cpfCliente"));
-                orcamento.setCpfFuncionario(orcamentosBuscados.getString("cpfResponsavel"));
+                orcamento.setStatus(orcamentosBuscados.getInt("status"));
+                orcamento.setStatusString(orcamento.getStatus());
                 orcamentos.add(orcamento);
             }
 
@@ -126,6 +161,8 @@ public class OrcamentoBO {
             throw new Exception("erro ao buscar orcamentos");
         }
     }
+
+
 
     public ArrayList<OrcamentoVO> buscarPorCPFCliente(String cpf) throws Exception {
         try {
@@ -141,7 +178,8 @@ public class OrcamentoBO {
                 orcamento.setDataDeCriação(orcamentosBuscados.getDate("dataDeCriacao"));
                 orcamento.setDataDeEncerramento(orcamentosBuscados.getDate("dataDeEncerramento"));
                 orcamento.setCpfCliente(orcamentosBuscados.getString("cpfCliente"));
-                orcamento.setCpfFuncionario(orcamentosBuscados.getString("cpfResponsavel"));
+                orcamento.setStatus(orcamentosBuscados.getInt("status"));
+                orcamento.setStatusString(orcamento.getStatus());
                 orcamentos.add(orcamento);
             }
 
@@ -150,6 +188,8 @@ public class OrcamentoBO {
             throw new Exception("erro ao buscar orcamentos");
         }
     }
+
+
 
     public ArrayList<OrcamentoVO> buscarPorData(String data) throws Exception {
         try {
@@ -169,7 +209,8 @@ public class OrcamentoBO {
                 orcamento.setDataDeCriação(orcamentosBuscados.getDate("dataDeCriacao"));
                 orcamento.setDataDeEncerramento(orcamentosBuscados.getDate("dataDeEncerramento"));
                 orcamento.setCpfCliente(orcamentosBuscados.getString("cpfCliente"));
-                orcamento.setCpfFuncionario(orcamentosBuscados.getString("cpfResponsavel"));
+                orcamento.setStatus(orcamentosBuscados.getInt("status"));
+                orcamento.setStatusString(orcamento.getStatus());
                 orcamentos.add(orcamento);
             }
 
@@ -179,19 +220,49 @@ public class OrcamentoBO {
         }
     }
     
+
+
     public ArrayList<OrcamentoVO> buscarPorStatusData(OrcamentoVO vo) throws Exception {
         try {
             ResultSet orcamentosBuscados = orcamentoDao.buscarPorStatusData(vo);
             ArrayList<OrcamentoVO> orcamentos = new ArrayList<>();
+
             while(orcamentosBuscados.next()) {
                 OrcamentoVO orcamento = new OrcamentoVO();
                 orcamento.setId(orcamentosBuscados.getLong("id"));
+                
+
+                ResultSet pecasBuscadas = orcamentoDao.listarPecas(orcamento);
+                ArrayList<PecaVo> pecas = new ArrayList<>();
+                while (pecasBuscadas.next()) {
+                    PecaVo peca = new PecaVo();
+                    peca.setId(pecasBuscadas.getLong("id"));
+                    peca.setNome(pecasBuscadas.getString("nome"));
+                    peca.setFabricante(pecasBuscadas.getString("fabricante"));
+                    peca.setQuantidade(orcamentoDao.contarPecas(peca, orcamento.getId()));
+                    peca.setValor(pecasBuscadas.getDouble("preco"));
+                    pecas.add(peca);
+                }
+
+                ResultSet servsBuscados = orcamentoDao.listarServicos(orcamento);
+                ArrayList<ServicoVO> servicos = new ArrayList<>();
+                while (servsBuscados.next()) {
+                    ServicoVO servico = new ServicoVO();
+                    servico.setId(servsBuscados.getLong("id"));
+                    servico.setNome(servsBuscados.getString("nome"));
+                    servico.setValor(servsBuscados.getDouble("preco"));
+                    servicos.add(servico);
+                }
+                
+
+                orcamento.setPecas(pecas);
+                orcamento.setServicos(servicos);
                 orcamento.setPlacaVeiculo(orcamentosBuscados.getString("placaVeiculo"));
                 orcamento.setValor(orcamentosBuscados.getDouble("valor"));
                 orcamento.setDataDeCriação(orcamentosBuscados.getDate("dataDeCriacao"));
                 orcamento.setDataDeEncerramento(orcamentosBuscados.getDate("dataDeEncerramento"));
                 orcamento.setCpfCliente(orcamentosBuscados.getString("cpfCliente"));
-                orcamento.setCpfFuncionario(orcamentosBuscados.getString("cpfResponsavel"));
+                orcamento.setStatus(orcamentosBuscados.getInt("status"));
                 orcamentos.add(orcamento);
             }
 
@@ -200,6 +271,8 @@ public class OrcamentoBO {
             throw new Exception("erro ao buscar orcamentos");
         }
     }
+
+
 
     public Boolean encerrarRelatorio(OrcamentoVO vo) throws Exception {
         try {

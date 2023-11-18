@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Orcamentos;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.BaseController;
@@ -13,11 +12,10 @@ import br.java.projeto.poo.models.BO.VeiculoBO;
 import br.java.projeto.poo.models.VO.OrcamentoVO;
 import br.java.projeto.poo.models.VO.PecaVo;
 import br.java.projeto.poo.models.VO.ServicoVO;
-import br.java.projeto.poo.models.VO.VeiculoVO;
 import br.java.projeto.poo.src.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class EditarOrcamentosController extends BaseController {
@@ -39,26 +38,28 @@ public class EditarOrcamentosController extends BaseController {
     ModalsController modalsController = new ModalsController();
     OrcamentoVO orcamentoEditado = new OrcamentoVO();
     
-    @FXML private TableView<PecaVo> tbPecas;
+
+    @FXML private Button editarOrcamento;
+    @FXML private Button voltaTelaInicial;
+    @FXML private Label dadosCliente;
+    @FXML private Label dadosVeiculo;
+    @FXML private Label msgErroPecas;
+    @FXML private Label msgErroServicos;
+    @FXML private Label valorOrcamento;
+    @FXML private ListView<PecaVo> pecasBuscadas;
+    @FXML private ListView<ServicoVO> servicosBuscados;
     @FXML private TableColumn<PecaVo, String> acaoPeca;
     @FXML private TableColumn<PecaVo, String> nomePeca;
     @FXML private TableColumn<PecaVo, Double> valorPeca;
     @FXML private TableColumn<PecaVo, Integer> quantidade;
-    @FXML private Button voltaTelaInicial;
-    @FXML private Button editarOrcamento;
-    @FXML private TextField buscarVeiculo;
-    @FXML private TextField campoBuscaPeca;
-    @FXML private TextField campoBuscaServ;
-    @FXML private ListView<PecaVo> pecasBuscadas;
-    @FXML private Label dadosCliente;
-    @FXML private TableView<ServicoVO> tbServicos;
     @FXML private TableColumn<ServicoVO, String> acaoServico;
     @FXML private TableColumn<ServicoVO, String> servicoNome;
     @FXML private TableColumn<ServicoVO, Double> servicoValor;
-    @FXML private ListView<ServicoVO> servicosBuscados;
-    @FXML private Label msgErroPecas;
-    @FXML private Label msgErroServicos;
-    @FXML private Label valorOrcamento;
+    @FXML private TableView<PecaVo> tbPecas;
+    @FXML private TableView<ServicoVO> tbServicos;
+    @FXML private TextField campoBuscaPeca;
+    @FXML private TextField campoBuscaServ;
+
 
     ObservableList<PecaVo> itensPecas = FXCollections.observableArrayList();
     ObservableList<PecaVo> pecasEscolhidas = FXCollections.observableArrayList();
@@ -66,72 +67,117 @@ public class EditarOrcamentosController extends BaseController {
     ObservableList<ServicoVO> servicosEscolhidos = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize() throws Exception {
+    public void initialize(OrcamentoVO orcamento) throws Exception {
         super.initialize();
+        acaoDosBotoes();
+        orcamentoEditado = orcamento;
+        this.setDados(orcamento);
         tbServicos.setItems(servicosEscolhidos);
         tbPecas.setItems(pecasEscolhidas);
         pecasBuscadas.setVisible(false);
         servicosBuscados.setVisible(false);
         servicosBuscados.setItems(itensServicos);
-        servicosBuscados.setOnMouseClicked(event -> {
-            this.atualizarValoresServicos();
-        });
         pecasBuscadas.setItems(itensPecas);
+        inicializarTabelas();
+    }
+
+
+
+
+    /**
+     * <p> Sets the action of all elements on the corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void acaoDosBotoes(){
+        editarOrcamento.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                if (!tbPecas.getItems().isEmpty() || !tbServicos.getItems().isEmpty()){
+                    editarOrcamento();
+                } else editarOrcamento();
+            }
+            
+        });
+        
+        voltaTelaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                voltaTelaInicial();
+            }
+            
+        });
+
+        campoBuscaPeca.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarPecasPorNome();
+            }
+            
+        });
+
+        campoBuscaServ.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarServicosPorNome();
+            }
+            
+        });
+
         pecasBuscadas.setOnMouseClicked(event -> {
             this.atualizarValoresPecas();
         });
 
-        inicializarTabelas();
+        servicosBuscados.setOnMouseClicked(event -> {
+            this.atualizarValoresServicos();
+        });
     }
 
-    @FXML
-    void editarOrcamento(ActionEvent event) {
+
+
+
+    
+    /**
+     * <p> Updates the current {@code orcamento}.
+     * 
+     * <p> This method has no parameters.  
+     */
+    void editarOrcamento() {
         try {
             if (App.usuarioLogado == null) {
                 throw new Exception("Você não tem permissão para fazer essa ação");
             }
-            OrcamentoVO orcamentoVo = new OrcamentoVO();
-            orcamentoVo.setId(orcamentoEditado.getId());
-            orcamentoVo.setCpfCliente(orcamentoEditado.getCpfCliente());
-            orcamentoVo.setCpfFuncionario(orcamentoEditado.getCpfFuncionario());
-            orcamentoVo.setPlacaVeiculo(orcamentoEditado.getPlacaVeiculo());
+            
             ArrayList<PecaVo> pecas = new ArrayList<>(pecasEscolhidas);
             ArrayList<ServicoVO> servicos = new ArrayList<>(servicosEscolhidos);
-            orcamentoVo.setPecas(pecas);
-            orcamentoVo.setServicos(servicos);
-            orcamentoVo.setValor(valor);
-            orcamentoBO.atualizar(orcamentoVo);
+            orcamentoEditado.setPecas(pecas);
+            orcamentoEditado.setServicos(servicos);
+            orcamentoEditado.setValor(valor);
+            orcamentoBO.atualizar(orcamentoEditado);
             modalsController.abrirModalSucesso("Orcamento editado com sucesso.");
             App.navegarEntreTelas("orcamentos");
         } catch (Exception e) {
             e.printStackTrace();
-            modalsController.abrirModalFalha(e.getMessage());
+            modalsController.abrirModalFalha("Erro ao editar: " + e.getMessage());
             App.navegarEntreTelas("login");
         }
     }
 
-    @FXML
-    void buscarDadosDoVeiculo(KeyEvent event) {
-        try {
-            if(buscarVeiculo.getText().length() > 7) {
-                ArrayList<VeiculoVO> veiculos = veiculoBO.buscarPorPlaca(buscarVeiculo.getText());
-                if(veiculos.get(0).getId() > 0) {
-                    this.cpfCliente = veiculos.get(0).getCpfDono();
-                    dadosCliente.setText("Veiculo existe");
-                    dadosCliente.setStyle("-fx-text-fill: green;");
-                }
-            } else {
-                dadosCliente.setText("");
-            }
-        } catch (Exception e) {
-            dadosCliente.setStyle("-fx-text-fill: red;");
-            dadosCliente.setText("Veiculo não encontrado");
-        } 
-    }
 
-    // funçoes para configurar a tabela de peças
-    @FXML
-    void buscarPecasPorNome(KeyEvent event) {
+
+
+    
+    /**
+     * <p> Searches the database for the {@code peca} with the given name on the TextField 
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#campoBuscaPeca campoBuscaPeca}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void buscarPecasPorNome() {
         try {
             msgErroPecas.setVisible(false);
             if (campoBuscaPeca.getText().length() > 0) {
@@ -148,6 +194,14 @@ public class EditarOrcamentosController extends BaseController {
         }
     }
 
+    /**
+     * <p> Updates the items on the TableView {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#tbPecas tbPecas}.
+     * 
+     * <p> The values in the table is taken from the selected item in the ListView 
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#pecasBuscadas pecasBuscadas}.
+     * 
+     * <p> This method has no parameters.
+     */
     void atualizarValoresPecas() {
         try {
             PecaVo peca = pecasBuscadas.getSelectionModel().getSelectedItem();
@@ -159,6 +213,7 @@ public class EditarOrcamentosController extends BaseController {
 
             if (!pecasEscolhidas.contains(peca)) {
                 pecasEscolhidas.add(new PecaVo(peca.getId(), peca.getNome(), peca.getFabricante(), peca.getValor(), 1));
+                editarOrcamento.setDisable(false);
             } else {
                 PecaVo pecaAdicionada = pecasEscolhidas.get(indice);
                 if (peca.getQuantidade() == pecaAdicionada.getQuantidade()) {
@@ -175,7 +230,13 @@ public class EditarOrcamentosController extends BaseController {
         }
     }
 
-    private void inicializarBotoesDeAcaoPeca (ObservableList<PecaVo> funcs) {
+
+    /**
+     * <p> Sets the buttons on the table {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#tbPecas tbPecas}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void inicializarBotoesDeAcaoPeca () {
         acaoPeca.setCellFactory(param -> new TableCell<>() {
             private final Button btnDelete = new Button();
             private final HBox btnContainer = new HBox(btnDelete);
@@ -190,6 +251,9 @@ public class EditarOrcamentosController extends BaseController {
                             pecasEscolhidas.set(getIndex(), peca);
                         } else {
                             pecasEscolhidas.remove(getIndex());
+                            if (pecasEscolhidas.isEmpty() && servicosEscolhidos.isEmpty()) {
+                                editarOrcamento.setDisable(true);
+                            }
                         }
                         valor -= peca.getValor();
                         valorOrcamento.setText(String.valueOf(valor));
@@ -213,9 +277,15 @@ public class EditarOrcamentosController extends BaseController {
         });
     }
 
-    // funçoes para configurar a tabela de Servicos
-    @FXML
-    void buscarServicosPorNome(KeyEvent event) {
+    
+
+    /**
+     * <p> Searches the database for the {@code servico} with the given name on the TextField 
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#campoBuscaServ campoBuscaServ}.
+     * 
+     * <p> This method has no parameters.
+     */
+    void buscarServicosPorNome() {
         try {
             msgErroServicos.setVisible(false);
             if (campoBuscaServ.getText().length() > 0) {
@@ -232,12 +302,23 @@ public class EditarOrcamentosController extends BaseController {
         }
     }
 
+
+
+    /**
+     * <p> Updates the items on the TableView {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#tbServicos tbServicos}.
+     * 
+     * <p> The values in the table is taken from the selected item in the ListView 
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#servicosBuscados servicosBuscadas}.
+     * 
+     * <p> This method has no parameters.
+     */
     void atualizarValoresServicos() {
         try {
             ServicoVO servico = servicosBuscados.getSelectionModel().getSelectedItem();
         
             if (!servicosEscolhidos.contains(servico)) {
                 servicosEscolhidos.add(servico);
+                editarOrcamento.setDisable(false);
                 this.valor += servico.getValor();
                 valorOrcamento.setText(String.valueOf(valor));
             } else {
@@ -249,7 +330,13 @@ public class EditarOrcamentosController extends BaseController {
         }
     }
 
-    private void inicializarBotoesDeAcaoServico (ObservableList<ServicoVO> funcs) {
+
+    /**
+     * <p> Sets the buttons on the table {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#tbServicos tbServicos}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void inicializarBotoesDeAcaoServico() {
         acaoServico.setCellFactory(param -> new TableCell<>() {
             private final Button btnDelete = new Button();
             private final HBox btnContainer = new HBox(btnDelete);
@@ -260,6 +347,9 @@ public class EditarOrcamentosController extends BaseController {
                     try {
                         ServicoVO servicoVo = getTableView().getItems().get(getIndex());
                         servicosEscolhidos.remove(getIndex());
+                        if (servicosEscolhidos.isEmpty() && pecasEscolhidas.isEmpty()) {
+                            editarOrcamento.setDisable(true);
+                        }
                         valor -= servicoVo.getValor();
                         valorOrcamento.setText(String.valueOf(valor));
                     } catch (Exception e) {
@@ -282,30 +372,55 @@ public class EditarOrcamentosController extends BaseController {
         });
     }
 
-    private void inicializarTabelas() throws SQLException {
+
+    
+    /**
+     * <p> Initializes the tables {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#tbPecas tbPecas} and 
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#tbServicos tbServicos}, then calls the methods 
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#inicializarBotoesDeAcaoPeca() inicializarBotoesDeAcaoPeca} and
+     * {@link br.java.projeto.poo.controller.Orcamentos.EditarOrcamentosController#inicializarBotoesDeAcaoServico() inicializarBotoesDeAcaoServ}
+     * that set the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void inicializarTabelas(){
         nomePeca.setCellValueFactory(new PropertyValueFactory<PecaVo, String>("nome"));
         valorPeca.setCellValueFactory(new PropertyValueFactory<PecaVo, Double>("valor"));
         quantidade.setCellValueFactory(new PropertyValueFactory<PecaVo, Integer>("quantidade"));
         servicoNome.setCellValueFactory(new PropertyValueFactory<ServicoVO, String>("nome"));
         servicoValor.setCellValueFactory(new PropertyValueFactory<ServicoVO, Double>("valor"));
-        this.inicializarBotoesDeAcaoPeca(itensPecas);
-        this.inicializarBotoesDeAcaoServico(itensServicos);
+        this.inicializarBotoesDeAcaoPeca();
+        this.inicializarBotoesDeAcaoServico();
     }
 
-    @FXML
-    public void voltaTelaInicial() throws Exception {
+    
+
+    /**
+     * <p> Calls the Method {@link br.java.projeto.poo.src.App#navegarEntreTelas(String) navegarEntreTelas} to switch from the actual active screen 
+     * to the screen {@code orcamento}.
+     * 
+     * <p> This method has no parameters. 
+     */
+    public void voltaTelaInicial() {
         App.navegarEntreTelas("orcamentos");
     }
 
-    public void setDados(Long id) {
+
+
+    /**
+     * <p> Sets the data on the screen with the given {@code orcamento}. 
+     * 
+     * @param orcamento the data to be set on the screen.
+     */
+    private void setDados(OrcamentoVO orcamento) {
         try {
-            orcamentoEditado = orcamentoBO.buscarPorId(id);
-            pecasEscolhidas.setAll(orcamentoEditado.getPecas());
-            servicosEscolhidos.setAll(orcamentoEditado.getServicos());
-            this.valor = orcamentoEditado.getValor();
+            orcamento = orcamentoBO.buscarPorId(orcamento);
+            pecasEscolhidas.setAll(orcamento.getPecas());
+            servicosEscolhidos.setAll(orcamento.getServicos());
+            this.valor = orcamento.getValor();
             valorOrcamento.setText(String.valueOf(valor));
-            dadosCliente.setText(orcamentoEditado.getCpfCliente() + " - " + orcamentoEditado.getPlacaVeiculo());
-            dadosCliente.setVisible(true);
+            dadosCliente.setText(orcamento.getCpfCliente());
+            dadosVeiculo.setText(orcamento.getPlacaVeiculo());;
         } catch (Exception e) {
             e.printStackTrace();
         }

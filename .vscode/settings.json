@@ -12,5 +12,6 @@
         "br/java/projeto/poo/lib/javafx.base.jar",
         "br/java/projeto/poo/lib/itextpdf-5.5.13.3.jar",
         "br/java/projeto/poo/lib/AnimateFX-1.2.4.jar"
-    ]
+    ],
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable"
 }

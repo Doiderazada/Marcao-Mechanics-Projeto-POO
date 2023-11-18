@@ -154,12 +154,12 @@
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="620.0" spacing="15.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="voltaTelaInicial" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#voltaTelaInicial" onMouseClicked="#carregarOrcamentos" prefHeight="40.0" prefWidth="110.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Voltar">
+                        <Button fx:id="voltaTelaInicial" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#carregarOrcamentos" prefHeight="40.0" prefWidth="110.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Voltar">
                            <HBox.margin>
                               <Insets right="8.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="salvarNovoOrcamento" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#salvarOrcamento" prefHeight="40.0" prefWidth="110.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Salvar">
+                        <Button fx:id="salvarNovoOrcamento" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Salvar">
                            <HBox.margin>
                               <Insets left="8.0" />
                            </HBox.margin>
@@ -195,12 +195,12 @@
                                                 <Font name="System Bold" size="18.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="buscarVeiculo" onKeyReleased="#buscarDadosDoVeiculo" prefHeight="40.0" prefWidth="211.0" promptText="Placa do veículo" styleClass="searchField" stylesheets="@../css/buttons.css">
+                                          <TextField fx:id="buscarVeiculo" prefHeight="40.0" prefWidth="211.0" promptText="Placa do veículo" styleClass="searchField" stylesheets="@../css/buttons.css">
                                              <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </padding>
                                           </TextField>
-                                          <Label fx:id="dadosCliente" minHeight="-Infinity" minWidth="-Infinity" />
+                                          <Label fx:id="dadosCliente" minHeight="-Infinity" minWidth="-Infinity" text="Confirmar placa" />
                                           <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="201.0" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <Label alignment="CENTER" text="Valor total:">
@@ -231,7 +231,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="70.0">
                                              <children>
-                                                <TextField fx:id="campoBuscaPeca" onKeyReleased="#buscarPecasPorNome" prefHeight="33.0" prefWidth="201.0" promptText="Nome da peça" styleClass="searchField" stylesheets="@../css/buttons.css">
+                                                <TextField fx:id="campoBuscaPeca" prefHeight="33.0" prefWidth="201.0" promptText="Nome da peça" styleClass="searchField" stylesheets="@../css/buttons.css">
                                                    <contextMenu>
                                                       <ContextMenu>
                                                         <items>
@@ -269,7 +269,7 @@
                                           </Group>
                                           <HBox alignment="CENTER_LEFT" spacing="50.0">
                                              <children>
-                                                <TextField fx:id="campoBuscaServ" onKeyReleased="#buscarServicosPorNome" prefHeight="33.0" prefWidth="201.0" promptText="Nome do serviço" styleClass="searchField" stylesheets="@../css/buttons.css" />
+                                                <TextField fx:id="campoBuscaServ" prefHeight="33.0" prefWidth="201.0" promptText="Nome do serviço" styleClass="searchField" stylesheets="@../css/buttons.css" />
                                                 <Label fx:id="msgErroServicos" alignment="CENTER_RIGHT" text="Novo " textFill="#bf0c0c" visible="false" />
                                              </children>
                                           </HBox>
