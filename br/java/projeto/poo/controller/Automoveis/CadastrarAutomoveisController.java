@@ -304,8 +304,8 @@ public class CadastrarAutomoveisController {
 
                 ArrayList<VeiculoVO> listaVeiculos = new ArrayList<VeiculoVO>();
                 listaVeiculos.add(veiculoVO);
-                String cpfNull = null;
-                TelefoneVO telefoneVO = new TelefoneVO(0, cpf.getText(), cpfNull, telefone.getText());
+
+                TelefoneVO telefoneVO = new TelefoneVO(0, cpf.getText(), null, telefone.getText());
                 
                 ClienteVO ClienteVO = new ClienteVO(0, nome.getText(), cpf.getText(), enderecoCliente, listaVeiculos, telefoneVO);
 

@@ -241,7 +241,7 @@ public class CriarOrcamentosController extends BaseController{
 
                 }
             } else {
-                setDadosCliente("", "-fx-text-fill: default;");
+                setDadosCliente("", "-fx-text-fill: black;");
                 salvarNovoOrcamento.setDisable(true);
             }    
 

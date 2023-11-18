@@ -357,7 +357,9 @@ public class ClienteShowController extends BaseController{
 
             CriarOrcamentosController controller = loader.getController();
             controller.setBuscarVeic(placa);
-            controller.setDadosCliente("Pressione ENTER para confirmar o veículo");
+            String text = "Pressione ENTER para confirmar o veículo";
+            String style = "-fx-text-fill: black;-fx-font-weight: bold;";
+            controller.setDadosCliente(text, style);
             
             Stage palco = new Stage();
             Scene cena = new Scene(root);

@@ -318,9 +318,8 @@ public class ClienteCadController {
 
                 VeiculoVO veiculo = new VeiculoVO(0, placa, cor, modelo, cpf, tipoV, ano, quilometragem);
                 listaveiculos.add(veiculo);
-                String cpfNull = null;
 
-                TelefoneVO telefoneVO = new TelefoneVO(0, cpf, cpfNull, telefone);
+                TelefoneVO telefoneVO = new TelefoneVO(0, cpf, null, telefone);
                 ClienteVO nClienteVO = new ClienteVO(0, nome, cpf, nEnderecoVO, listaveiculos, telefoneVO);
 
                 
