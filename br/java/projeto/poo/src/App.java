@@ -19,8 +19,8 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         try {
             janela = primaryStage;
-            //File f = new File("public/MarcãoIcon16x16.png");
-            Image logo = new Image("file: public/MarcãoIcon32x32.png");
+            janela.setTitle("Marção Mechanics");
+            Image logo = new Image(getClass().getResourceAsStream("../public/MarcãoIcon566x566.png"));
             janela.getIcons().add(logo);
             janela.setResizable(true);
             janela.setMinHeight(800);
@@ -34,12 +34,12 @@ public class App extends Application {
     }
 
     /**
-     * Permite navegar entre telas usando o nome disponibilizado em TelasDisponiveis
-     * @param nomeTela
-     * @throws Exception
+     * <p> Swithes up screens based on the existing screens in {@link br.java.projeto.poo.src.TelasDisponiveis#TelasDisponiveis() TelasDisponiveis()}.
+     * @param nomeTela name of the screen to switch to.
      */
-
     public static void navegarEntreTelas(String nomeTela) {
-        janela.setScene(gr.carregarNovaTela(nomeTela)); // carrega a tela com o nome recebido na funçãzo
+        janela.setWidth(janela.getScene().getWindow().getX());
+        janela.setHeight(janela.getScene().getWindow().getY());
+        janela.setScene(gr.carregarNovaTela(nomeTela)); 
     }
 }
