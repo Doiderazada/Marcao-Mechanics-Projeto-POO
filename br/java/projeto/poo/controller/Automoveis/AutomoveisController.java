@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Automoveis;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -13,7 +12,6 @@ import br.java.projeto.poo.models.VO.ClienteVO;
 import br.java.projeto.poo.models.VO.VeiculoVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,9 +35,6 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 public class AutomoveisController extends BaseController{
-    private VeiculoBO veiculoB0 = new VeiculoBO();
-    public static ArrayList<VeiculoVO> listaAutomoveis;
-    static ObservableList<VeiculoVO> automoveisDisponiveis;
     
     @FXML private Label msgErroBusca;
     @FXML private Button cadastrar;
@@ -52,26 +47,51 @@ public class AutomoveisController extends BaseController{
     @FXML private TextField buscar;
 
 
+    private VeiculoBO veiculoB0 = new VeiculoBO();
+    private ModalsController modalsController = new ModalsController();
+    private ArrayList<VeiculoVO> listaAutomoveis;
+    private ObservableList<VeiculoVO> automoveisDisponiveis;
+
+
     @FXML
     public void initialize () {
         try {
             super.initialize();
+            acaoCompTela();
             listaAutomoveis = this.veiculoB0.listar();
             automoveisDisponiveis = FXCollections.observableArrayList(listaAutomoveis);
             inicializarTabela();
-            linhaSelecionada();
             msgErroBusca.setVisible(false);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
 
 
+    private void acaoCompTela() {
+        cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                abrirModalCadastro();
+            }
+            
+        });
+        buscar.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarVeiculo();
+            }
+            
+        });
+    }
 
 
-    @FXML
-    void abrirModalCadastro(ActionEvent event) {
+    
+    private void abrirModalCadastro() {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -100,7 +120,7 @@ public class AutomoveisController extends BaseController{
         }
     }
 
-    void abrirModalEditar(VeiculoVO vo, int indice) throws Exception {
+    private void abrirModalEditar(VeiculoVO veiculo) {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -110,7 +130,7 @@ public class AutomoveisController extends BaseController{
             Parent root = loader.load();
 
             EditarAutomoveisController editarController = loader.getController();
-            editarController.initialize(vo);
+            editarController.initialize(veiculo);
 
             
             Window wNV = cadastrar.getScene().getWindow();
@@ -130,39 +150,13 @@ public class AutomoveisController extends BaseController{
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
 
-    private void abrirExclusao(VeiculoVO veiculo, int index) throws Exception {
-        Stage palco = new Stage();
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalExcluir.fxml"));
-        Parent root = loader.load();
-        ModalsController modalExc = loader.getController();
-
-        String mensagem = "Tem certeza que deseja excluir esse veículo?";
-
-        modalExc.ExibirMensagemExcluir(mensagem);
-        
-
-        Window wNV = cadastrar.getScene().getWindow();
-        double centralizarEixoX, centralizarEixoY;
-        centralizarEixoX = (wNV.getX() + wNV.getWidth()/2) - 225;
-        centralizarEixoY = (wNV.getY() + wNV.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-
-        Scene janelaEdit = new Scene(root);
-        palco.setResizable(false);
-        palco.setScene(janelaEdit);
-        palco.showAndWait();
-
-        if(modalExc.getExclusaoValid()){
+    private void abrirExclusao(VeiculoVO veiculo, int index) {
+        if (modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse veículo?", index)) {
             realizarExclusao(veiculo, index);
         }
     }
@@ -172,17 +166,54 @@ public class AutomoveisController extends BaseController{
 
 
 
+
+    
+    private void buscarVeiculo() {
+        try {
+            ArrayList<VeiculoVO> veiculos;
+            if(this.buscar.getText().length() > 2) {
+                    if (this.buscar.getText().matches("^\\d{3}.*")) {
+                        veiculos = veiculoB0.buscarPorDono(buscar.getText());
+                        if (veiculos.isEmpty()) {
+                            msgErroBusca.setVisible(true);
+                        }else msgErroBusca.setVisible(false);
+                    } else {
+                        veiculos = veiculoB0.buscarPorPlaca(buscar.getText());
+                        if (veiculos.isEmpty()) {
+                            msgErroBusca.setVisible(true);
+                        }else msgErroBusca.setVisible(false);
+                    }
+                    automoveisDisponiveis.setAll(veiculos);
+            } else {
+                    automoveisDisponiveis.setAll(listaAutomoveis);
+                    msgErroBusca.setVisible(false);
+            }
+
+            veiculos = veiculoB0.buscarPorDono(buscar.getText());
+            veiculos = veiculoB0.buscarPorPlaca(buscar.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
+    }
+
+
+
+
+
+
     // inicializa a tabela
-    private void inicializarTabela() throws SQLException {
+    private void inicializarTabela() {
         placa.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("placa"));
         proprietario.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("cpfDono"));
         modelo.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("modelo"));
         tbAutomoveis.setItems(automoveisDisponiveis);
-        this.inicializarBotoesDeAcao(automoveisDisponiveis);
+        linhaSelecionada();
+        inicializarBotoesDeAcao();
     }
 
     // inicializa os botões de ação
-    private void inicializarBotoesDeAcao (ObservableList<VeiculoVO> funcs) {
+    private void inicializarBotoesDeAcao () {
         acoes.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
@@ -190,24 +221,21 @@ public class AutomoveisController extends BaseController{
 
             {
                 btnEdit.getStyleClass().add("btn-edit");
+                btnEdit.setPrefSize(25, 25);
                 btnDelete.getStyleClass().add("btn-delete");
+                btnDelete.setPrefSize(25, 25);
                 btnEdit.setOnAction(event -> {
-                    try {
-                        VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        abrirModalEditar(veiculo, getIndex());
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+                    
+                    VeiculoVO veiculo = getTableView().getItems().get(getIndex());
+                    abrirModalEditar(veiculo);
+                    
                 });
 
                 btnDelete.setOnAction(event -> {
-                    try {
-                        VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        abrirExclusao(veiculo, getIndex());
+                    
+                    VeiculoVO veiculo = getTableView().getItems().get(getIndex());
+                    abrirExclusao(veiculo, getIndex());
                         
-                    } catch (Exception e) {
-                       e.printStackTrace();
-                    }
                 });
             }
 
@@ -235,7 +263,7 @@ public class AutomoveisController extends BaseController{
 
 
 
-    void linhaSelecionada() throws Exception{
+    private void linhaSelecionada() {
         
         tbAutomoveis.setRowFactory(event -> {
             TableRow<VeiculoVO> myRow = new TableRow<>();
@@ -245,13 +273,7 @@ public class AutomoveisController extends BaseController{
                 public void handle(MouseEvent arg0) {
                     VeiculoVO veiculoSelecionado = myRow.getItem();
                     if (!(myRow.isEmpty())) {
-                        try{
-                            exibirCliente(veiculoSelecionado);
-                        }catch(Exception e){
-                            System.out.println(e.getMessage());
-                            ModalsController modalsController = new ModalsController();
-                            modalsController.abrirModalFalha(e.getMessage());
-                        }
+                        exibirCliente(veiculoSelecionado);
                     } 
                 }
                 
@@ -264,38 +286,27 @@ public class AutomoveisController extends BaseController{
 
 
     
-    private void exibirCliente(VeiculoVO veiculo) throws Exception {
+    private void exibirCliente(VeiculoVO veiculo) {
+        try {
+            ClienteBO clienteBO = new ClienteBO();
+            ArrayList<ClienteVO> listaCliente;
+            listaCliente = clienteBO.buscarPorCPF(veiculo.getCpfDono());
+            ClienteVO cliente = listaCliente.get(0);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
+            Parent root = loader.load();
 
-        ClienteBO clienteBO = new ClienteBO();
-        ArrayList<ClienteVO> listaCliente;
-        listaCliente = clienteBO.buscarPorCPF(veiculo.getCpfDono());
-        ClienteVO cliente = listaCliente.get(0);
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
-        Parent root = loader.load();
-
-        ClienteShowController controller = loader.getController();
-        controller.initialize(cliente);
-        
-        Stage palco = new Stage();
-        Scene cena = new Scene(root);
-        palco  = (Stage)cadastrar.getScene().getWindow();
-        palco.setScene(cena);
-        palco.show();
-    }
-
-
-
-
-
-
-
-
-    private void realizarExclusao(VeiculoVO veiculo, int index) throws Exception {
-        VeiculoBO veiculoExcluido = new VeiculoBO();
-        if(!veiculoExcluido.deletar(veiculo.getPlaca())){
-            listaAutomoveis.remove(index);
-            automoveisDisponiveis.setAll(listaAutomoveis);
+            ClienteShowController controller = loader.getController();
+            controller.initialize(cliente);
+            
+            Stage palco = new Stage();
+            Scene cena = new Scene(root);
+            palco  = (Stage)cadastrar.getScene().getWindow();
+            palco.setScene(cena);
+            palco.show();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
@@ -305,34 +316,17 @@ public class AutomoveisController extends BaseController{
 
 
 
-    @FXML
-    void buscarVeiculo(KeyEvent event) {
-        try {
-            ArrayList<VeiculoVO> veiculos;
-            if(this.buscar.getText().length() > 2) {
-                    if (this.buscar.getText().matches("^\\d{3}.*")) {
-                        veiculos = veiculoB0.buscarPorDono(buscar.getText());
-                        if (veiculos.isEmpty()) {
-                            msgErroBusca.setVisible(true);
-                        }else msgErroBusca.setVisible(false);
-                    } else {
-                        veiculos = veiculoB0.buscarPorPlaca(buscar.getText());
-                        if (veiculos.isEmpty()) {
-                            msgErroBusca.setVisible(true);
-                        }else msgErroBusca.setVisible(false);
-                    }
-                    automoveisDisponiveis.setAll(veiculos);
-            } else {
-                    automoveisDisponiveis.setAll(listaAutomoveis);
-                    msgErroBusca.setVisible(false);
-            }
 
-            veiculos = veiculoB0.buscarPorDono(buscar.getText());
-            veiculos = veiculoB0.buscarPorPlaca(buscar.getText());
-        } catch (Exception e) {
+    private void realizarExclusao(VeiculoVO veiculo, int index) {
+        try {
+            VeiculoBO veiculoExcluido = new VeiculoBO();
+            if(!veiculoExcluido.deletar(veiculo.getPlaca())){
+                listaAutomoveis.remove(index);
+                automoveisDisponiveis.setAll(listaAutomoveis);
+            }
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
-            ModalsController modalsController = new ModalsController();
-            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 }

@@ -1,31 +1,21 @@
 package br.java.projeto.poo.controller.Automoveis;
 
-import java.io.IOException;
-
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.VeiculoBO;
 import br.java.projeto.poo.models.VO.VeiculoVO;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class EditarAutomoveisController {
-    VeiculoBO veiculoBO = new VeiculoBO();
-    int indice = 0;
-    String cpfDono;
-    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
-    String[] tipoVeicArray = {"Carro", "Moto"};
-    VeiculoVO veiculoEditar = new VeiculoVO();
+    
 
     @FXML private TextField ano;
     @FXML private Button cadastrar;
@@ -37,11 +27,23 @@ public class EditarAutomoveisController {
     @FXML private TextField placa;
     @FXML private ChoiceBox<String> tipo;
 
+
+    private VeiculoBO veiculoBO = new VeiculoBO();
+    private VeiculoVO veiculoEditar = new VeiculoVO();
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    private String[] tipoVeic = {"Carro", "Moto"};
+    private ObservableList<String> listaTipoVeic = FXCollections.observableArrayList(tipoVeic);
+
+
+
+
     @FXML
     public void initialize(VeiculoVO veiculo) {
+        acaoCompTela();
         this.msgErro.setVisible(false);
-        tipo.getItems().addAll(tipoVeicArray);
-        tipo.setValue(tipoVeicArray[0]);
+        tipo.setItems(listaTipoVeic);
+        tipo.setValue(listaTipoVeic.get(0));
         veiculoEditar = veiculo;
         preencherCampos(veiculoEditar);
     }
@@ -49,59 +51,31 @@ public class EditarAutomoveisController {
     
 
 
+    private void acaoCompTela() {
+        cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
+            @Override
+            public void handle(MouseEvent arg0) {
+                editarVeiculo();
+            }
+            
+        });
+        cancelar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-    
-    void abrirModalFail(String mensagem) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
-
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem);
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCV = cadastrar.getScene().getWindow();
-        double centralizarEixoX = (wCV.getX() + wCV.getWidth()/2) - 200;
-        double centralizarEixoY = (wCV.getY() + wCV.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-    }
-
-    
-    void abrirModalSucess(String mensagem) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem);
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCV = cadastrar.getScene().getWindow();
-        double centralizarEixoX = (wCV.getX() + wCV.getWidth()/2) - 200;
-        double centralizarEixoY = (wCV.getY() + wCV.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-        
+            @Override
+            public void handle(MouseEvent arg0) {
+                cancelar();
+            }
+            
+        });
     }
 
 
 
 
-    @FXML
-    void editarVeiculo(ActionEvent event) {
+
+    
+    private void editarVeiculo() {
         try {
             if(validarCampos()){
                 veiculoEditar.setAno(ano.getText());
@@ -113,23 +87,17 @@ public class EditarAutomoveisController {
                 
                 veiculoBO.atualizar(veiculoEditar);
                 
-                this.fecharModal();
-                abrirModalSucess("Veículo editado com sucesso.");
+                cancelar();
+                modalsController.ExibirMensagemSucesso("Veículo editado com sucesso.");
             }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            this.msgErro.setText(e.getMessage());
-            this.msgErro.setVisible(true);
+            modalsController.ExibirMensagemFalha(e.getMessage());
         }
     }
 
-    @FXML
-    void cancelar(ActionEvent event) {
-        this.fecharModal();
-    }
-
-    private void fecharModal() {
+    private void cancelar() {
         Stage stage = (Stage) this.cancelar.getScene().getWindow();
         stage.close();
     }
@@ -150,7 +118,6 @@ public class EditarAutomoveisController {
             tipo.setValue(vo.getTipo());
             cor.setText(vo.getCor());
             km.setText(String.valueOf(vo.getKm()));
-            cpfDono = vo.getCpfDono();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -162,7 +129,7 @@ public class EditarAutomoveisController {
 
 
 
-    boolean validarCampos(){
+    private boolean validarCampos(){
         
         if(modelo.getText().isEmpty()){
             msgErro.setText("O modelo do veículo não pode ser vazio");

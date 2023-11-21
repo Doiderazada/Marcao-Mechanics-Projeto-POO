@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Automoveis;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.ModalsController;
@@ -10,29 +9,20 @@ import br.java.projeto.poo.models.VO.ClienteVO;
 import br.java.projeto.poo.models.VO.EnderecoVO;
 import br.java.projeto.poo.models.VO.TelefoneVO;
 import br.java.projeto.poo.models.VO.VeiculoVO;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class CadastrarAutomoveisController {
-    VeiculoBO veiculoBO = new VeiculoBO();
-    ClienteBO clienteBO = new ClienteBO();
-    private boolean clienteExisteFlag = false;
-    private String[] tipoVeic_Array = {"Carro","Moto"};
-    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    
 
     @FXML private TextField ano;
     @FXML private Button cadastrar;
@@ -47,73 +37,47 @@ public class CadastrarAutomoveisController {
     @FXML private TextField placa;
     @FXML private TextField telefone;
     @FXML private ChoiceBox<String> tipo;
+
+
+    private VeiculoBO veiculoBO = new VeiculoBO();
+    private ClienteBO clienteBO = new ClienteBO();
+    private ModalsController modalsController = new ModalsController();
+    private boolean clienteExisteFlag = false;
+    private String[] tipoVeic = {"Carro","Moto"};
+    private ObservableList<String> listaTipoVeic = FXCollections.observableArrayList(tipoVeic);
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+
+
     
     @FXML
-    void initialize() {
+    public void initialize() {
+        acaoCompTela();
         this.msgErro.setVisible(false);
-        tipo.getItems().addAll(tipoVeic_Array);
-        tipo.setValue(tipoVeic_Array[0]);
-        acaoTextField();
-    }
-
-
-
-
-    
-    void abrirModalFail(String mensagem) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
-
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem);
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCV = cadastrar.getScene().getWindow();
-        double centralizarEixoX = (wCV.getX() + wCV.getWidth()/2) - 200;
-        double centralizarEixoY = (wCV.getY() + wCV.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-    }
-
-    
-    void abrirModalSucess(String mensagem) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem);
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCV = cadastrar.getScene().getWindow();
-        double centralizarEixoX = (wCV.getX() + wCV.getWidth()/2) - 200;
-        double centralizarEixoY = (wCV.getY() + wCV.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+        tipo.setItems(listaTipoVeic);
+        tipo.setValue(listaTipoVeic.get(0));
         
     }
 
 
 
 
+    private void acaoCompTela(){
+        cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
+            @Override
+            public void handle(MouseEvent arg0) {
+                cadastrarVeiculo();
+            }
+            
+        });
+        cancelar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-
-
-
-    void acaoTextField(){
+            @Override
+            public void handle(MouseEvent arg0) {
+                cancelar();
+            }
+            
+        });
         nome.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -137,7 +101,7 @@ public class CadastrarAutomoveisController {
             @Override
             public void handle(KeyEvent arg0) {
                 autoComplete();
-                buscarCliente(arg0);
+                buscarCliente();
             }
             
         });
@@ -221,7 +185,7 @@ public class CadastrarAutomoveisController {
 
 
     
-    void autoComplete(){
+    private void autoComplete(){
         // auto-complete cpf
         if(cpf.getText().length() == 3){
             cpf.setText(cpf.getText() + ".");
@@ -260,7 +224,7 @@ public class CadastrarAutomoveisController {
     
 
 
-    void buscarCliente(KeyEvent event) {
+    private void buscarCliente() {
         try {
             if(cpf.getText().length() == 14) {
                 ArrayList<ClienteVO> clientes = clienteBO.buscarPorCPF(cpf.getText());
@@ -285,8 +249,8 @@ public class CadastrarAutomoveisController {
     
 
 
-    @FXML
-    void cadastrarVeiculo(ActionEvent event) {
+    
+    private void cadastrarVeiculo() {
         try {
             
             if (validarCampos()) {
@@ -315,9 +279,9 @@ public class CadastrarAutomoveisController {
 
                 if(veiculoBO.inserir(veiculoVO)){
 
-                    this.fecharModal();
-                    abrirModalSucess("Veículo cadastrado com sucesso.");
-                }
+                    cancelar();
+                    modalsController.ExibirMensagemSucesso("Veículo cadastrado com sucesso.");
+                } else modalsController.ExibirMensagemFalha("Não foi possível cadastrar o veículo.");
             }
 
         } catch (Exception e) {
@@ -326,12 +290,8 @@ public class CadastrarAutomoveisController {
         }
     }
 
-    @FXML
-    void cancelar(ActionEvent event) {
-        this.fecharModal();
-    }
-
-    private void fecharModal() {
+    
+    private void cancelar() {
         Stage stage = (Stage) this.cancelar.getScene().getWindow();
         stage.close();
     }
@@ -347,7 +307,8 @@ public class CadastrarAutomoveisController {
 
 
 
-    boolean validarCampos(){
+
+    private boolean validarCampos(){
         
         if(nome.getText().isEmpty()){
             msgErro.setText("O nome não pode ser vazio");
@@ -520,16 +481,13 @@ public class CadastrarAutomoveisController {
                 return false;
             }
         }
-
-
         return true;
     }
 
 
 
 
-    void setInvisibleCad(){
+    private void setInvisibleCad(){
         this.msgErro.setVisible(false);
     }
-
 }

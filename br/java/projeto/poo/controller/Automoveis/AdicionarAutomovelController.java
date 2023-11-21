@@ -4,7 +4,8 @@ import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.VeiculoBO;
 import br.java.projeto.poo.models.VO.ClienteVO;
 import br.java.projeto.poo.models.VO.VeiculoVO;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,11 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class AdicionarAutomovelController {
-    
-    ClienteVO donoVeic = new ClienteVO();
-    private String[] tipoVeic_Array = {"Carro","Moto"};
-    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
-
 
     @FXML private Button addNovoV;
     @FXML private Button cancelarAddV;
@@ -32,13 +28,21 @@ public class AdicionarAutomovelController {
     @FXML private ChoiceBox<String> tipoNovoV;
 
 
+    
+    private ClienteVO donoVeic = new ClienteVO();
+    private ModalsController modalsController = new ModalsController();
+    private String[] tipoVeic = {"Carro","Moto"};
+    private ObservableList<String> listaTipoVeic = FXCollections.observableArrayList(tipoVeic);
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+
 
 
     public void initialize(ClienteVO cliente){
+        acaoCompTela();
         donoVeic = cliente;
-        tipoNovoV.getItems().addAll(tipoVeic_Array);
-        tipoNovoV.setValue(tipoVeic_Array[0]);
-        acaoTextField();
+        tipoNovoV.setItems(listaTipoVeic);
+        tipoNovoV.setValue(listaTipoVeic.get(0));
+        
     }
 
 
@@ -48,7 +52,23 @@ public class AdicionarAutomovelController {
 
 
 
-    void acaoTextField(){
+    private void acaoCompTela(){
+        addNovoV.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                addNovoV();
+            }
+            
+        });
+        cancelarAddV.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                cancelarAddV();
+            }
+            
+        });
         modeloNovoV.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -107,8 +127,8 @@ public class AdicionarAutomovelController {
 
 
 
-    @FXML
-    void addNovoV(ActionEvent event) {
+    
+    private void addNovoV() {
         try{   
             if (validarCampos()) {
                 VeiculoBO veiculoBO = new VeiculoBO();
@@ -126,7 +146,6 @@ public class AdicionarAutomovelController {
                 VeiculoVO novoVeiculo = new VeiculoVO(0, placa, cor, modelo, donoVeic.getCpf(), tipo, ano, km);
                 if (veiculoBO.inserir(novoVeiculo)) {
                     cancelarAddV();
-                    ModalsController modalsController = new ModalsController();
                     modalsController.abrirModalSucesso("Veículo adicionado com sucesso");
                 }else {
                     msgErroNovoV.setText("Não foi possível adicionar o veículo");
@@ -138,13 +157,12 @@ public class AdicionarAutomovelController {
         }catch(Exception e){
             this.cancelarAddV();
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
-    @FXML
-    void cancelarAddV() {
+    
+    private void cancelarAddV() {
         Stage palco = (Stage)this.cancelarAddV.getScene().getWindow();
         palco.close();
     }
@@ -155,7 +173,7 @@ public class AdicionarAutomovelController {
 
 
 
-    boolean validarCampos(){
+    private boolean validarCampos(){
         
         if(modeloNovoV.getText().isEmpty()){
             msgErroNovoV.setText("O modelo do veículo não pode ser vazio");
@@ -259,7 +277,7 @@ public class AdicionarAutomovelController {
 
 
 
-    void setInvisibleAdd(){
+    private void setInvisibleAdd(){
         this.msgErroNovoV.setVisible(false);
     }
 

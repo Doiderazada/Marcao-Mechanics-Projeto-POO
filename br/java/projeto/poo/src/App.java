@@ -38,8 +38,11 @@ public class App extends Application {
      * @param nomeTela name of the screen to switch to.
      */
     public static void navegarEntreTelas(String nomeTela) {
-        janela.setWidth(janela.getScene().getWindow().getX());
-        janela.setHeight(janela.getScene().getWindow().getY());
-        janela.setScene(gr.carregarNovaTela(nomeTela)); 
+        double newW = janela.getScene().getWindow().getWidth();
+        double newH = janela.getScene().getWindow().getHeight();
+        janela.setY(janela.getScene().getWindow().getY());
+        janela.setScene(gr.carregarNovaTela(nomeTela));
+        janela.setWidth(newW);
+        janela.setHeight(newH);
     }
 }

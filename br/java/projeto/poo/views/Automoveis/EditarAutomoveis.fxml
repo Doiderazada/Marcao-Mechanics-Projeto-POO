@@ -89,14 +89,14 @@
             </VBox>
          </children>
       </Group>
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="374.0" prefHeight="86.0" prefWidth="500.0" spacing="20.0">
+      <HBox alignment="CENTER" layoutY="373.0" prefHeight="86.0" prefWidth="520.0" spacing="20.0">
          <children>
-            <Button fx:id="cancelar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelar" prefHeight="50.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar">
+            <Button fx:id="cancelar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="cadastrar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#editarVeiculo" prefHeight="50.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Editar veiculo">
+            <Button fx:id="cadastrar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Editar veiculo">
                <font>
                   <Font size="15.0" />
                </font>
