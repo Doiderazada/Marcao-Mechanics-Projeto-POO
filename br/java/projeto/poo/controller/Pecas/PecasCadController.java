@@ -223,7 +223,7 @@ public class PecasCadController {
             new animatefx.animation.Shake(campoCadNome).play();
             return false;
         }else{
-            if (campoCadNome.getText().matches("[a-zA-Z^0-9,.\\s]{2,50}")) {
+            if (campoCadNome.getText().matches("[a-zA-Z^0-9,.\\sãâáéêóõôí/]{2,50}")) {
                 System.out.println("Campo nome válido");
             } else {
                 mensagemErroCad.setText("Formato de nome inválido");
@@ -241,7 +241,7 @@ public class PecasCadController {
             new animatefx.animation.Shake(campoCadFabricante).play();
             return false; 
         } else {
-            if (campoCadFabricante.getText().matches("[a-zA-Z^0-9,.\\s]{2,40}")) {
+            if (campoCadFabricante.getText().matches("[a-zA-Z^0-9,.\\sãâáéêóõôí]{2,40}")) {
                 System.out.println("Campo fabricante válido");
             } else {
                 mensagemErroCad.setText("Formato de fabricante inválido");
@@ -259,7 +259,7 @@ public class PecasCadController {
             new animatefx.animation.Shake(campoCadQuantidade).play();
             return false;
         } else {
-            if (campoCadQuantidade.getText().matches("[1-9]{1,9}")) {
+            if (campoCadQuantidade.getText().matches("[1-9]{1}[0-9]{0,8}")) {
                 System.out.println("Campo valor válido");
             } else {
                 mensagemErroCad.setText("Formato de quantidade inválido");
@@ -277,7 +277,7 @@ public class PecasCadController {
             new animatefx.animation.Shake(campoCadValor).play();
             return false;
         } else {
-            if (campoCadValor.getText().matches("[1-9]{1,9}[.]{1}[0-9]{1,2}")) {
+            if (campoCadValor.getText().matches("[1-9]{1}[0-9]*[.]?[0-9]*")) {
                 System.out.println("Campo valor válido");
             } else {
                 mensagemErroCad.setText("Formato de valor inválido");

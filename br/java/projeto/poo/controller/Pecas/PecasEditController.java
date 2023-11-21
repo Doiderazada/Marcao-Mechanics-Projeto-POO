@@ -262,7 +262,7 @@ public class PecasEditController {
             new animatefx.animation.Shake(campoEditNome).play();
             return false;
         }else{
-            if (campoEditNome.getText().matches("[a-zA-Z^0-9,.\\s]{2,50}")) {
+            if (campoEditNome.getText().matches("[a-zA-Z^0-9,.\\sãâáéêóõôí/]{2,50}")) {
                 System.out.println("Campo nome válido");
             } else {
                 mensagemErroEdit.setText("Formato de nome inválido");
@@ -280,7 +280,7 @@ public class PecasEditController {
             new animatefx.animation.Shake(campoEditFabricante).play();
             return false; 
         } else {
-            if (campoEditFabricante.getText().matches("[a-zA-Z^0-9,.\\s]{2,40}")) {
+            if (campoEditFabricante.getText().matches("[a-zA-Z^0-9,.\\sãâáéêóõôí]{2,40}")) {
                 System.out.println("Campo fabricante válido");
             } else {
                 mensagemErroEdit.setText("Formato de fabricante inválido");
@@ -298,7 +298,7 @@ public class PecasEditController {
             new animatefx.animation.Shake(campoEditQuantidade).play();
             return false;
         } else {
-            if (campoEditQuantidade.getText().matches("[1-9]{1,9}")) {
+            if (campoEditQuantidade.getText().matches("[1-9]{1}[0-9]{0,8}")) {
                 System.out.println("Campo quantidade válido");
             } else {
                 mensagemErroEdit.setText("Formato de quantidade inválido");
@@ -316,7 +316,7 @@ public class PecasEditController {
             new animatefx.animation.Shake(campoEditValor).play();
             return false;
         } else {
-            if (campoEditValor.getText().matches("[1-9]{1,9}[.]{1}[0-9]{1,2}")) {
+            if (campoEditValor.getText().matches("[1-9]{1}[0-9]*[.]?[0-9]*")) {
                 System.out.println("Campo valor válido");
             } else {
                 mensagemErroEdit.setText("Formato de valor inválido");

@@ -30,6 +30,7 @@ public class PecaBO implements BaseInterfaceBO<PecaVo>{
     }
 
     @Override
+    @Deprecated
     public Object buscarPorId(int id) throws Exception{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'buscarPorId'");
@@ -88,23 +89,34 @@ public class PecaBO implements BaseInterfaceBO<PecaVo>{
     @Override
     public boolean inserir(PecaVo vo) throws Exception{
         try {pecaDao.inserir(vo);} 
-        catch (Exception e) {e.printStackTrace();}
+        catch (Exception e) {
+            System.out.println(e.getMessage() + "\n");
+            e.printStackTrace();
+        }
         
-        return true;
+        return false;
     }
 
     @Override
     public PecaVo atualizar(PecaVo vo) throws Exception{
-        
-        PecaDao<PecaVo> pecaDao = new PecaDao<PecaVo>();
-        return pecaDao.atualizar(vo);
+        try {
+            PecaDao<PecaVo> pecaDao = new PecaDao<PecaVo>();
+            return pecaDao.atualizar(vo);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "\n");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public Boolean deletar(PecaVo vo) throws Exception{
+    public Boolean deletar(PecaVo vo) {
         PecaDao<PecaVo> pecaDao = new PecaDao<PecaVo>();
         try {return pecaDao.deletar(vo);}
-        catch(Exception e) {e.printStackTrace();}
+        catch(Exception e) {
+            System.out.println(e.getMessage() + "\n");
+            e.printStackTrace();
+        }
         return false;
     }
     
