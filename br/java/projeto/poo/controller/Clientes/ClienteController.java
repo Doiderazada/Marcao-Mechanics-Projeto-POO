@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Clientes;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.BaseController;
@@ -34,10 +33,6 @@ import javafx.stage.Window;
 
 public class ClienteController extends BaseController{
 
-    
-    private ClienteBO clienteBO = new ClienteBO();
-    private static ArrayList<ClienteVO> listaClientes = new ArrayList<ClienteVO>();
-    private static ObservableList<ClienteVO> clientesDisponiveis;
 
     @FXML protected Button novoCliente;
     @FXML private Label mensagemErroBusca;
@@ -50,98 +45,90 @@ public class ClienteController extends BaseController{
     @FXML private TableColumn<ClienteVO, String>  columnNome;
     @FXML private TableColumn<ClienteVO, String>  columnTel;
     
+    
+    private ClienteBO clienteBO = new ClienteBO();
+    private ModalsController modalsController = new ModalsController();
+    private ArrayList<ClienteVO> listaClientes = new ArrayList<ClienteVO>();
+    private ObservableList<ClienteVO> clientesDisponiveis;
+
+
 
     @Override
     public void initialize() throws Exception{
-        try{
-            super.initialize();;
-            listaClientes = this.clienteBO.listar();
-            clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
-            mensagemErroBusca.setVisible(false);
-            this.inicializarTabela();
-            acaoDosBotoes();
-            linhaSelecionada();
-        }catch(Exception ex){
-            System.out.println("Erro do initialize: " + ex.getMessage() + "\n");
-        }
-        
-    }
-
-
-
-
     
-
-    
-    private void abrirCadastro() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/CadastrarCliente.fxml"));
-        Parent root = loader.load();
-        Scene janelaCad = new Scene(root);
-        Stage palco = new Stage();
-        palco.setResizable(false);
-        palco.setScene(janelaCad);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wNC = novoCliente.getScene().getWindow();
-        palco.setX((wNC.getX() + wNC.getWidth()/2) - 250);
-        palco.setY((wNC.getY() + wNC.getHeight()/2) - 325);
-        palco.showAndWait();
-
+        super.initialize();;
+        acaoCompTela();
         listaClientes = this.clienteBO.listar();
-        clientesDisponiveis.setAll(listaClientes);
+        clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
+        mensagemErroBusca.setVisible(false);
+        inicializarTabela();
         
     }
 
 
-    private void abrirEdicao(ClienteVO cliente, int i) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/EditarCliente.fxml"));
-        Parent root = loader.load();
 
-        ClienteEditController controller = loader.getController();
-        controller.initialize(cliente);
+    
 
-        Scene janelaEdit = new Scene(root);
-        Stage palco = new Stage();
-        palco.setResizable(false);
-        palco.setScene(janelaEdit);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wNC = novoCliente.getScene().getWindow();
-        double centralizarEixoX, centralizarEixoY;
-        centralizarEixoX = (wNC.getX() + wNC.getWidth()/2) - 250;
-        centralizarEixoY = (wNC.getY() + wNC.getHeight()/2) - 225;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+    
+    private void abrirCadastro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/CadastrarCliente.fxml"));
+            Parent root = loader.load();
+            Scene janelaCad = new Scene(root);
+            Stage palco = new Stage();
+            palco.setResizable(false);
+            palco.setScene(janelaCad);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.initStyle(StageStyle.UNDECORATED);
+            Window wNC = novoCliente.getScene().getWindow();
+            palco.setX((wNC.getX() + wNC.getWidth()/2) - 250);
+            palco.setY((wNC.getY() + wNC.getHeight()/2) - 325);
+            palco.showAndWait();
+
+            listaClientes = this.clienteBO.listar();
+            clientesDisponiveis.setAll(listaClientes);
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
+    }
+
+
+    private void abrirEdicao(ClienteVO cliente) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/EditarCliente.fxml"));
+            Parent root = loader.load();
+
+            ClienteEditController controller = loader.getController();
+            controller.initialize(cliente);
+
+            Scene janelaEdit = new Scene(root);
+            Stage palco = new Stage();
+            palco.setResizable(false);
+            palco.setScene(janelaEdit);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.initStyle(StageStyle.UNDECORATED);
+            Window wNC = novoCliente.getScene().getWindow();
+            double centralizarEixoX, centralizarEixoY;
+            centralizarEixoX = (wNC.getX() + wNC.getWidth()/2) - 250;
+            centralizarEixoY = (wNC.getY() + wNC.getHeight()/2) - 225;
+            palco.setX(centralizarEixoX);
+            palco.setY(centralizarEixoY);
+            palco.showAndWait();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
 
-    private void abrirExclusao(ClienteVO cliente, int index) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalExcluir.fxml"));
-        Parent root = loader.load();
-        ModalsController modalExc = loader.getController();
-
-        String mensagem = "Tem certeza que deseja excluir esse cliente?";
-
-        modalExc.ExibirMensagemExcluir(mensagem);
-
-        Scene janelaEdit = new Scene(root);
-        Stage palco = new Stage();
-        palco.setResizable(false);
-        palco.setScene(janelaEdit);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wNC = novoCliente.getScene().getWindow();
-        double centralizarEixoX, centralizarEixoY;
-        centralizarEixoX = (wNC.getX() + wNC.getWidth()/2) - 225;
-        centralizarEixoY = (wNC.getY() + wNC.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-        if(modalExc.getExclusaoValid()){
+    private void abrirExclusao(ClienteVO cliente, int index) {
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse cliente?", index)){
             realizarExclusao(cliente, index);
         }
     }
@@ -154,17 +141,12 @@ public class ClienteController extends BaseController{
 
 
 
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
         novoCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try{abrirCadastro();}
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                abrirCadastro();
             }
             
         });
@@ -172,12 +154,7 @@ public class ClienteController extends BaseController{
 
             @Override
             public void handle(KeyEvent arg0) {
-                try {buscarCliente();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                buscarCliente();
             }
             
         });
@@ -219,7 +196,7 @@ public class ClienteController extends BaseController{
 
     
     
-    private void linhaSelecionada() throws Exception{
+    private void linhaSelecionada() {
         
         tabelaClientes.setRowFactory(event -> {
             TableRow<ClienteVO> myRow = new TableRow<>();
@@ -229,13 +206,7 @@ public class ClienteController extends BaseController{
                 public void handle(MouseEvent arg0) {
                     ClienteVO clienteSelecionado = myRow.getItem();
                     if (!(myRow.isEmpty())) {
-                        try{
-                            exibirCliente(clienteSelecionado);
-                        }catch(Exception e){
-                            System.out.println(e.getMessage());
-                            ModalsController modalsController = new ModalsController();
-                            modalsController.abrirModalFalha(e.getMessage());
-                        }
+                        exibirCliente(clienteSelecionado);
                     } 
                 }
                 
@@ -248,19 +219,25 @@ public class ClienteController extends BaseController{
 
 
     
-    private void exibirCliente(ClienteVO cliente) throws Exception {
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
-        Parent root = loader.load();
+    private void exibirCliente(ClienteVO cliente) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
+            Parent root = loader.load();
 
-        ClienteShowController controller = loader.getController();
-        controller.initialize(cliente);
-        
-        Stage palco = new Stage();
-        Scene cena = new Scene(root);
-        palco  = (Stage)novoCliente.getScene().getWindow();
-        palco.setScene(cena);
-        palco.show();
+            ClienteShowController controller = loader.getController();
+            controller.initialize(cliente);
+            
+            Stage palco = new Stage();
+            Scene cena = new Scene(root);
+            palco  = (Stage)novoCliente.getScene().getWindow();
+            palco.setScene(cena);
+            palco.show();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     } 
 
 
@@ -268,16 +245,17 @@ public class ClienteController extends BaseController{
 
 
 
-    private void inicializarTabela() throws SQLException {
+    private void inicializarTabela(){
         columnNome.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("nome"));
         columnCPF.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("cpf"));
         columnEnd.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("endereco"));
         columnTel.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("telefone"));
         tabelaClientes.setItems(clientesDisponiveis);
-        this.inicializarBotoesDeAcao(clientesDisponiveis);
+        linhaSelecionada();
+        inicializarBotoesDeAcao();
     }
 
-    private void inicializarBotoesDeAcao (ObservableList<ClienteVO> funcs) {
+    private void inicializarBotoesDeAcao() {
         columnBut.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
@@ -288,24 +266,18 @@ public class ClienteController extends BaseController{
                 btnDelete.getStyleClass().add("btn-delete");
                 
                 btnEdit.setOnAction(event -> {
-                    try {
-                        ClienteVO cliente = getTableView().getItems().get(getIndex());
-                        abrirEdicao(cliente, getIndex());
-                        tabelaClientes.refresh();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                        tabelaClientes.refresh();
-                    }
+                    
+                    ClienteVO cliente = getTableView().getItems().get(getIndex());
+                    abrirEdicao(cliente);
+                    tabelaClientes.refresh();
+                    
                 });
 
                 btnDelete.setOnAction(event -> {
-                    try{
-                        ClienteVO cliente = getTableView().getItems().get(getIndex());
-                        abrirExclusao(cliente, getIndex());
-                        
-                    } catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }
+                    
+                    ClienteVO cliente = getTableView().getItems().get(getIndex());
+                    abrirExclusao(cliente, getIndex());
+                    
                 });
             }
 
@@ -327,10 +299,10 @@ public class ClienteController extends BaseController{
 
 
 
-    private void realizarExclusao(ClienteVO cliente, int index) throws Exception {
+    private void realizarExclusao(ClienteVO cliente, int index) {
         ClienteBO clienteExcluido = new ClienteBO();
-            if(!clienteExcluido.deletar(cliente)){
-                clientesDisponiveis.remove(index);
-            }
+        if(!clienteExcluido.deletar(cliente)){
+            clientesDisponiveis.remove(index);
+        }
     }
 }

@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Clientes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -11,11 +10,10 @@ import br.java.projeto.poo.models.VO.ClienteVO;
 import br.java.projeto.poo.models.VO.EnderecoVO;
 import br.java.projeto.poo.models.VO.TelefoneVO;
 import br.java.projeto.poo.models.VO.VeiculoVO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -23,24 +21,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class ClienteCadController {
-    
-    private EnderecoVO nEnderecoVO = new EnderecoVO();
-    private ClienteBO clienteBO = new ClienteBO();
-    private VeiculoBO nVeiculoBO = new VeiculoBO();
-    private String ano = null, cor = null, cpf = null, endereco = null, modelo = null, nome = null, placa = null, tipoV = null, telefone = null;
-    private double quilometragem = 0;
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
-    private String[] tipoVeic_Array = {"Carro","Moto"};
+
 
     @FXML private Button cadastrarCliente;
     @FXML private Button cancelarCadastro;
-    @FXML private ChoiceBox<String> tipoVeic;
+    @FXML private ChoiceBox<String> tipoV;
     @FXML private Label mensagemErroCad;
     @FXML private Pane cadastroCliente;
     @FXML private TextField campoAnoVeic;
@@ -54,42 +42,22 @@ public class ClienteCadController {
     @FXML private TextField campoTelefone;
     
 
+    
+    private EnderecoVO nEnderecoVO = new EnderecoVO();
+    private ClienteBO clienteBO = new ClienteBO();
+    private VeiculoBO nVeiculoBO = new VeiculoBO();
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    private String[] tipoVeic = {"Carro","Moto"};
+    private ObservableList<String> listaTipoVeic = FXCollections.observableArrayList(tipoVeic);
+
+
 
     
     public void initialize(){
-
-        tipoVeic.getItems().addAll(tipoVeic_Array);
-        tipoVeic.setValue(tipoVeic_Array[0]);
-
-        this.acaoTextField();
-    
-    }
-
-
-
-
-
-
-
-    private void abrirModalFail(Label mensagem, Button b) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
-
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem.getText());
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCC = b.getScene().getWindow();
-        double centralizarEixoX = (wCC.getX() + wCC.getWidth()/2) - 200;
-        double centralizarEixoY = (wCC.getY() + wCC.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+        acaoCompTela();
+        tipoV.setItems(listaTipoVeic);
+        tipoV.setValue(listaTipoVeic.get(0));
 
     }
 
@@ -98,33 +66,8 @@ public class ClienteCadController {
 
 
 
-    private void abrirModalSucess(Label mensagem, Button b, ClienteVO cliente) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem.getText());
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCC = b.getScene().getWindow();
-        double centralizarEixoX = (wCC.getX() + wCC.getWidth()/2) - 200;
-        double centralizarEixoY = (wCC.getY() + wCC.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-        
-    }
 
-
-
-
-
-    private void acaoTextField(){
+    private void acaoCompTela(){
         campoNomeCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -228,12 +171,7 @@ public class ClienteCadController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {cadastrarCliente();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                cadastrarCliente();
             }
             
         });
@@ -241,12 +179,7 @@ public class ClienteCadController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {cancelarCadastro();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                cancelarCadastro();
             }
             
         });
@@ -296,54 +229,49 @@ public class ClienteCadController {
 
 
     
-    private void cadastrarCliente() throws Exception{
-        
+    private void cadastrarCliente() {
         try{
-
             if (validarCampos()) {
-                ano = campoAnoVeic.getText();
-                cor = campoCorVeic.getText();
-                cpf = campoCPFCliente.getText();
-                endereco = campoEndCliente.getText();
-                modelo = campoModVeic.getText();
-                nome = campoNomeCliente.getText();
-                placa = campoPlacVeic.getText().toUpperCase();
-                quilometragem = Double.parseDouble(campoKMVeic.getText());
-                telefone = this.campoTelefone.getText();
-                tipoV = this.tipoVeic.getValue();
             
-                nEnderecoVO.pegarValoresComoString(endereco);
+                nEnderecoVO.pegarValoresComoString(campoEndCliente.getText());
 
                 ArrayList<VeiculoVO> listaveiculos = new ArrayList<VeiculoVO>();
 
-                VeiculoVO veiculo = new VeiculoVO(0, placa, cor, modelo, cpf, tipoV, ano, quilometragem);
+                VeiculoVO veiculo = new VeiculoVO(0, 
+                    campoPlacVeic.getText(), 
+                    campoCorVeic.getText(), 
+                    campoModVeic.getText(), 
+                    campoCPFCliente.getText(), 
+                    tipoV.getValue(), 
+                    campoAnoVeic.getText(), 
+                    Double.parseDouble(campoKMVeic.getText()));
                 listaveiculos.add(veiculo);
 
-                TelefoneVO telefoneVO = new TelefoneVO(0, cpf, null, telefone);
-                ClienteVO nClienteVO = new ClienteVO(0, nome, cpf, nEnderecoVO, listaveiculos, telefoneVO);
+                TelefoneVO telefoneVO = new TelefoneVO(0, campoCPFCliente.getText(), null, campoTelefone.getText());
+                ClienteVO nClienteVO = new ClienteVO(0, campoNomeCliente.getText(), campoCPFCliente.getText(), nEnderecoVO, listaveiculos, telefoneVO);
 
                 
                 if(clienteBO.inserir(nClienteVO)){
                     
-                    nVeiculoBO.inserir(veiculo);
-                    Label labelSucesso = new Label("Cliente cadastrado com sucesso.");
-                    cancelarCadastro();
-                    abrirModalSucess(labelSucesso, cadastrarCliente, nClienteVO);
-                }
+                    if(nVeiculoBO.inserir(veiculo)){
+                        cancelarCadastro();
+                        modalsController.ExibirMensagemSucesso("Cliente cadastrado com sucesso.");
+                    } else modalsController.abrirModalFalha("Não foi possível cadastrar o veículo."); 
+
+                } else modalsController.abrirModalFalha("Não foi possível cadastrar o cliente.");
                 
             }
         }
         catch (Exception ex){
-            Label labelFalha = new Label();
-            labelFalha.setText(ex.getMessage());
             cancelarCadastro();
-            abrirModalFail(labelFalha, cadastrarCliente);
+            System.out.println(ex.getMessage());
+            modalsController.ExibirMensagemFalha(ex.getMessage());
 
         }
     }
     
     
-    private void cancelarCadastro() throws Exception{
+    private void cancelarCadastro() {
         Stage palco = (Stage) this.cancelarCadastro.getScene().getWindow();
         palco.close();
     }

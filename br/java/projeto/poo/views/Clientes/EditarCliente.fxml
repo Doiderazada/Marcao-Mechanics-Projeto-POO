@@ -33,7 +33,7 @@
             <Point3D />
          </rotationAxis>
       </VBox>
-      <VBox alignment="CENTER" layoutY="50.0" prefHeight="300.0" prefWidth="500.0" spacing="20.0" stylesheets="@../css/Modals.css">
+      <VBox alignment="CENTER" layoutY="50.0" prefHeight="300.0" prefWidth="500.0" spacing="10.0" stylesheets="@../css/Modals.css">
          <children>
             <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" spacing="15.0">
                <children>
@@ -68,8 +68,8 @@
       <Separator layoutY="366.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefWidth="500.0" />
       <HBox alignment="CENTER" layoutY="369.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="500.0" spacing="20.0">
          <children>
-            <Button fx:id="cancelarEdicao" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="190.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar" />
-            <Button fx:id="salvarEdicao" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="190.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Salvar Alterações" />
+            <Button fx:id="cancelarEdicao" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="190.0" styleClass="btn-back" stylesheets="@../css/buttons.css" text="Cancelar" />
+            <Button fx:id="salvarEdicao" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="190.0" styleClass="btn-primary" stylesheets="@../css/buttons.css" text="Salvar Alterações" />
          </children>
       </HBox>
       <Label fx:id="mensagemErroEdit" alignment="CENTER" contentDisplay="CENTER" layoutX="117.0" layoutY="337.0" text="Os campos não podem ser vazios" textFill="RED" visible="false">

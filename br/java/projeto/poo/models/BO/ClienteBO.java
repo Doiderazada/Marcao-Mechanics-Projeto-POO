@@ -118,7 +118,7 @@ public class ClienteBO {
         return listaDeClientes;
     }
 
-    public Boolean deletar(ClienteVO vo) throws Exception{
+    public Boolean deletar(ClienteVO vo) {
         ClienteDao clienteDao = new ClienteDao();
         try {return clienteDao.deletar(vo);}
         catch(Exception e) {e.printStackTrace();}

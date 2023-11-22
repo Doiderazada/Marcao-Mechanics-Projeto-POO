@@ -1,7 +1,5 @@
 package br.java.projeto.poo.controller.Clientes;
 
-import java.io.IOException;
-
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.ClienteBO;
 import br.java.projeto.poo.models.BO.EnderecoBO;
@@ -11,27 +9,15 @@ import br.java.projeto.poo.models.VO.EnderecoVO;
 import br.java.projeto.poo.models.VO.TelefoneVO;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class ClienteEditController {
     
-    private EnderecoBO enderecoBO = new EnderecoBO();
-    private ClienteBO clienteBO = new ClienteBO();
-    private TelefoneBO telefoneBO = new TelefoneBO();
-    private ClienteVO clienteEditar = new ClienteVO();
-    private String nome = null, cpf = null, endereco = null, telefone = null;
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
 
     @FXML private Button cancelarEdicao;
     @FXML private Button salvarEdicao;
@@ -42,6 +28,15 @@ public class ClienteEditController {
     @FXML private TextField campoEditTel;
     
     
+    private EnderecoBO enderecoBO = new EnderecoBO();
+    private ClienteBO clienteBO = new ClienteBO();
+    private TelefoneBO telefoneBO = new TelefoneBO();
+    private ClienteVO clienteEditar = new ClienteVO();
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+
+
+
     public void initialize(ClienteVO cliente){
         
         clienteEditar = new ClienteVO();
@@ -52,55 +47,7 @@ public class ClienteEditController {
     }
     
 
-    
-    private void abrirModalFail(Label mensagem, Button b) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
 
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem.getText());
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCC = b.getScene().getWindow();
-        double centralizarEixoX = (wCC.getX() + wCC.getWidth()/2) - 200;
-        double centralizarEixoY = (wCC.getY() + wCC.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-    }
-
-
-
-
-
-    
-    private void abrirModalSucess(Label mensagem, Button b, ClienteVO cliente) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem.getText());
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCC = b.getScene().getWindow();
-        double centralizarEixoX = (wCC.getX() + wCC.getWidth()/2) - 200;
-        double centralizarEixoY = (wCC.getY() + wCC.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-        
-    }
 
 
 
@@ -154,12 +101,8 @@ public class ClienteEditController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try{cancelarEdicao();}
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                cancelarEdicao();
+
             }
             
         });
@@ -167,12 +110,7 @@ public class ClienteEditController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try{editarCliente();}
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                editarCliente();
             }
             
         });
@@ -217,11 +155,10 @@ public class ClienteEditController {
     
     
     
-    private void editarCliente() throws Exception{
-        
+    private void editarCliente() {
         try{
-            
             if (validarCampos()) {
+                String nome = null, cpf = null, endereco = null, telefone = null;
                 
                 nome = campoEditNome.getText();
                 cpf = campoEditCPF.getText();
@@ -245,20 +182,19 @@ public class ClienteEditController {
                 clienteBO.atualizar(clienteEditar);
                 
                 cancelarEdicao();
-                abrirModalSucess(new Label("Cliente editado com sucesso!"), salvarEdicao, clienteEditar);
+                modalsController.abrirModalSucesso("Cliente editado com sucesso!");
             }
 
         }
         catch(Exception ex){
-            Label labelFalha = new Label(ex.getMessage());
             System.out.println(ex.getMessage());
             cancelarEdicao();
-            abrirModalFail(labelFalha, cancelarEdicao);
+            modalsController.ExibirMensagemFalha(ex.getMessage());
         }
     }
 
     
-    private void cancelarEdicao() throws Exception{
+    private void cancelarEdicao() {
         Stage palco = (Stage) this.cancelarEdicao.getScene().getWindow();
         palco.close();
     }
@@ -359,8 +295,10 @@ public class ClienteEditController {
             campoEditCPF.setText(cliente.getCpf());
             campoEditEnd.setText(cliente.getEndereco().toString());
             campoEditTel.setText(cliente.getTelefone().toString());
+
         } catch(Exception ex){
             System.out.println(ex.getMessage());
+            modalsController.abrirModalFalha(ex.getMessage());
         }
     }
 

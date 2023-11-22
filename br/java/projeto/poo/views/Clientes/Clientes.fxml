@@ -52,7 +52,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Serviços" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
@@ -181,11 +181,11 @@
             </HBox>
             <TableView fx:id="tabelaClientes" prefHeight="600.0" prefWidth="914.0">
               <columns>
-                <TableColumn fx:id="columnNome" maxWidth="800.0" prefWidth="244.0" text="Nome" />
-                <TableColumn fx:id="columnCPF" maxWidth="600.0" minWidth="-Infinity" prefWidth="116.0" text="CPF" />
-                  <TableColumn fx:id="columnEnd" maxWidth="700.0" minWidth="-Infinity" prefWidth="321.0" text="Endereço" />
+                <TableColumn fx:id="columnNome" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="250.0" text="Nome" />
+                <TableColumn fx:id="columnCPF" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="116.0" text="CPF" />
+                  <TableColumn fx:id="columnEnd" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="321.0" text="Endereço" />
                   <TableColumn fx:id="columnTel" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Telefone" />
-                  <TableColumn fx:id="columnBut" maxWidth="122.0" minWidth="-Infinity" prefWidth="75.0" resizable="false" sortable="false" text="Ações" />
+                  <TableColumn fx:id="columnBut" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" resizable="false" sortable="false" text="Ações" />
                   <TableColumn fx:id="columnIdCliente" maxWidth="169.0" minWidth="0.0" prefWidth="0.0" resizable="false" text="Id do cliente" visible="false" />
               </columns>
                <columnResizePolicy>

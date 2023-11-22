@@ -1,7 +1,6 @@
 package br.java.projeto.poo.controller.Clientes;
 
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.BaseController;
@@ -36,10 +35,7 @@ import javafx.stage.Window;
 
 public class ClienteShowController extends BaseController{
     
-    ClienteVO clienteExibido = new ClienteVO();
-    VeiculoBO veiculoBO = new VeiculoBO();
-    static ObservableList<VeiculoVO> veiculosDoCliente;
-    static ArrayList<VeiculoVO> listaVeiculos;
+    
 
     @FXML private Button editarCliente; 
     @FXML private Button novoVeic;
@@ -60,22 +56,27 @@ public class ClienteShowController extends BaseController{
     
 
 
+    private ClienteVO clienteExibido = new ClienteVO();
+    private VeiculoBO veiculoBO = new VeiculoBO();
+    private ModalsController modalsController = new ModalsController();
+    private ObservableList<VeiculoVO> veiculosDoCliente;
+    private ArrayList<VeiculoVO> listaVeiculos;
 
 
     
     public void initialize(ClienteVO cliente){
         try{
+            acaoCompTela();
             clienteExibido = new ClienteVO();
             clienteExibido = cliente;
             listaVeiculos = veiculoBO.buscarPorDono(clienteExibido.getCpf());
             veiculosDoCliente = FXCollections.observableArrayList(listaVeiculos);
             this.preencherCampos(clienteExibido);
-            this.initTable();
-            acaoDosBotoes();
+            initTable();
+            
 
         }catch(Exception e){
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
@@ -111,7 +112,6 @@ public class ClienteShowController extends BaseController{
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
@@ -149,7 +149,6 @@ public class ClienteShowController extends BaseController{
 
         }catch(Exception e){
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
@@ -158,7 +157,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    private void abrirEditVeic(VeiculoVO vo, int indice) throws Exception {
+    private void abrirEditVeic(VeiculoVO vo) {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -185,7 +184,6 @@ public class ClienteShowController extends BaseController{
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
@@ -195,30 +193,8 @@ public class ClienteShowController extends BaseController{
 
 
 
-    private void abrirExclusao(VeiculoVO veiculo, int index) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalExcluir.fxml"));
-        Parent root = loader.load();
-        ModalsController modalExc = loader.getController();
-
-        String mensagem = "Tem certeza que deseja excluir esse veículo?";
-
-        modalExc.ExibirMensagemExcluir(mensagem);
-
-        Scene janelaEdit = new Scene(root);
-        Stage palco = new Stage();
-        palco.setResizable(false);
-        palco.setScene(janelaEdit);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wNV = novoVeic.getScene().getWindow();
-        double centralizarEixoX, centralizarEixoY;
-        centralizarEixoX = (wNV.getX() + wNV.getWidth()/2) - 225;
-        centralizarEixoY = (wNV.getY() + wNV.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-        if(modalExc.getExclusaoValid()){
+    private void abrirExclusao(VeiculoVO veiculo, int index) {
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse veículo?", index)){
             realizarExclusao(veiculo, index);
         }
     }
@@ -232,7 +208,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    private void acaoDosBotoes() throws Exception {
+    private void acaoCompTela() {
         telaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -267,7 +243,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-    private void initTable() throws SQLException {
+    private void initTable() {
         columnModeloV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("modelo"));
         columnPlacaV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("placa"));
         columnTipoV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("tipo"));
@@ -275,10 +251,10 @@ public class ClienteShowController extends BaseController{
         columnKMV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, Double>("km"));
         columnAnoV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("ano"));
         tabelaAuto.setItems(veiculosDoCliente);
-        this.initActBut(veiculosDoCliente);
+        initActBut();
     }
 
-    private void initActBut (ObservableList<VeiculoVO> funcs) {
+    private void initActBut () {
         columnButA.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
@@ -299,7 +275,6 @@ public class ClienteShowController extends BaseController{
                 btnOrc.setOnAction(event -> {
                     try {
                         VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        
                         novoOrcamento(veiculo.getPlaca());
                         
                     } catch (Exception e) {
@@ -309,24 +284,18 @@ public class ClienteShowController extends BaseController{
                 });
 
                 btnEdit.setOnAction(event -> {
-                    try {
-                        VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        abrirEditVeic(veiculo, getIndex());
-                        tabelaAuto.refresh();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                        tabelaAuto.refresh();
-                    }
+                
+                    VeiculoVO veiculo = getTableView().getItems().get(getIndex());
+                    abrirEditVeic(veiculo);
+                    tabelaAuto.refresh();
+                
                 });
 
                 btnDelete.setOnAction(event -> {
-                    try{
-                        VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        abrirExclusao(veiculo, getIndex());
-                        
-                    } catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }
+                
+                    VeiculoVO veiculo = getTableView().getItems().get(getIndex());
+                    abrirExclusao(veiculo, getIndex());
+                
                 });
             }
 
@@ -396,7 +365,6 @@ public class ClienteShowController extends BaseController{
             this.nomeClienteMenu.setText(cliente.getNome().substring(0, espaco));
         }catch(Exception e){
             System.out.println("Erro no preenchimento dos campos: \n" + e.getMessage() + "\n");
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
@@ -407,12 +375,17 @@ public class ClienteShowController extends BaseController{
 
 
 
-    private void realizarExclusao(VeiculoVO veiculo, int index) throws Exception {
+    private void realizarExclusao(VeiculoVO veiculo, int index) {
         VeiculoBO veiculoExcluido = new VeiculoBO();
-
-        if(!veiculoExcluido.deletar(veiculo.getPlaca())){
-            listaVeiculos.remove(index);
-            veiculosDoCliente.setAll(listaVeiculos);
+        try {
+            if(!veiculoExcluido.deletar(veiculo.getPlaca())){
+                listaVeiculos.remove(index);
+                veiculosDoCliente.setAll(listaVeiculos);
+            }
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 

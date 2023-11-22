@@ -55,7 +55,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Serviços" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
@@ -301,11 +301,11 @@
                           <columns>
                             <TableColumn fx:id="columnModeloV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" text="Modelo" />
                               <TableColumn fx:id="columnPlacaV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Placa" />
-                              <TableColumn fx:id="columnTipoV" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="100.0" resizable="false" text="Tipo" />
+                              <TableColumn fx:id="columnTipoV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Tipo" />
                               <TableColumn fx:id="columnKMV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Quilometragem" />
                             <TableColumn fx:id="columnAnoV" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" resizable="false" text="Ano" />
                               <TableColumn fx:id="columnCorV" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" text="Cor" />
-                              <TableColumn fx:id="columnButA" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" resizable="false" text="Ações" />
+                              <TableColumn fx:id="columnButA" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Ações" />
                           </columns>
                            <stylesheets>
                               <URL value="@../css/tabela.css" />
