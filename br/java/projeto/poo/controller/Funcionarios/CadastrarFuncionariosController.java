@@ -19,9 +19,6 @@ import javafx.stage.Stage;
 
 public class CadastrarFuncionariosController { 
     
-    private FuncionarioBO funcionarioBO = new FuncionarioBO();
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
-
     
     @FXML private Button cadastrar;
     @FXML private Button fechar;
@@ -34,12 +31,19 @@ public class CadastrarFuncionariosController {
     @FXML private TextField senha;
     @FXML private TextField telefone;
 
+
+    private FuncionarioBO funcionarioBO = new FuncionarioBO();
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+
     
+
     @FXML
-    void initialize () {
-        this.mensagemDeErro.setVisible(false);
-        acaoDosBotoes();
+    public void initialize() {
+        acaoCompTela();
         autoComplete();
+        setInvisibleCad();
+        
     }
 
 
@@ -50,16 +54,12 @@ public class CadastrarFuncionariosController {
 
 
 
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {
-                 cadastrarFuncionario();   
-                } catch (Exception e) {
-
-                }
+                cadastrarFuncionario();   
             }
             
             
@@ -203,7 +203,7 @@ public class CadastrarFuncionariosController {
 
 
     
-    void cadastrarFuncionario() throws Exception {
+    private void cadastrarFuncionario() {
         try {
             if (validarCampos()) {
                 TelefoneVO telefoneVO = new TelefoneVO(0, null, null, null);
@@ -211,7 +211,7 @@ public class CadastrarFuncionariosController {
                 
                 Date dataAtual = new Date();
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                String dataAtualString = formato.format(dataAtual); // pega a data em que o funcionario esta sendo criado
+                String dataAtualString = formato.format(dataAtual); 
                 
                 telefoneVO.setCpfFuncionario(cpf.getText());
                 telefoneVO.setNumero(telefone.getText());
@@ -229,17 +229,16 @@ public class CadastrarFuncionariosController {
 
                 if(funcionarioBO.inserir(funcionario)) {
                     this.fecharModal();
-                    ModalsController controller = new ModalsController();
-                    controller.abrirModalSucesso("Funcionário cadastrado com sucesso");
-                } else {
-                    this.mensagemDeErro.setVisible(true);
-                }
+                    modalsController.abrirModalSucesso("Funcionário cadastrado com sucesso");
+                } else modalsController.abrirModalFalha("Não foi possível cadastrar novo funcionário");
+
             }
         } catch (Exception e) {
             this.mensagemDeErro.setText(e.getMessage());
             this.mensagemDeErro.setVisible(true);
         }
     }
+
 
 
     private void fecharModal() {
@@ -253,7 +252,7 @@ public class CadastrarFuncionariosController {
 
 
 
-    private boolean validarCampos() throws Exception {
+    private boolean validarCampos() {
         if (nome.getText().isEmpty()) {
             mensagemDeErro.setText("O nome não pode ser vazio");
             mensagemDeErro.setVisible(true);

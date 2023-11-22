@@ -21,7 +21,6 @@ import javafx.stage.Window;
 
 public class FuncionarioShowController extends BaseController{
     
-    FuncionarioVO funcionarioExibido;
 
     @FXML private Button editarFuncionario;
     @FXML private Button telaInicial;
@@ -38,18 +37,19 @@ public class FuncionarioShowController extends BaseController{
     @FXML private TextField verSenhaTF;
 
 
+    private FuncionarioVO funcionarioExibido;
+    private ModalsController modalsController = new ModalsController();
+
+
+
     public void initialize(FuncionarioVO funcionario){
-        try {
-            funcionarioExibido = new FuncionarioVO();
-            funcionarioExibido = funcionario;
-            verSenhaTF.setVisible(false);
-            acaoDosBotoes();
-            preencherCampos(funcionarioExibido);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());     
-            ModalsController modalsController = new ModalsController();
-            modalsController.abrirModalFalha(e.getMessage());
-        }
+        
+        funcionarioExibido = new FuncionarioVO();
+        funcionarioExibido = funcionario;
+        verSenhaTF.setVisible(false);
+        acaoCompTela();
+        preencherCampos(funcionarioExibido);
+    
     }
 
 
@@ -83,13 +83,12 @@ public class FuncionarioShowController extends BaseController{
             palco.setY(centralizarEixoY);
             palco.showAndWait();
 
-            funcionarioExibido = controller.pegarFuncionarioEditado();
+            funcionarioExibido = controller.getFuncionarioEditar();
             preencherCampos(funcionarioExibido);
 
 
         }catch(Exception e){
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
@@ -102,7 +101,7 @@ public class FuncionarioShowController extends BaseController{
 
 
 
-    private void acaoDosBotoes() throws Exception {
+    private void acaoCompTela() {
         telaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -162,7 +161,6 @@ public class FuncionarioShowController extends BaseController{
             this.nomeFuncionarioMenu.setText(funcionario.getNome().substring(0, espaco));
         }catch(Exception e){
             System.out.println("Erro no preenchimento dos campos: \n" + e.getMessage() + "\n");
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }

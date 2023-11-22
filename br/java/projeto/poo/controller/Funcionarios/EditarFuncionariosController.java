@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 public class EditarFuncionariosController {
     private FuncionarioBO funcionarioBO = new FuncionarioBO();
+    private ModalsController modalsController = new ModalsController();
     private FuncionarioVO funcEditar;
     private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
     
@@ -35,22 +36,18 @@ public class EditarFuncionariosController {
 
 
     
-    void initialize(FuncionarioVO funcionario) {
-        try{
-            this.mensagemDeErro.setVisible(false);
-            this.funcEditar = funcionario;
-            acaoDosBotoes();
-            preencherCampos(funcEditar);
-        }catch(Exception e){
-            System.out.println(e.getMessage());     
-            ModalsController modalsController = new ModalsController();
-            modalsController.abrirModalFalha(e.getMessage());
-        }
+    public void initialize(FuncionarioVO funcionario) {
+        
+        setInvisibleEdit();
+        this.funcEditar = funcionario;
+        acaoCompTela();
+        preencherCampos(funcEditar);
+        
     }
 
 
 
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -195,7 +192,7 @@ public class EditarFuncionariosController {
 
 
     
-    void editarFuncionario() {
+    private void editarFuncionario() {
         try {
             if (validarCampos()) {
     
@@ -211,9 +208,8 @@ public class EditarFuncionariosController {
                 funcEditar.setTelefone(telefoneVO);
 
                 funcionarioBO.atualizar(funcEditar);
-                this.fecharModal();
-                ModalsController controller = new ModalsController();
-                controller.abrirModalSucesso("Funcionário editado com sucesso");;
+                fecharModal();
+                modalsController.abrirModalSucesso("Funcionário editado com sucesso");;
                 
             }
             
@@ -236,7 +232,7 @@ public class EditarFuncionariosController {
 
 
 
-    public void preencherCampos(FuncionarioVO vo) throws Exception {
+    public void preencherCampos(FuncionarioVO vo) {
        try {
             
             this.cpf.setText(vo.getCpf());
@@ -247,6 +243,7 @@ public class EditarFuncionariosController {
             this.telefone.setText(vo.getTelefone().getNumero());
        } catch (Exception e) {
             System.out.println(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
        }
     }
 
@@ -257,7 +254,7 @@ public class EditarFuncionariosController {
 
 
 
-    private boolean validarCampos() throws Exception {
+    private boolean validarCampos() {
         if (nome.getText().isEmpty()) {
             mensagemDeErro.setText("O nome não pode ser vazio");
             mensagemDeErro.setVisible(true);
@@ -377,7 +374,7 @@ public class EditarFuncionariosController {
 
 
 
-    public FuncionarioVO pegarFuncionarioEditado(){
+    public FuncionarioVO getFuncionarioEditar(){
         return this.funcEditar;
     }
 

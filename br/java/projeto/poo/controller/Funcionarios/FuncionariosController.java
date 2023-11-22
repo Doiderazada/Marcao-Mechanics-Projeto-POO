@@ -24,8 +24,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -37,9 +35,7 @@ import br.java.projeto.poo.models.VO.FuncionarioVO;
 
 
 public class FuncionariosController extends BaseController{
-    private FuncionarioBO funcionarioBO = new FuncionarioBO(); 
-    static ObservableList<FuncionarioVO> funcionariosDisponiveis;
-    static ArrayList<FuncionarioVO> listaFuncionarios;
+    
 
     @FXML private Button cadastrarFuncionario;
     @FXML private Label msgErroBusca;
@@ -53,14 +49,20 @@ public class FuncionariosController extends BaseController{
     @FXML private TextField buscar;
 
 
+    private FuncionarioBO funcionarioBO = new FuncionarioBO();
+    private ModalsController modalsController = new ModalsController();
+    private ObservableList<FuncionarioVO> funcionariosDisponiveis;
+    private ArrayList<FuncionarioVO> listaFuncionarios;
+
+
     
     public void initialize() throws Exception {
         super.initialize();
+        acaoCompTela();
         listaFuncionarios = this.funcionarioBO.listar();
         funcionariosDisponiveis = FXCollections.observableArrayList(listaFuncionarios);
-        this.inicializarTabela();
+        inicializarTabela();
         msgErroBusca.setVisible(false);
-        acaoDosBotoes();
         linhaSelecionada();
     }
 
@@ -68,7 +70,7 @@ public class FuncionariosController extends BaseController{
 
 
     
-    void buscarFuncionario() {
+    private void buscarFuncionario() {
         try {
             ArrayList<FuncionarioVO> funcionarioVOs;
             if (this.buscar.getText().length() > 2) {
@@ -99,7 +101,7 @@ public class FuncionariosController extends BaseController{
 
 
     
-    void abirModalCadastro() throws IOException {
+    private void abirModalCadastro() {
         try{
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -123,12 +125,11 @@ public class FuncionariosController extends BaseController{
             
         }catch(Exception e){
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
-    void abrirModalEditar(FuncionarioVO vo, int indice) throws Exception {
+    private void abrirModalEditar(FuncionarioVO funcionario) {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -138,7 +139,7 @@ public class FuncionariosController extends BaseController{
             Parent root = loader.load();
 
             EditarFuncionariosController editarController = loader.getController();
-            editarController.initialize(vo);
+            editarController.initialize(funcionario);
 
             Scene modalScene = new Scene(root);
             modalStage.setScene(modalScene);
@@ -154,22 +155,13 @@ public class FuncionariosController extends BaseController{
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
-    void abrirModalDeletar(FuncionarioVO funcionario, int indice) throws Exception {
-        try {
-            ModalsController controller = new ModalsController();
-            if(controller.abrirModalExcluir("Tem certeza que deseja excluir esse funcionário", 0)){
-                realizarExclusao(funcionario, indice);
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
-            modalsController.abrirModalFalha(e.getMessage());
+    private void abrirModalDeletar(FuncionarioVO funcionario, int indice) {
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse funcionário", 0)){
+            realizarExclusao(funcionario, indice);
         }
     }
 
@@ -178,17 +170,12 @@ public class FuncionariosController extends BaseController{
 
 
 
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
         cadastrarFuncionario.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try{abirModalCadastro();}
-                catch(Exception e){
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                abirModalCadastro();
             }
             
         });
@@ -208,7 +195,7 @@ public class FuncionariosController extends BaseController{
 
 
 
-    private void linhaSelecionada() throws Exception{
+    private void linhaSelecionada() {
         
         tabelaFuncionarios.setRowFactory(event -> {
             TableRow<FuncionarioVO> myRow = new TableRow<>();
@@ -218,13 +205,7 @@ public class FuncionariosController extends BaseController{
                 public void handle(MouseEvent arg0) {
                     FuncionarioVO funcionarioSelecionado = myRow.getItem();
                     if (!(myRow.isEmpty())) {
-                        try{
-                            exibirFuncionario(funcionarioSelecionado);
-                        }catch(Exception e){
-                            System.out.println(e.getMessage());
-                            ModalsController modalsController = new ModalsController();
-                            modalsController.abrirModalFalha(e.getMessage());
-                        }
+                        exibirFuncionario(funcionarioSelecionado);
                     } 
                 }
                 
@@ -237,19 +218,23 @@ public class FuncionariosController extends BaseController{
 
 
     
-    private void exibirFuncionario(FuncionarioVO funcionario) throws Exception {
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Funcionarios/ExibirFuncionario.fxml"));
-        Parent root = loader.load();
+    private void exibirFuncionario(FuncionarioVO funcionario) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Funcionarios/ExibirFuncionario.fxml"));
+            Parent root = loader.load();
 
-        FuncionarioShowController controller = loader.getController();
-        controller.initialize(funcionario);
-        
-        Stage palco = new Stage();
-        Scene cena = new Scene(root);
-        palco  = (Stage)cadastrarFuncionario.getScene().getWindow();
-        palco.setScene(cena);
-        palco.show();
+            FuncionarioShowController controller = loader.getController();
+            controller.initialize(funcionario);
+            
+            Stage palco = new Stage();
+            Scene cena = new Scene(root);
+            palco  = (Stage)cadastrarFuncionario.getScene().getWindow();
+            palco.setScene(cena);
+            palco.show();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
@@ -257,18 +242,19 @@ public class FuncionariosController extends BaseController{
 
 
     
-    private void inicializarTabela() throws SQLException {
+    private void inicializarTabela() {
         funcNome.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, String>("nome"));
         FuncNivel.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, Integer>("nivel"));
         funcAdmi.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, String>("dataDeAdimissao"));
         funcCPF.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, String>("cpf"));
         funcSalario.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, Double>("salario"));
         tabelaFuncionarios.setItems(funcionariosDisponiveis);
-        this.inicializarBotoesDeAcao(funcionariosDisponiveis);
+        linhaSelecionada();
+        inicializarBotoesDeAcao();
     }
 
     
-    private void inicializarBotoesDeAcao (ObservableList<FuncionarioVO> funcs) {
+    private void inicializarBotoesDeAcao() {
         funcAcoes.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
@@ -278,22 +264,15 @@ public class FuncionariosController extends BaseController{
             {
                 btnEdit.getStyleClass().add("btn-edit");
                 btnDelete.getStyleClass().add("btn-delete");
+
                 btnEdit.setOnAction(event -> {
-                    try {
-                        FuncionarioVO funcionario = getTableView().getItems().get(getIndex());
-                        abrirModalEditar(funcionario, getIndex());
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+                    FuncionarioVO funcionario = getTableView().getItems().get(getIndex());
+                    abrirModalEditar(funcionario);
                 });
 
-                btnDelete.setOnAction(event -> {
-                    try {
-                        FuncionarioVO funcionario = getTableView().getItems().get(getIndex());
-                        abrirModalDeletar(funcionario, getIndex());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                btnDelete.setOnAction(event -> {                    
+                    FuncionarioVO funcionario = getTableView().getItems().get(getIndex());
+                    abrirModalDeletar(funcionario, getIndex());
                 });
             }
 
@@ -314,10 +293,9 @@ public class FuncionariosController extends BaseController{
 
 
 
-    private void realizarExclusao(FuncionarioVO funcionario, int index) throws Exception {
-        
-            if(!funcionarioBO.deletar(funcionario)){
-                funcionariosDisponiveis.remove(index);
-            }
+    private void realizarExclusao(FuncionarioVO funcionario, int index) {
+        if(!funcionarioBO.deletar(funcionario)){
+            funcionariosDisponiveis.remove(index);
+        }
     }
 }
