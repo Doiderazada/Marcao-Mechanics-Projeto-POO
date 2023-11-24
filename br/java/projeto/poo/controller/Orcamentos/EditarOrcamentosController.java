@@ -8,7 +8,6 @@ import br.java.projeto.poo.exceptions.InvalidQuantidadeException;
 import br.java.projeto.poo.models.BO.OrcamentoBO;
 import br.java.projeto.poo.models.BO.PecaBO;
 import br.java.projeto.poo.models.BO.ServicoBO;
-import br.java.projeto.poo.models.BO.VeiculoBO;
 import br.java.projeto.poo.models.VO.OrcamentoVO;
 import br.java.projeto.poo.models.VO.PecaVo;
 import br.java.projeto.poo.models.VO.ServicoVO;
@@ -30,13 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class EditarOrcamentosController extends BaseController {
-    PecaBO pecaBo = new PecaBO();
-    VeiculoBO veiculoBO = new VeiculoBO();
-    ServicoBO servicoBO = new ServicoBO();
-    OrcamentoBO orcamentoBO = new OrcamentoBO();
-    double valor = 0; String cpfCliente;
-    ModalsController modalsController = new ModalsController();
-    OrcamentoVO orcamentoEditado = new OrcamentoVO();
+    
     
 
     @FXML private Button editarOrcamento;
@@ -66,10 +59,21 @@ public class EditarOrcamentosController extends BaseController {
     ObservableList<ServicoVO> itensServicos = FXCollections.observableArrayList();
     ObservableList<ServicoVO> servicosEscolhidos = FXCollections.observableArrayList();
 
+
+    private PecaBO pecaBo = new PecaBO();
+    private ServicoBO servicoBO = new ServicoBO();
+    private OrcamentoBO orcamentoBO = new OrcamentoBO();
+    private ModalsController modalsController = new ModalsController();
+    private double valor = 0;
+    private OrcamentoVO orcamentoEditado = new OrcamentoVO();
+
+
+    
+
     @FXML
     public void initialize(OrcamentoVO orcamento) throws Exception {
         super.initialize();
-        acaoDosBotoes();
+        acaoCompTela();
         orcamentoEditado = orcamento;
         this.setDados(orcamento);
         tbServicos.setItems(servicosEscolhidos);
@@ -89,14 +93,12 @@ public class EditarOrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters.
      */
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
         editarOrcamento.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                if (!tbPecas.getItems().isEmpty() || !tbServicos.getItems().isEmpty()){
-                    editarOrcamento();
-                } else editarOrcamento();
+                editarOrcamento();
             }
             
         });
@@ -146,7 +148,7 @@ public class EditarOrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters.  
      */
-    void editarOrcamento() {
+    private void editarOrcamento() {
         try {
             if (App.usuarioLogado == null) {
                 throw new Exception("Você não tem permissão para fazer essa ação");
@@ -202,7 +204,7 @@ public class EditarOrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters.
      */
-    void atualizarValoresPecas() {
+    private void atualizarValoresPecas() {
         try {
             PecaVo peca = pecasBuscadas.getSelectionModel().getSelectedItem();
             int indice = pecasEscolhidas.indexOf(peca);
@@ -285,7 +287,7 @@ public class EditarOrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters.
      */
-    void buscarServicosPorNome() {
+    private void buscarServicosPorNome() {
         try {
             msgErroServicos.setVisible(false);
             if (campoBuscaServ.getText().length() > 0) {
@@ -312,7 +314,7 @@ public class EditarOrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters.
      */
-    void atualizarValoresServicos() {
+    private void atualizarValoresServicos() {
         try {
             ServicoVO servico = servicosBuscados.getSelectionModel().getSelectedItem();
         

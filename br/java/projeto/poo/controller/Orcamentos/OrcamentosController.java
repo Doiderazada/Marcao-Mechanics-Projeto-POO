@@ -34,13 +34,6 @@ import javafx.stage.Window;
 
 public class OrcamentosController extends BaseController {
     
-    private OrcamentoBO orcamentoBO = new OrcamentoBO();
-    static ArrayList<OrcamentoVO> listaOrcamentos;
-    static ObservableList<OrcamentoVO> orcamentosDisponiveis;
-    private ModalsController modalsController = new ModalsController();
-
-    private String[] situacoes = {"Em aberto", "Todos"};
-    private ObservableList<String> listaSituacao = FXCollections.observableArrayList(situacoes);
 
     @FXML private Button novoOrcamento;
     @FXML private Button gerarRelatorio;
@@ -55,19 +48,26 @@ public class OrcamentosController extends BaseController {
     @FXML private TextField buscar;
 
 
+    private OrcamentoBO orcamentoBO = new OrcamentoBO();
+    private ModalsController modalsController = new ModalsController();
+    private ArrayList<OrcamentoVO> listaOrcamentos;
+    private ObservableList<OrcamentoVO> orcamentosDisponiveis;
+
+    private String[] situacoes = {"Em aberto", "Todos"};
+    private ObservableList<String> listaSituacao = FXCollections.observableArrayList(situacoes);
 
 
 
     @FXML
     public void initialize() throws Exception {
         super.initialize();
-        acaoDosBotoes();
+        acaoCompTela();
         cbSituacao.setItems(listaSituacao);
         cbSituacao.setValue(listaSituacao.get(0));
         msgErroBusca.setVisible(false);
         listaOrcamentos = this.orcamentoBO.listarEmAberto();
         orcamentosDisponiveis = FXCollections.observableArrayList(listaOrcamentos); 
-        this.inicializarTabela(0);
+        inicializarTabela(0);
     }
 
 
@@ -77,18 +77,13 @@ public class OrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters.
      */
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
     
         novoOrcamento.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {
-                    novoOrcamento();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                novoOrcamento();
             }
             
         });
@@ -96,13 +91,8 @@ public class OrcamentosController extends BaseController {
         gerarRelatorio.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
-            public void handle(MouseEvent arg0) {
-                try {
-                    gerarRelatorio();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+            public void handle(MouseEvent arg0) {                
+                gerarRelatorio();
             }
             
         });
@@ -162,6 +152,7 @@ public class OrcamentosController extends BaseController {
             modalStage.setX((wNO.getX() + wNO.getWidth()/2) - 260);
             modalStage.setY((wNO.getY() + wNO.getHeight()/2) - 230);
             modalStage.showAndWait();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             modalsController.abrirModalFalha(e.getMessage());
@@ -220,7 +211,7 @@ public class OrcamentosController extends BaseController {
      * 
      * <p> This method has no parameters. 
      */
-    public void novoOrcamento(){
+    private void novoOrcamento(){
         App.navegarEntreTelas("novoOrcamento");
     }
 
@@ -244,7 +235,7 @@ public class OrcamentosController extends BaseController {
         }
         
         tbOrcamentos.setItems(orcamentosDisponiveis);
-        this.inicializarBotoesDeAcao();
+        inicializarBotoesDeAcao();
     }
 
 

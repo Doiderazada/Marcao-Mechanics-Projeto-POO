@@ -33,14 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class CriarOrcamentosController extends BaseController{
-    PecaBO pecaBo = new PecaBO();
-    VeiculoBO veiculoBO = new VeiculoBO();
-    ServicoBO servicoBO = new ServicoBO();
-    OrcamentoBO orcamentoBO = new OrcamentoBO();
-    boolean veicValid = false;
-    double valor = 0; 
-    String cpfCliente;
-    ModalsController modalsController = new ModalsController();
+    
     
     
     @FXML private Button voltaTelaInicial;
@@ -65,19 +58,27 @@ public class CriarOrcamentosController extends BaseController{
     @FXML private TableView<ServicoVO> tbServicos;
 
 
-    ObservableList<PecaVo> itensPecas = FXCollections.observableArrayList();
-    ObservableList<PecaVo> pecasEscolhidas = FXCollections.observableArrayList();
-    ObservableList<ServicoVO> itensServicos = FXCollections.observableArrayList();
-    ObservableList<ServicoVO> servicosEscolhidos = FXCollections.observableArrayList();
+    private ObservableList<PecaVo> itensPecas = FXCollections.observableArrayList();
+    private ObservableList<PecaVo> pecasEscolhidas = FXCollections.observableArrayList();
+    private ObservableList<ServicoVO> itensServicos = FXCollections.observableArrayList();
+    private ObservableList<ServicoVO> servicosEscolhidos = FXCollections.observableArrayList();
 
 
+    private PecaBO pecaBo = new PecaBO();
+    private VeiculoBO veiculoBO = new VeiculoBO();
+    private ServicoBO servicoBO = new ServicoBO();
+    private OrcamentoBO orcamentoBO = new OrcamentoBO();
+    private ModalsController modalsController = new ModalsController();
+    private boolean veicValid = false;
+    private double valor = 0; 
+    private String cpfCliente;
 
 
 
     @FXML
     public void initialize() throws Exception {
         super.initialize();
-        acaoDosBotoes();
+        acaoCompTela();
         dadosCliente.setVisible(false);
         tbServicos.setItems(servicosEscolhidos);
         tbPecas.setItems(pecasEscolhidas);
@@ -98,7 +99,7 @@ public class CriarOrcamentosController extends BaseController{
      * 
      * <p> This method has no parameters.
      */
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
 
         buscarVeiculo.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
@@ -149,12 +150,7 @@ public class CriarOrcamentosController extends BaseController{
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {
-                    voltaTelaInicial();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                voltaTelaInicial();
             }
             
         });
@@ -333,7 +329,7 @@ public class CriarOrcamentosController extends BaseController{
      *  
      * <p> This method has no parameters.
      */
-    void buscarServicosPorNome() {
+    private void buscarServicosPorNome() {
         try {
             msgErroServicos.setVisible(false);
             if (campoBuscaServ.getText().length() > 0) {
@@ -358,7 +354,7 @@ public class CriarOrcamentosController extends BaseController{
      * 
      * <p> This method has no parameters.
      */
-    void adicionarServicos() {
+    private void adicionarServicos() {
         try {
             ServicoVO servico = servicosBuscados.getSelectionModel().getSelectedItem();
         
@@ -386,9 +382,8 @@ public class CriarOrcamentosController extends BaseController{
 
     /**
      * <p> Sets up the {@code TableView}s present on the screen: {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbPecas tbPecas}, 
-     * {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbServicos tbServicos}. Then call the methods 
-     * {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#inicializarBotoesDeAcaoPeca() inicializarBotoesDeAcaoPeca} and 
-     * {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#inicializarBotoesDeAcaoServico() inicializarBotoesDeAcaoServico} 
+     * {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbServicos tbServicos}. Then call the method 
+     * {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
      * that sets the buttons on each table.
      * 
      * <p> This method has no parameters.
@@ -399,18 +394,18 @@ public class CriarOrcamentosController extends BaseController{
         quantidade.setCellValueFactory(new PropertyValueFactory<PecaVo, Integer>("quantidade"));
         servicoNome.setCellValueFactory(new PropertyValueFactory<ServicoVO, String>("nome"));
         servicoValor.setCellValueFactory(new PropertyValueFactory<ServicoVO, Double>("valor"));
-        this.inicializarBotoesDeAcaoPeca();
-        this.inicializarBotoesDeAcaoServico();
+        inicializarBotoesDeAcao();
     }
 
 
 
     /**
-     * <p> Sets up the buttons on the {@code TableView} {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbPecas tbPecas}.
+     * <p> Sets up the buttons on the {@code TableView} {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbPecas tbPecas}, 
+     * {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbServicos tbServicos}.
      * 
      * <p> This method has no parameters.
      */
-    private void inicializarBotoesDeAcaoPeca () {
+    private void inicializarBotoesDeAcao () {
         acaoPeca.setCellFactory(param -> new TableCell<>() {
             private final Button btnDelete = new Button();
             private final HBox btnContainer = new HBox(btnDelete);
@@ -451,16 +446,8 @@ public class CriarOrcamentosController extends BaseController{
                 }
             }
         });
-    }
 
 
-
-    /**
-     * <p> Sets up the buttons on the {@code TableView} {@link br.java.projeto.poo.controller.Orcamentos.CriarOrcamentosController#tbServicos tbServicos}.
-     * 
-     * <p> This method has no parameters.
-     */
-    private void inicializarBotoesDeAcaoServico () {
         acaoServico.setCellFactory(param -> new TableCell<>() {
             private final Button btnDelete = new Button();
             private final HBox btnContainer = new HBox(btnDelete);
@@ -506,7 +493,7 @@ public class CriarOrcamentosController extends BaseController{
      * 
      * <p> This method has no parameters. 
      */
-    public void voltaTelaInicial(){
+    private void voltaTelaInicial(){
         App.navegarEntreTelas("orcamentos");
     }
 

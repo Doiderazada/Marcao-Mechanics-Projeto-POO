@@ -37,15 +37,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class GerarRelatorioController {
-    private OrcamentoBO orcamentoBO = new OrcamentoBO();
-    private ModalsController modalsController = new ModalsController();
-
-    private java.sql.Date dataInicio;
-    private java.sql.Date dataFinal;
-
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
-    private String[] itens = {"Todos", "Em aberto", "Finalizado"};
-    private ObservableList<String> listaItens = FXCollections.observableArrayList(itens);
+    
 
     @FXML private Button gerarRelatorio;
     @FXML private Button cancelar;
@@ -54,10 +46,20 @@ public class GerarRelatorioController {
     @FXML private Label msgErro;
     @FXML private ChoiceBox<String> status;
 
-    
+    private java.sql.Date dataInicio;
+    private java.sql.Date dataFinal;
+
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    private String[] itens = {"Todos", "Em aberto", "Finalizado"};
+    private ObservableList<String> listaItens = FXCollections.observableArrayList(itens);    
+    private OrcamentoBO orcamentoBO = new OrcamentoBO();
+    private ModalsController modalsController = new ModalsController();
+
+
+
     @FXML
     public void initialize() {
-        acaoDosBotoes();
+        acaoCompTela();
         this.msgErro.setVisible(false);
         status.setItems(listaItens);
         status.setValue(listaItens.get(0));
@@ -71,7 +73,7 @@ public class GerarRelatorioController {
      * <p> This method should be invoked by {@code initialize} method.
      * <p> This method has no parameters.
      */
-    private void acaoDosBotoes() {
+    private void acaoCompTela() {
         gerarRelatorio.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -165,8 +167,9 @@ public class GerarRelatorioController {
      * <p> Creates the PDF report file.
      * 
      * <p> This method has no parameters.  
+     * 
      */
-    void gerarRelatorio() {
+    private void gerarRelatorio() {
         try {
             
             validarCampos();
@@ -314,6 +317,7 @@ public class GerarRelatorioController {
 
             modalsController.abrirModalSucesso("Relatorio criado com sucesso!");
             App.navegarEntreTelas("orcamentos");
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
             msgErro.setText(e.getMessage());
@@ -341,7 +345,7 @@ public class GerarRelatorioController {
      * <p> Validate the contents in the {@Code TextField} presented on screen.
      * 
      * <p> This method has no parameters.
-     * @throws Exception
+     * @throws Exception if any validation fails.
      */
     private void validarCampos() throws Exception {
 
@@ -396,21 +400,29 @@ public class GerarRelatorioController {
      * 
      * @param data the date to be converted.
      * @return a {@code Date}.
-     * @throws ParseException if the any problem occours parsing the {@code String}.
      * @see java.sql.Date#Date Date;
      */
-    private java.sql.Date gerarData(String data) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private java.sql.Date gerarData(String data) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         
-        String dia = data.substring(0, 2);
-        String mes = data.substring(3, 5);
-        String ano = data.substring(6);
-        data = ano + "-" + mes + "-" + dia;
+            String dia = data.substring(0, 2);
+            String mes = data.substring(3, 5);
+            String ano = data.substring(6);
+            data = ano + "-" + mes + "-" + dia;
 
-        Date dataGerada = dateFormat.parse(data);
-        java.sql.Date sqlDate = new java.sql.Date(dataGerada.getTime());
+            Date dataGerada = dateFormat.parse(data);
+            java.sql.Date sqlDate = new java.sql.Date(dataGerada.getTime());
+
+            return sqlDate;
+
+        } catch(ParseException e) {
+            System.out.println( e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
         
-        return sqlDate;
+        return null;
     }
 
 
