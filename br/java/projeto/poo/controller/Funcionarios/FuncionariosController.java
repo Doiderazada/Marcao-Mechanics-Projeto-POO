@@ -56,14 +56,20 @@ public class FuncionariosController extends BaseController{
 
 
     
-    public void initialize() throws Exception {
-        super.initialize();
-        acaoCompTela();
-        listaFuncionarios = this.funcionarioBO.listar();
-        funcionariosDisponiveis = FXCollections.observableArrayList(listaFuncionarios);
-        inicializarTabela();
-        msgErroBusca.setVisible(false);
-        linhaSelecionada();
+    public void initialize() {
+        try {
+            super.initialize();
+            acaoCompTela();
+            listaFuncionarios = this.funcionarioBO.listar();
+            funcionariosDisponiveis = FXCollections.observableArrayList(listaFuncionarios);
+            inicializarTabela();
+            msgErroBusca.setVisible(false);
+            linhaSelecionada();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
@@ -160,7 +166,7 @@ public class FuncionariosController extends BaseController{
     }
 
     private void abrirModalDeletar(FuncionarioVO funcionario, int indice) {
-        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse funcionário", 0)){
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse funcionário")){
             realizarExclusao(funcionario, indice);
         }
     }

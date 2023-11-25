@@ -76,20 +76,26 @@ public class CriarOrcamentosController extends BaseController{
 
 
     @FXML
-    public void initialize() throws Exception {
-        super.initialize();
-        acaoCompTela();
-        dadosCliente.setVisible(false);
-        tbServicos.setItems(servicosEscolhidos);
-        tbPecas.setItems(pecasEscolhidas);
-        pecasBuscadas.setVisible(false);
-        servicosBuscados.setVisible(false);
-        salvarNovoOrcamento.setDisable(true);
+    public void initialize() {
+        try {
+            super.initialize();
+            acaoCompTela();
+            dadosCliente.setVisible(false);
+            tbServicos.setItems(servicosEscolhidos);
+            tbPecas.setItems(pecasEscolhidas);
+            pecasBuscadas.setVisible(false);
+            servicosBuscados.setVisible(false);
+            salvarNovoOrcamento.setDisable(true);
 
-        servicosBuscados.setItems(itensServicos);
-        pecasBuscadas.setItems(itensPecas);
+            servicosBuscados.setItems(itensServicos);
+            pecasBuscadas.setItems(itensPecas);
 
-        inicializarTabelas();
+            inicializarTabelas();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalExcluir(e.getMessage());
+        }
     }
 
 

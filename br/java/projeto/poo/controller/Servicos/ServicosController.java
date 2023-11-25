@@ -49,13 +49,19 @@ public class ServicosController extends BaseController{
 
 
     
-    public void initialize() throws Exception{
-        super.initialize();
-        acaoCompTela();
-        listaServicos = this.servicoBO.listar();
-        servicosDisponiveis = FXCollections.observableArrayList(listaServicos);
-        inicializarTabela();
-        msgErroBusca.setVisible(false);
+    public void initialize() {
+        try {    
+            super.initialize();
+            acaoCompTela();
+            listaServicos = this.servicoBO.listar();
+            servicosDisponiveis = FXCollections.observableArrayList(listaServicos);
+            inicializarTabela();
+            msgErroBusca.setVisible(false);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
@@ -141,7 +147,7 @@ public class ServicosController extends BaseController{
 
 
     private void abrirExclusao(ServicoVO servico, int index) {
-        if(modalsController.abrirModalExcluir("Tem certeza que deseja exluir esse serviço?", index)){
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja exluir esse serviço?")){
             realizarExclusao(servico, index);
         }
     }

@@ -51,14 +51,19 @@ public class PecasController extends BaseController {
 
 
     @Override
-    public void initialize() throws Exception {
-        super.initialize();
-        acaoDosBotoes();
-        msgErroBusca.setVisible(false);
-        listaPecas = this.pecaBO.listar();
-        pecasDisponiveis = FXCollections.observableArrayList(listaPecas);
-        inicializarTabela();
-        
+    public void initialize() {
+        try {    
+            super.initialize();
+            acaoDosBotoes();
+            msgErroBusca.setVisible(false);
+            listaPecas = this.pecaBO.listar();
+            pecasDisponiveis = FXCollections.observableArrayList(listaPecas);
+            inicializarTabela();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
@@ -125,7 +130,7 @@ public class PecasController extends BaseController {
 
 
     private void abrirExclusao(PecaVo peca, int index) {
-        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir essa peça?", index)){
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir essa peça?")){
             realizarExclusao(peca, index);
         }
     }

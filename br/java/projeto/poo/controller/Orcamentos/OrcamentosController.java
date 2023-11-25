@@ -59,15 +59,21 @@ public class OrcamentosController extends BaseController {
 
 
     @FXML
-    public void initialize() throws Exception {
-        super.initialize();
-        acaoCompTela();
-        cbSituacao.setItems(listaSituacao);
-        cbSituacao.setValue(listaSituacao.get(0));
-        msgErroBusca.setVisible(false);
-        listaOrcamentos = this.orcamentoBO.listarEmAberto();
-        orcamentosDisponiveis = FXCollections.observableArrayList(listaOrcamentos); 
-        inicializarTabela(0);
+    public void initialize() {
+        try {
+            super.initialize();
+            acaoCompTela();
+            cbSituacao.setItems(listaSituacao);
+            cbSituacao.setValue(listaSituacao.get(0));
+            msgErroBusca.setVisible(false);
+            listaOrcamentos = this.orcamentoBO.listarEmAberto();
+            orcamentosDisponiveis = FXCollections.observableArrayList(listaOrcamentos); 
+            inicializarTabela(0);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
@@ -275,7 +281,7 @@ public class OrcamentosController extends BaseController {
                 btnFinalizar.setOnAction(event -> {
                     try {
                         OrcamentoVO orcamentoVO = getTableView().getItems().get(getIndex());
-                        if(modalsController.abrirModalExcluir("Realmente deseja fechar esse orçamento?", getIndex())) {
+                        if(modalsController.abrirModalExcluir("Realmente deseja fechar esse orçamento?")) {
                             orcamentoBO.encerrarRelatorio(orcamentoVO);
                             orcamentosDisponiveis.remove(getIndex());
                         };
@@ -296,7 +302,7 @@ public class OrcamentosController extends BaseController {
                 btnDelete.setOnAction(event -> {
                     try {
                         OrcamentoVO orcamentoVO = getTableView().getItems().get(getIndex());
-                        if(modalsController.abrirModalExcluir("Realmente deseja excluir esse orçamento?", getIndex())) {
+                        if(modalsController.abrirModalExcluir("Realmente deseja excluir esse orçamento?")) {
                             orcamentoBO.deletar(orcamentoVO.getId());
                             orcamentosDisponiveis.remove(getIndex());
                         };

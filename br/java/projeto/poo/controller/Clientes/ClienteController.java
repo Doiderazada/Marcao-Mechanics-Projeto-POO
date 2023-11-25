@@ -54,15 +54,19 @@ public class ClienteController extends BaseController{
 
 
     @Override
-    public void initialize() throws Exception{
-    
-        super.initialize();;
-        acaoCompTela();
-        listaClientes = this.clienteBO.listar();
-        clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
-        mensagemErroBusca.setVisible(false);
-        inicializarTabela();
-        
+    public void initialize() {
+        try {
+            super.initialize();;
+            acaoCompTela();
+            listaClientes = this.clienteBO.listar();
+            clientesDisponiveis = FXCollections.observableArrayList(listaClientes);
+            mensagemErroBusca.setVisible(false);
+            inicializarTabela();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
@@ -128,7 +132,7 @@ public class ClienteController extends BaseController{
 
 
     private void abrirExclusao(ClienteVO cliente, int index) {
-        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse cliente?", index)){
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse cliente?")){
             realizarExclusao(cliente, index);
         }
     }
@@ -187,7 +191,6 @@ public class ClienteController extends BaseController{
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
