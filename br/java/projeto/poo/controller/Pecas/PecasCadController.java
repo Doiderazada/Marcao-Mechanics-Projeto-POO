@@ -1,27 +1,19 @@
 package br.java.projeto.poo.controller.Pecas;
 
-import java.io.IOException;
-
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.PecaBO;
 import br.java.projeto.poo.models.VO.PecaVo;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class PecasCadController {
     
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    
 
     @FXML private TextField campoCadFabricante;
     @FXML private TextField campoCadNome;
@@ -32,57 +24,14 @@ public class PecasCadController {
     @FXML private Button cancelarCadastro;
     
 
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+
+
+
     public void initialize(){
-        mensagemErroCad.setVisible(false);
-        acaoDosBotoes();
-    }
-
-
-
-    
-    void abrirModalFail(String mensagem, Button b) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
-
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem);
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCP = b.getScene().getWindow();
-        double centralizarEixoX = (wCP.getX() + wCP.getWidth()/2) - 200;
-        double centralizarEixoY = (wCP.getY() + wCP.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-    }
-
-    
-    void abrirModalSucess(String mensagem, Button b) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem);
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCP = b.getScene().getWindow();
-        double centralizarEixoX = (wCP.getX() + wCP.getWidth()/2) - 200;
-        double centralizarEixoY = (wCP.getY() + wCP.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-        
+        acaoCompTela();
+        setInvisibleCad();
     }
 
 
@@ -92,18 +41,12 @@ public class PecasCadController {
 
 
 
-
-    private void acaoDosBotoes(){
+    private void acaoCompTela(){
         cadastrarPeca.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {cadastrarPeca();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                cadastrarPeca(); 
             }
             
         });
@@ -111,12 +54,7 @@ public class PecasCadController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {cancelarCadastro();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                cancelarCadastro();
             }
             
         });
@@ -166,7 +104,7 @@ public class PecasCadController {
 
     
     
-    void cadastrarPeca() throws Exception{
+    private void cadastrarPeca() {
         
         try {
             if(validarCampos()){
@@ -182,19 +120,17 @@ public class PecasCadController {
                 PecaVo novaPeca = new PecaVo(0, nome, fabricante, valor, quantidade);
                 PecaBO pecaBO = new PecaBO();
                 if(pecaBO.inserir(novaPeca)){
-                    String labelSucesso = "Peça cadastrada com sucesso.";
                     cancelarCadastro();
-                    abrirModalSucess(labelSucesso, cadastrarPeca);
+                    modalsController.abrirModalSucesso("Peça cadastrada com sucesso.");
                 }
             }
         } catch (Exception ex) {
-            String labelFalha = ex.getMessage();
             cancelarCadastro();
-            abrirModalFail(labelFalha, cancelarCadastro);
+            modalsController.abrirModalFalha(ex.getMessage());
         }
     }
 
-    void cancelarCadastro(){
+    private void cancelarCadastro(){
         Stage palco = (Stage)this.cancelarCadastro.getScene().getWindow();
         palco.close();
     }
@@ -206,7 +142,7 @@ public class PecasCadController {
 
 
 
-    void setInvisibleCad(){
+    private void setInvisibleCad(){
         this.mensagemErroCad.setVisible(false);
     }
 

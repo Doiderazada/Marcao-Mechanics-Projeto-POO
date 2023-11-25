@@ -1,29 +1,18 @@
 package br.java.projeto.poo.controller.Pecas;
 
-import java.io.IOException;
-
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.PecaBO;
 import br.java.projeto.poo.models.VO.PecaVo;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class PecasEditController {
     
-    private PecaVo pecaEditar;
-    private PecaBO pecaBO = new PecaBO();
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
 
     @FXML private Button salvarEdicao;
     @FXML private Button cancelarEdicao;
@@ -34,69 +23,19 @@ public class PecasEditController {
     @FXML private TextField campoEditQuantidade;
     
 
+    private PecaVo pecaEditar;
+    private PecaBO pecaBO = new PecaBO();
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
 
 
     
-    public void initialize(PecaVo peca) throws Exception {
+    public void initialize(PecaVo peca) {
+        acaoCompTela();
         pecaEditar = new PecaVo();
         pecaEditar = peca;
-        this.preencherCampos(peca);
-        mensagemErroEdit.setVisible(false);
-        acaoDosBotoes();
-    }
-
-
-
-
-
-
-
-
-
-
-    
-    private void abrirModalFail(String mensagem, Button b) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
-
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem);
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCP = b.getScene().getWindow();
-        double centralizarEixoX = (wCP.getX() + wCP.getWidth()/2) - 200;
-        double centralizarEixoY = (wCP.getY() + wCP.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-    }
-
-    
-    private void abrirModalSucess(String mensagem, Button b) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem);
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCP = b.getScene().getWindow();
-        double centralizarEixoX = (wCP.getX() + wCP.getWidth()/2) - 200;
-        double centralizarEixoY = (wCP.getY() + wCP.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+        preencherCampos(pecaEditar);
+        setInvisibleEdit();
         
     }
 
@@ -106,17 +45,13 @@ public class PecasEditController {
 
 
 
-    private void acaoDosBotoes(){
+
+    private void acaoCompTela(){
         salvarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {editarPeca();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                editarPeca();
             }
             
         });
@@ -124,12 +59,7 @@ public class PecasEditController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {cancelarEdicao();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                cancelarEdicao();
             }
             
         });
@@ -181,14 +111,13 @@ public class PecasEditController {
 
 
     
-    private void editarPeca() throws Exception{
-        String nome = null, fabricante = null;
-        int quantidade = 0; 
-        double valor = 0;
-        
-        
+    private void editarPeca() {
         try {
             if(validarCampos()){
+                String nome = null, fabricante = null;
+                int quantidade = 0; 
+                double valor = 0;
+
                 nome = campoEditNome.getText();
                 fabricante = campoEditFabricante.getText();
                 quantidade = Integer.parseInt(campoEditQuantidade.getText());
@@ -199,15 +128,13 @@ public class PecasEditController {
                 pecaEditar.setFabricante(fabricante);
                 pecaEditar.setQuantidade(quantidade);
                 pecaEditar.setValor(valor);
-                String labelSucesso = "Peça editada com sucesso.";
                 pecaBO.atualizar(pecaEditar);
                 cancelarEdicao();
-                abrirModalSucess(labelSucesso, salvarEdicao);
+                modalsController.abrirModalSucesso("Peça editada com sucesso.");
             }
-        } catch (Exception ex) {
-            String labelFalha = ex.getMessage();
+        } catch(Exception ex) {
             cancelarEdicao();
-            abrirModalFail(labelFalha, cancelarEdicao);
+            modalsController.abrirModalFalha(ex.getMessage());
         }
     }
 
@@ -233,6 +160,7 @@ public class PecasEditController {
             campoEditValor.setText(String.valueOf(peca.getValor()));
         } catch(Exception ex){
             System.out.println(ex.getMessage());
+            modalsController.abrirModalFalha(ex.getMessage());
         }
     }
 

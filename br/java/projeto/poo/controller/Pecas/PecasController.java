@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Pecas;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.BaseController;
@@ -32,10 +31,6 @@ import javafx.stage.Window;
 
 public class PecasController extends BaseController {
     
-    PecaBO pecaBO = new PecaBO();
-    static ArrayList<PecaVo> listaPecas;
-    static ObservableList<PecaVo> pecasDisponiveis;
-
     
     @FXML private Button novaPeca;
     @FXML private Label msgErroBusca;
@@ -48,17 +43,22 @@ public class PecasController extends BaseController {
     @FXML private TableView<PecaVo> tabelaPecas;
 
 
+    private PecaBO pecaBO = new PecaBO();
+    private ModalsController modalsController = new ModalsController();
+    private ArrayList<PecaVo> listaPecas;
+    private ObservableList<PecaVo> pecasDisponiveis;
 
 
 
     @Override
     public void initialize() throws Exception {
         super.initialize();
+        acaoDosBotoes();
         msgErroBusca.setVisible(false);
         listaPecas = this.pecaBO.listar();
         pecasDisponiveis = FXCollections.observableArrayList(listaPecas);
-        this.inicializarTabela();
-        acaoDosBotoes();
+        inicializarTabela();
+        
     }
 
 
@@ -67,73 +67,65 @@ public class PecasController extends BaseController {
 
 
     
-    void abrirCadastro() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/CadastrarPeca.fxml"));
-        Parent root = loader.load();
-        Scene janelaCad = new Scene(root);
-        Stage palco = new Stage(StageStyle.UNDECORATED);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.setScene(janelaCad);
-        Window wNP = novaPeca.getScene().getWindow();
-        double centralizarEixoX = (wNP.getX() + wNP.getWidth()/2) - 200;
-        double centralizarEixoY = (wNP.getY() + wNP.getHeight()/2) - 200;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+    private void abrirCadastro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/CadastrarPeca.fxml"));
+            Parent root = loader.load();
+            Scene janelaCad = new Scene(root);
+            Stage palco = new Stage(StageStyle.UNDECORATED);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.setScene(janelaCad);
+            Window wNP = novaPeca.getScene().getWindow();
+            double centralizarEixoX = (wNP.getX() + wNP.getWidth()/2) - 200;
+            double centralizarEixoY = (wNP.getY() + wNP.getHeight()/2) - 200;
+            palco.setX(centralizarEixoX);
+            palco.setY(centralizarEixoY);
+            palco.showAndWait();
 
 
-        listaPecas = pecaBO.listar();
-        pecasDisponiveis.setAll(listaPecas);
+            listaPecas = pecaBO.listar();
+            pecasDisponiveis.setAll(listaPecas);
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
     
-    void abrirEdicao(PecaVo peca, int index) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/EditarPeca.fxml"));
-        Parent root = loader.load();
+    private void abrirEdicao(PecaVo peca) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/EditarPeca.fxml"));
+            Parent root = loader.load();
 
-        PecasEditController controller = loader.getController();
-        controller.initialize(peca);
+            PecasEditController controller = loader.getController();
+            controller.initialize(peca);
 
-        Scene janelaCad = new Scene(root);
-        Stage palco = new Stage(StageStyle.UNDECORATED);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.setScene(janelaCad);
-        Window wNP = novaPeca.getScene().getWindow();
-        double centralizarEixoX = (wNP.getX() + wNP.getWidth()/2) - 200;
-        double centralizarEixoY = (wNP.getY() + wNP.getHeight()/2) - 200;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+            Scene janelaCad = new Scene(root);
+            Stage palco = new Stage(StageStyle.UNDECORATED);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.setScene(janelaCad);
+            Window wNP = novaPeca.getScene().getWindow();
+            double centralizarEixoX = (wNP.getX() + wNP.getWidth()/2) - 200;
+            double centralizarEixoY = (wNP.getY() + wNP.getHeight()/2) - 200;
+            palco.setX(centralizarEixoX);
+            palco.setY(centralizarEixoY);
+            palco.showAndWait();
 
-        tabelaPecas.refresh();
+            tabelaPecas.refresh();
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
 
-    void abrirExclusao(PecaVo peca, int index) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalExcluir.fxml"));
-        Parent root = loader.load();
-        ModalsController modalExc = loader.getController();
-
-        String mensagem = "Tem certeza que deseja excluir essa peça?";
-
-        modalExc.ExibirMensagemExcluir(mensagem);
-
-        Scene janelaEdit = new Scene(root);
-        Stage palco = new Stage();
-        palco.setResizable(false);
-        palco.setScene(janelaEdit);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wNC = novaPeca.getScene().getWindow();
-        double centralizarEixoX, centralizarEixoY;
-        centralizarEixoX = (wNC.getX() + wNC.getWidth()/2) - 225;
-        centralizarEixoY = (wNC.getY() + wNC.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-        if(modalExc.getExclusaoValid()){
+    private void abrirExclusao(PecaVo peca, int index) {
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir essa peça?", index)){
             realizarExclusao(peca, index);
         }
     }
@@ -150,12 +142,7 @@ public class PecasController extends BaseController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                try {abrirCadastro();} 
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                abrirCadastro(); 
             }
             
         });
@@ -163,13 +150,7 @@ public class PecasController extends BaseController {
 
             @Override
             public void handle(KeyEvent arg0) {
-                try {
-                    buscarPeca(arg0);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    ModalsController modalsController = new ModalsController();
-                    modalsController.abrirModalFalha(e.getMessage());
-                }
+                buscarPeca(arg0);
             }
             
         });
@@ -183,7 +164,7 @@ public class PecasController extends BaseController {
     
 
     
-    void buscarPeca(KeyEvent event) {
+    private void buscarPeca(KeyEvent event) {
         try {
             ArrayList<PecaVo> pecasVO;
             if (this.buscarPeca.getText().length() > 2) {
@@ -205,6 +186,7 @@ public class PecasController extends BaseController {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
@@ -216,16 +198,16 @@ public class PecasController extends BaseController {
 
 
 
-    private void inicializarTabela() throws SQLException {
+    private void inicializarTabela() {
         columnNome.setCellValueFactory(new PropertyValueFactory<PecaVo, String>("nome"));
         columnFab.setCellValueFactory(new PropertyValueFactory<PecaVo, String>("fabricante"));
         columnQuant.setCellValueFactory(new PropertyValueFactory<PecaVo, Integer>("quantidade"));
         columnVal.setCellValueFactory(new PropertyValueFactory<PecaVo, Double>("valor"));
         tabelaPecas.setItems(pecasDisponiveis);
-        this.inicializarBotoesDeAcao(pecasDisponiveis);
+        inicializarBotoesDeAcao();
     }
 
-    private void inicializarBotoesDeAcao (ObservableList<PecaVo> funcs) {
+    private void inicializarBotoesDeAcao() {
         columnBut.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
@@ -237,7 +219,7 @@ public class PecasController extends BaseController {
                 btnEdit.setOnAction(event -> {
                     try {
                         PecaVo peca = getTableView().getItems().get(getIndex());
-                        abrirEdicao(peca, getIndex());
+                        abrirEdicao(peca);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -270,7 +252,7 @@ public class PecasController extends BaseController {
 
 
     
-    private void realizarExclusao(PecaVo peca, int index) throws Exception {
+    private void realizarExclusao(PecaVo peca, int index) {
         PecaBO pecaExcluida = new PecaBO();
             if(!pecaExcluida.deletar(peca)){
                 pecasDisponiveis.remove(index);
