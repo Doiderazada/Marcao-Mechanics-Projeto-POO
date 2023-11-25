@@ -1,30 +1,18 @@
 package br.java.projeto.poo.controller.Servicos;
 
-import java.io.IOException;
-
 import br.java.projeto.poo.controller.ModalsController;
 import br.java.projeto.poo.models.BO.ServicoBO;
 import br.java.projeto.poo.models.VO.ServicoVO;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 public class ServicosEditController {
     
-    String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
-
-    private ServicoBO servicoBO = new ServicoBO();
-    private ServicoVO servicoEditar;
 
     @FXML private TextField campoEditNome;
     @FXML private TextField campoEditValor;
@@ -33,62 +21,25 @@ public class ServicosEditController {
     @FXML private Button salvarEdicao;
 
     
-    
-    void initialize(ServicoVO servico, int index) throws Exception {
+    private ServicoVO servicoEditar = new ServicoVO();
+    private ServicoBO servicoBO = new ServicoBO();
+    private ModalsController modalsController = new ModalsController();
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+
+
+
+    public void initialize(ServicoVO servico, int index) throws Exception {
         
-        servicoEditar = new ServicoVO(servico.getId(), servico.getNome(), servico.getValor());
+        acaoCompTela();
         servicoEditar = servico;
-        this.preencherCampos(servico, index);
-        mensagemErroEdit.setVisible(false);
-        acaoTextField();
+        preencherCampos(servico, index);
+        setInvisibleEdit();
         
     }
     
-    @FXML
-    void abrirModalFail(Label mensagem, Button b) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalFalha.fxml"));
-        Parent root = loader.load();
+    
 
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemFalha(mensagem.getText());
-
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCS = b.getScene().getWindow();
-        double centralizarEixoX = (wCS.getX() + wCS.getWidth()/2) - 200;
-        double centralizarEixoY = (wCS.getY() + wCS.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-    }
-
-    @FXML
-    void abrirModalSucess(Label mensagem, Button b) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalSucesso.fxml"));
-        Parent root = loader.load();
-        
-        ModalsController controller = loader.getController();
-        controller.ExibirMensagemSucesso(mensagem.getText());
-        
-        Scene popup = new Scene(root);
-        Stage palco = new Stage();
-        palco.setScene(popup);
-        palco.setResizable(false);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wCS = b.getScene().getWindow();
-        double centralizarEixoX = (wCS.getX() + wCS.getWidth()/2) - 200;
-        double centralizarEixoY = (wCS.getY() + wCS.getHeight()/2) - 100;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-        
-    }
+    
     
     
 
@@ -96,11 +47,27 @@ public class ServicosEditController {
 
 
 
-    void acaoTextField(){
+    private void acaoCompTela(){
+        salvarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                editarServico();
+            }
+            
+        });
+        cancelarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                cancelarEdicao();
+            }
+            
+        });
         campoEditNome.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
-                mensagemErroEdit.setVisible(false);
+                setInvisibleEdit();
                 campoEditNome.setStyle(null);
             }
         });
@@ -108,7 +75,7 @@ public class ServicosEditController {
         campoEditValor.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
-                mensagemErroEdit.setVisible(false);
+                setInvisibleEdit();
                 campoEditValor.setStyle(null);
             }
         });
@@ -120,48 +87,46 @@ public class ServicosEditController {
 
 
     
-    @FXML
-    void editarServico() throws Exception {
     
+    private void editarServico() {
         try {
-            String nome = null;
-            double valor = 0;
-            if(validarCamposVazios()){
+            
+            if(validarCampos()){
+                String nome = null;
+                double valor = 0;
+
                 servicoEditar.setNome(nome);
                 servicoEditar.setValor(valor);
-                Label labelSucesso = new Label("Peça editada com sucesso.");
+
                 servicoBO.atualizar(servicoEditar);
                 cancelarEdicao();
-                abrirModalSucess(labelSucesso, salvarEdicao);
+                modalsController.abrirModalSucesso("Peça editada com sucesso.");
             }
         } catch (Exception ex) {
-            Label labelFalha = new Label(ex.getMessage());
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             cancelarEdicao();
-            abrirModalFail(labelFalha, cancelarEdicao);
+            modalsController.abrirModalFalha(ex.getMessage());
         }
     }
 
-    @FXML
-    void cancelarEdicao() {
+    
+    private void cancelarEdicao() {
         Stage palco = (Stage)this.cancelarEdicao.getScene().getWindow();
         palco.close();
     }
 
 
-    void preencherCampos(ServicoVO servico, int index){
+    private void preencherCampos(ServicoVO servico, int index){
         
-        try{
-
-            campoEditNome.setText(servico.getNome());
-            campoEditValor.setText(String.valueOf(servico.getValor()));
-        } catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
+        campoEditNome.setText(servico.getNome());
+        campoEditValor.setText(String.valueOf(servico.getValor()));
+        
     }
 
 
-    @FXML
-    void setInvisibleEdit(){
+    
+    private void setInvisibleEdit(){
         this.mensagemErroEdit.setVisible(false);
     }
 
@@ -169,7 +134,7 @@ public class ServicosEditController {
 
 
 
-    boolean validarCamposVazios(){
+    private boolean validarCampos(){
 
         if (campoEditNome.getText().isEmpty()) {
             mensagemErroEdit.setText("O nome não pode ser vazio");

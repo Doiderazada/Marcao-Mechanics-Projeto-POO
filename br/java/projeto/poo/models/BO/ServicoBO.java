@@ -70,7 +70,7 @@ public class ServicoBO implements BaseInterfaceBO<ServicoVO>{
     }
 
     @Override
-    public Boolean deletar(ServicoVO vo) throws Exception {
+    public Boolean deletar(ServicoVO vo) {
         try {return servicoDao.deletar(vo);}
         catch(Exception e) {e.printStackTrace();}
         return false;

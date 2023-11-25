@@ -1,6 +1,5 @@
 package br.java.projeto.poo.controller.Servicos;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.java.projeto.poo.controller.BaseController;
@@ -9,6 +8,7 @@ import br.java.projeto.poo.models.BO.ServicoBO;
 import br.java.projeto.poo.models.VO.ServicoVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,9 +31,6 @@ import javafx.stage.Window;
 
 public class ServicosController extends BaseController{
 
-    private ServicoBO servicoBO = new ServicoBO();
-    public static ArrayList<ServicoVO> listaServicos;
-    public static ObservableList<ServicoVO> servicosDisponiveis;
     
     @FXML private Button novoServico;
     @FXML private Label msgErroBusca;
@@ -41,83 +39,109 @@ public class ServicosController extends BaseController{
     @FXML private TableColumn<ServicoVO, String> columnBut;
     @FXML private TableColumn<ServicoVO, String> columnServ;
     @FXML private TableColumn<ServicoVO, Double> columnVal;
+
+
+    private ServicoBO servicoBO = new ServicoBO();
+    private ModalsController modalsController = new ModalsController();
+    private ArrayList<ServicoVO> listaServicos;
+    private ObservableList<ServicoVO> servicosDisponiveis;
+
+
+
     
     public void initialize() throws Exception{
         super.initialize();
+        acaoCompTela();
         listaServicos = this.servicoBO.listar();
         servicosDisponiveis = FXCollections.observableArrayList(listaServicos);
-        this.inicializarTabela();
+        inicializarTabela();
         msgErroBusca.setVisible(false);
     }
 
 
 
-    @FXML
-    void abrirCadastro() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Servicos/CadastrarServico.fxml"));
-        Parent root = loader.load();
-        Scene janelaCad = new Scene(root);
-        Stage palco = new Stage(StageStyle.UNDECORATED);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.setScene(janelaCad);
-        Window wNS = novoServico.getScene().getWindow();
-        double centralizarEixoX = (wNS.getX() + wNS.getWidth()/2) - 200;
-        double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
 
-        tabelaServicos.refresh();
+
+    private void acaoCompTela() {
+        novoServico.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                abrirCadastro();
+            }
+            
+        });
+        buscarServico.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarServico();
+            }
+            
+        });
+    }
+    
+
+
+    private void abrirCadastro() {
+        try {    
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Servicos/CadastrarServico.fxml"));
+            Parent root = loader.load();
+            Scene janelaCad = new Scene(root);
+            Stage palco = new Stage(StageStyle.UNDECORATED);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.setScene(janelaCad);
+            Window wNS = novoServico.getScene().getWindow();
+            double centralizarEixoX = (wNS.getX() + wNS.getWidth()/2) - 200;
+            double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 150;
+            palco.setX(centralizarEixoX);
+            palco.setY(centralizarEixoY);
+            palco.showAndWait();
+
+            listaServicos = servicoBO.listar();
+            servicosDisponiveis.setAll(listaServicos);
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
-    @FXML
-    void abrirEdicao(ServicoVO servico, int index) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Servicos/EditarServico.fxml"));
-        Parent root = loader.load();
+    
+    private void abrirEdicao(ServicoVO servico, int index) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Servicos/EditarServico.fxml"));
+            Parent root = loader.load();
 
-        ServicosEditController controller = loader.getController();
-        controller.initialize(servico, index);
+            ServicosEditController controller = loader.getController();
+            controller.initialize(servico, index);
 
-        Scene janelaCad = new Scene(root);
-        Stage palco = new Stage(StageStyle.UNDECORATED);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.setScene(janelaCad);
-        Window wNS = novoServico.getScene().getWindow();
-        double centralizarEixoX = (wNS.getX() + wNS.getWidth()/2) - 200;
-        double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
+            Scene janelaCad = new Scene(root);
+            Stage palco = new Stage(StageStyle.UNDECORATED);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.setScene(janelaCad);
+            Window wNS = novoServico.getScene().getWindow();
+            double centralizarEixoX = (wNS.getX() + wNS.getWidth()/2) - 200;
+            double centralizarEixoY = (wNS.getY() + wNS.getHeight()/2) - 150;
+            palco.setX(centralizarEixoX);
+            palco.setY(centralizarEixoY);
+            palco.showAndWait();
 
-        tabelaServicos.refresh();
+            listaServicos = servicoBO.listar();
+            servicosDisponiveis.setAll(listaServicos);
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            modalsController.abrirModalFalha(e.getMessage());
+        }
     }
 
 
 
-    void abrirExclusao(ServicoVO servico, int index) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Modals/ModalExcluir.fxml"));
-        Parent root = loader.load();
-        ModalsController modalExc = loader.getController();
-
-        String mensagem = "Tem certeza que deseja excluir essa serviço?";
-
-        modalExc.ExibirMensagemExcluir(mensagem);
-
-        Scene janelaEdit = new Scene(root);
-        Stage palco = new Stage();
-        palco.setResizable(false);
-        palco.setScene(janelaEdit);
-        palco.initModality(Modality.APPLICATION_MODAL);
-        palco.initStyle(StageStyle.UNDECORATED);
-        Window wNC = novoServico.getScene().getWindow();
-        double centralizarEixoX, centralizarEixoY;
-        centralizarEixoX = (wNC.getX() + wNC.getWidth()/2) - 225;
-        centralizarEixoY = (wNC.getY() + wNC.getHeight()/2) - 150;
-        palco.setX(centralizarEixoX);
-        palco.setY(centralizarEixoY);
-        palco.showAndWait();
-
-        if(modalExc.getExclusaoValid()){
+    private void abrirExclusao(ServicoVO servico, int index) {
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja exluir esse serviço?", index)){
             realizarExclusao(servico, index);
         }
     }
@@ -126,8 +150,8 @@ public class ServicosController extends BaseController{
 
 
 
-    @FXML
-    void buscarServico(KeyEvent event){
+    
+    private void buscarServico(){
         try {
             ArrayList<ServicoVO> servicos;
             if (this.buscarServico.getText().length() > 2) {
@@ -154,14 +178,14 @@ public class ServicosController extends BaseController{
 
 
 
-    private void inicializarTabela() throws SQLException {
+    private void inicializarTabela() {
         columnServ.setCellValueFactory(new PropertyValueFactory<ServicoVO, String>("nome"));
         columnVal.setCellValueFactory(new PropertyValueFactory<ServicoVO, Double>("valor"));
         tabelaServicos.setItems(servicosDisponiveis);
-        this.inicializarBotoesDeAcao(servicosDisponiveis);
+        inicializarBotoesDeAcao();
     }
 
-    private void inicializarBotoesDeAcao (ObservableList<ServicoVO> funcs) {
+    private void inicializarBotoesDeAcao () {
         columnBut.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
@@ -208,7 +232,7 @@ public class ServicosController extends BaseController{
 
 
 
-    private void realizarExclusao(ServicoVO servico, int index) throws Exception {
+    private void realizarExclusao(ServicoVO servico, int index) {
         ServicoBO servicoExcluido = new ServicoBO();
             if(!servicoExcluido.deletar(servico)){
                 listaServicos.remove(index);
