@@ -255,7 +255,7 @@ public class ClienteCadController {
                     
                     if(nVeiculoBO.inserir(veiculo)){
                         cancelarCadastro();
-                        modalsController.ExibirMensagemSucesso("Cliente cadastrado com sucesso.");
+                        modalsController.abrirModalSucesso("Cliente cadastrado com sucesso.");
                     } else modalsController.abrirModalFalha("Não foi possível cadastrar o veículo."); 
 
                 } else modalsController.abrirModalFalha("Não foi possível cadastrar o cliente.");
@@ -265,7 +265,7 @@ public class ClienteCadController {
         catch (Exception ex){
             cancelarCadastro();
             System.out.println(ex.getMessage());
-            modalsController.ExibirMensagemFalha(ex.getMessage());
+            modalsController.abrirModalFalha(ex.getMessage());
 
         }
     }

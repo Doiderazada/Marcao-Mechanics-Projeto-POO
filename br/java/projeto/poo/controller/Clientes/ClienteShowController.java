@@ -194,7 +194,7 @@ public class ClienteShowController extends BaseController{
 
 
     private void abrirExclusao(VeiculoVO veiculo, int index) {
-        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse veículo?", index)){
+        if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse veículo?")){
             realizarExclusao(veiculo, index);
         }
     }

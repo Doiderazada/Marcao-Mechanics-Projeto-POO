@@ -13,7 +13,6 @@ import javafx.stage.StageStyle;
 
 public class ModalsController {
     
-    private boolean exclusaoValid = false;
     @FXML private Pane ModalSucess;
     @FXML private Pane ModalFail;
     @FXML private Pane ModalExcluir;
@@ -23,37 +22,41 @@ public class ModalsController {
     @FXML private Button cancelarExclusao;
     @FXML private Button confirmarExclusao;
 
+    
+    private boolean exclusaoValid = false;
+
+
     @FXML
     private void confirmarExclusao(){
         setExclusaoValid();
         CloseModalE();
     }
 
-    public void ExibirMensagemExcluir(String mensagem){
+    private void ExibirMensagemExcluir(String mensagem){
         mensagemExclusao.setText(mensagem);
     }
 
-    public void ExibirMensagemFalha(String mensagem){
+    private void ExibirMensagemFalha(String mensagem){
         mensagemFalha.setText(mensagem);
     }
     
-    public void ExibirMensagemSucesso(String mensagem){
+    private void ExibirMensagemSucesso(String mensagem){
         mensagemSucesso.setText(mensagem);
     }
 
     @FXML
-    void CloseModalE(){
+    private void CloseModalE(){
         Stage palco = (Stage)this.ModalExcluir.getScene().getWindow();
         palco.close();
     }
 
     @FXML
-    void CloseModalS(){
+    private void CloseModalS(){
         Stage palco = (Stage)this.ModalSucess.getScene().getWindow();
         palco.close();
     }
     @FXML
-    void CloseModalF(){
+    private void CloseModalF(){
         Stage palco = (Stage)this.ModalFail.getScene().getWindow();
         palco.close();
     }
@@ -107,7 +110,7 @@ public class ModalsController {
         }
     }
 
-    public boolean abrirModalExcluir(String mensagem, long index) {
+    public boolean abrirModalExcluir(String mensagem) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Modals/ModalExcluir.fxml"));
             Parent root = loader.load();

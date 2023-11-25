@@ -189,7 +189,7 @@ public class ClienteEditController {
         catch(Exception ex){
             System.out.println(ex.getMessage());
             cancelarEdicao();
-            modalsController.ExibirMensagemFalha(ex.getMessage());
+            modalsController.abrirModalFalha(ex.getMessage());
         }
     }
 

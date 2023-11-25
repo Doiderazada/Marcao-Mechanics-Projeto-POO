@@ -88,12 +88,12 @@ public class EditarAutomoveisController {
                 veiculoBO.atualizar(veiculoEditar);
                 
                 cancelar();
-                modalsController.ExibirMensagemSucesso("Veículo editado com sucesso.");
+                modalsController.abrirModalSucesso("Veículo editado com sucesso.");
             }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            modalsController.ExibirMensagemFalha(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
         }
     }
 

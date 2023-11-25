@@ -280,8 +280,8 @@ public class CadastrarAutomoveisController {
                 if(veiculoBO.inserir(veiculoVO)){
 
                     cancelar();
-                    modalsController.ExibirMensagemSucesso("Veículo cadastrado com sucesso.");
-                } else modalsController.ExibirMensagemFalha("Não foi possível cadastrar o veículo.");
+                    modalsController.abrirModalSucesso("Veículo cadastrado com sucesso.");
+                } else modalsController.abrirModalFalha("Não foi possível cadastrar o veículo.");
             }
 
         } catch (Exception e) {
