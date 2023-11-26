@@ -48,10 +48,11 @@ public class ClienteEditController {
     
 
 
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         campoEditNome.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -119,7 +120,11 @@ public class ClienteEditController {
 
 
 
-    
+    /**
+     * <p> Auto-completes the filled content in the {@code TextField}s.
+     * 
+     * <p> This method has no parameters.
+     */
     private void autoComplete(){
         // auto-complete cpf
         if(campoEditCPF.getText().length() == 3){
@@ -154,7 +159,11 @@ public class ClienteEditController {
     
     
     
-    
+    /**
+     * <p> Edits the current {@code cliente} in the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void editarCliente() {
         try{
             if (validarCampos()) {
@@ -194,14 +203,44 @@ public class ClienteEditController {
     }
 
     
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarEdicao() {
         Stage palco = (Stage) this.cancelarEdicao.getScene().getWindow();
         palco.close();
     }
 
+    
+
+    /**
+     * <p> Fills up the {@code TextField}s with the data from the {@code cliente} to be edited.
+     * @param cliente which data will fill the {@code TextField}s.
+     */
+    private void preencherCampos(ClienteVO cliente){
+        
+        try{
+
+            campoEditNome.setText(cliente.getNome());
+            campoEditCPF.setText(cliente.getCpf());
+            campoEditEnd.setText(cliente.getEndereco().toString());
+            campoEditTel.setText(cliente.getTelefone().toString());
+
+        } catch(Exception ex){
+            System.out.println(ex.getMessage());
+            modalsController.abrirModalFalha(ex.getMessage());
+        }
+    }
 
 
 
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         
         if(campoEditNome.getText().isEmpty()){
@@ -286,24 +325,7 @@ public class ClienteEditController {
 
 
 
-
-    private void preencherCampos(ClienteVO cliente){
-        
-        try{
-
-            campoEditNome.setText(cliente.getNome());
-            campoEditCPF.setText(cliente.getCpf());
-            campoEditEnd.setText(cliente.getEndereco().toString());
-            campoEditTel.setText(cliente.getTelefone().toString());
-
-        } catch(Exception ex){
-            System.out.println(ex.getMessage());
-            modalsController.abrirModalFalha(ex.getMessage());
-        }
-    }
-
-
-    public ClienteVO pegarClienteEditado(){
+    public ClienteVO getClienteEditar(){
         return this.clienteEditar;
     }
 

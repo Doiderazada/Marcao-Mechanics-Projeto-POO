@@ -27,11 +27,17 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-
         acaoCompTela();
         setInvisibleErro();
     }
 
+
+
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela() {
         logar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -83,6 +89,12 @@ public class LoginController {
     }
 
 
+
+    /**
+     * <p> Auto-completes the filled content in the {@code TextField}s.
+     * 
+     * <p> This method has no parameters.
+     */
     private void autoComplete(){
         if(nomeUsuario.getText().length() == 3){
             nomeUsuario.setText(nomeUsuario.getText() + ".");
@@ -101,6 +113,11 @@ public class LoginController {
     }
     
 
+    /**
+     * <p> Logs in the user in the system.
+     * 
+     * <p> This method has no parameters.
+     */
     private void logarUsuario() {
         try {
             if(validarCampos()) {    
@@ -125,6 +142,10 @@ public class LoginController {
 
 
 
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos() {
         if (nomeUsuario.getText().isEmpty()) {
             erro.setText("O nome de usuário não pode ser vazio.");
@@ -151,7 +172,6 @@ public class LoginController {
             new animatefx.animation.Shake(password).play();
             return false;
         }
-
         return true;
     }
 

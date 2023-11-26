@@ -34,10 +34,11 @@ public class ServicosCadController {
     
     
 
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         cadastrarServico.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -74,10 +75,11 @@ public class ServicosCadController {
 
 
 
-
-
-
-    
+    /**
+     * <p> Saves the current {@code peca} to the database.
+     * 
+     * <p> This method has no parameters.
+     */ 
     private void cadastrarServico() {
         try {
             if (validarCampos()) {
@@ -104,20 +106,23 @@ public class ServicosCadController {
     }
 
     
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarCadastro(){
         Stage palco = (Stage)this.cancelarCadastro.getScene().getWindow();
         palco.close();
     }
 
-    
-
-    
-    private void setInvisibleCad(){
-        this.mensagemErroCad.setVisible(false);
-    }
 
 
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
 
         if (campoCadNome.getText().isEmpty()) {
@@ -145,10 +150,14 @@ public class ServicosCadController {
                 new animatefx.animation.Shake(campoCadValor).play();
                 return false;
             }
-            
-            
-            
         }
         return true;
+    }
+
+
+
+    
+    private void setInvisibleCad(){
+        this.mensagemErroCad.setVisible(false);
     }
 }

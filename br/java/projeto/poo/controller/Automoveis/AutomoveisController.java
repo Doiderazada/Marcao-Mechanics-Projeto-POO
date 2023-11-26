@@ -70,12 +70,17 @@ public class AutomoveisController extends BaseController{
 
 
 
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela() {
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
-                abrirModalCadastro();
+                abrirCadastro();
             }
             
         });
@@ -90,8 +95,13 @@ public class AutomoveisController extends BaseController{
     }
 
 
-    
-    private void abrirModalCadastro() {
+
+    /**
+     * <p> Opens up a popup screen for creating a new {@code veiculo}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void abrirCadastro() {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -120,7 +130,14 @@ public class AutomoveisController extends BaseController{
         }
     }
 
-    private void abrirModalEditar(VeiculoVO veiculo) {
+
+
+    /**
+     * <p> Opens up a popup screen to edit the current {@code veiculo}.
+     * 
+     * @param veiculo to be edited.
+     */
+    private void abrirEdicao(VeiculoVO veiculo) {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -155,6 +172,12 @@ public class AutomoveisController extends BaseController{
     }
 
 
+
+    /**
+     * <p> Opens up an exclusion warning popup screen.
+     * @param veiculo to be excluded.
+     * @param index of the {@code veiculo} on its table.
+     */
     private void abrirExclusao(VeiculoVO veiculo, int index) {
         if (modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse veículo?")) {
             realizarExclusao(veiculo, index);
@@ -163,11 +186,11 @@ public class AutomoveisController extends BaseController{
 
 
 
-
-
-
-
-    
+    /**
+     * <p> Searches an {@code veiculo} on the database by the given name in the TextField {@link br.java.projeto.poo.controller.Automoveis.AutomoveisController#buscar buscar}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void buscarVeiculo() {
         try {
             ArrayList<VeiculoVO> veiculos;
@@ -199,10 +222,12 @@ public class AutomoveisController extends BaseController{
 
 
 
-
-
-
-    // inicializa a tabela
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Automoveis.AutomoveisController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
+     * that sets the buttons on it.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarTabela() {
         placa.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("placa"));
         proprietario.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("cpfDono"));
@@ -212,7 +237,13 @@ public class AutomoveisController extends BaseController{
         inicializarBotoesDeAcao();
     }
 
-    // inicializa os botões de ação
+    
+    
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarBotoesDeAcao () {
         acoes.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
@@ -227,7 +258,7 @@ public class AutomoveisController extends BaseController{
                 btnEdit.setOnAction(event -> {
                     
                     VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                    abrirModalEditar(veiculo);
+                    abrirEdicao(veiculo);
                     
                 });
 
@@ -255,14 +286,11 @@ public class AutomoveisController extends BaseController{
 
 
 
-
-
-
-
-
-
-
-
+    /**
+     * <p> Sets the action for a clicked row on the main table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void linhaSelecionada() {
         
         tbAutomoveis.setRowFactory(event -> {
@@ -280,12 +308,15 @@ public class AutomoveisController extends BaseController{
             });
             return myRow;
         });
-        
-        
     }
 
 
-    
+
+    /**
+     * <p> Opens up the user information screen.
+     * 
+     * @param veiculo to be for its user.
+     */
     private void exibirCliente(VeiculoVO veiculo) {
         try {
             ClienteBO clienteBO = new ClienteBO();
@@ -312,11 +343,11 @@ public class AutomoveisController extends BaseController{
 
 
 
-
-
-
-
-
+    /**
+     * <p> Excludes the {@code veiculo} from the database.
+     * @param veiculo to be excluded.
+     * @param index of the {@code veiculo} on tha table.
+     */
     private void realizarExclusao(VeiculoVO veiculo, int index) {
         try {
             VeiculoBO veiculoExcluido = new VeiculoBO();

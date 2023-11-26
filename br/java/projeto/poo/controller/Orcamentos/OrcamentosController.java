@@ -169,7 +169,7 @@ public class OrcamentosController extends BaseController {
 
     
     /**
-     * <p> Searches an {@code orcamento} on the database with the given name in TextField the {@link br.java.projeto.poo.controller.Orcamentos.OrcamentosController#buscar buscar}.
+     * <p> Searches an {@code orcamento} on the database with the given name in the TextField {@link br.java.projeto.poo.controller.Orcamentos.OrcamentosController#buscar buscar}.
      * 
      * <p> This method has no parameters.
      */

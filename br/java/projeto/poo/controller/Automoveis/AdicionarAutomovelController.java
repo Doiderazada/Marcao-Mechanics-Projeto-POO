@@ -47,11 +47,11 @@ public class AdicionarAutomovelController {
 
 
 
-
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         addNovoV.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -120,14 +120,11 @@ public class AdicionarAutomovelController {
 
 
 
-
-
-
-
-
-
-
-    
+    /**
+     * <p> Saves a new {@code veiculo} to te database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void addNovoV() {
         try{   
             if (validarCampos()) {
@@ -162,6 +159,11 @@ public class AdicionarAutomovelController {
     }
 
     
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarAddV() {
         Stage palco = (Stage)this.cancelarAddV.getScene().getWindow();
         palco.close();
@@ -172,7 +174,10 @@ public class AdicionarAutomovelController {
 
 
 
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         
         if(modeloNovoV.getText().isEmpty()){
@@ -268,7 +273,6 @@ public class AdicionarAutomovelController {
                 return false;
             }
         }
-
         return true;
     }
 

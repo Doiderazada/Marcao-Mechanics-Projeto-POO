@@ -66,7 +66,13 @@ public class BaseController {
         App.navegarEntreTelas("login");
     }
 
+
     
+    /**
+     * <p> Verifies the logged user to display the avaliable screens for its level.
+     * 
+     * <p> This method has no parameters.
+     */
     protected void verificarPermissoes() {
         
         ObservableList<Node> itensMenu = menu.getChildren();

@@ -28,25 +28,22 @@ public class ServicosEditController {
 
 
 
-    public void initialize(ServicoVO servico, int index) throws Exception {
+    public void initialize(ServicoVO servico) throws Exception {
         
         acaoCompTela();
         servicoEditar = servico;
-        preencherCampos(servico, index);
+        preencherCampos(servico);
         setInvisibleEdit();
         
     }
     
     
 
-    
-    
-    
-
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         salvarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -82,12 +79,12 @@ public class ServicosEditController {
     }
 
 
-
-
-
-
     
-    
+    /**
+     * <p> Edits the current {@code servico} in the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void editarServico() {
         try {
             
@@ -111,13 +108,24 @@ public class ServicosEditController {
     }
 
     
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarEdicao() {
         Stage palco = (Stage)this.cancelarEdicao.getScene().getWindow();
         palco.close();
     }
 
 
-    private void preencherCampos(ServicoVO servico, int index){
+
+    /**
+     * <p> Fills up the {@code TextField}s with the data from the {@code servico} to be edited.
+     * @param servico which data will fill the {@code TextField}s.
+     */
+    private void preencherCampos(ServicoVO servico){
         
         campoEditNome.setText(servico.getNome());
         campoEditValor.setText(String.valueOf(servico.getValor()));
@@ -125,15 +133,11 @@ public class ServicosEditController {
     }
 
 
-    
-    private void setInvisibleEdit(){
-        this.mensagemErroEdit.setVisible(false);
-    }
 
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
 
         if (campoEditNome.getText().isEmpty()) {
@@ -161,10 +165,13 @@ public class ServicosEditController {
                 new animatefx.animation.Shake(campoEditValor).play();
                 return false;
             }
-            
-            
-            
         }
         return true;
+    }
+
+
+    
+    private void setInvisibleEdit(){
+        this.mensagemErroEdit.setVisible(false);
     }
 }

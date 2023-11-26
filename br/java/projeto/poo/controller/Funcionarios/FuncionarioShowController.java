@@ -54,54 +54,11 @@ public class FuncionarioShowController extends BaseController{
     }
 
 
-
-
-
-
-
-
-    private void abrirEditFunc() {
-
-        try {
-            Stage palco = new Stage();
-            palco.initModality(Modality.APPLICATION_MODAL);
-            palco.initStyle(StageStyle.UNDECORATED);
-            Window wEC = editarFuncionario.getScene().getWindow();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Funcionarios/EditarFuncionario.fxml"));
-            Parent root = loader.load();
-
-            EditarFuncionariosController controller = loader.getController();
-            controller.initialize(funcionarioExibido);
-
-            Scene janelaEdit = new Scene(root);
-            palco.setScene(janelaEdit);
-            
-            double centralizarEixoX, centralizarEixoY;
-            centralizarEixoX = (wEC.getX() + wEC.getWidth()/2) - 250;
-            centralizarEixoY = (wEC.getY() + wEC.getHeight()/2) - 300;
-            palco.setX(centralizarEixoX);
-            palco.setY(centralizarEixoY);
-            palco.showAndWait();
-
-            funcionarioExibido = controller.getFuncionarioEditar();
-            preencherCampos(funcionarioExibido);
-
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            modalsController.abrirModalFalha(e.getMessage());
-        }
-    }
-
-
-
-
-
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela() {
         telaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -143,10 +100,51 @@ public class FuncionarioShowController extends BaseController{
 
 
 
+    /**
+     * <p> Opens up a popup screen to edit the current {@code funcionario}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void abrirEditFunc() {
+
+        try {
+            Stage palco = new Stage();
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.initStyle(StageStyle.UNDECORATED);
+            Window wEC = editarFuncionario.getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Funcionarios/EditarFuncionario.fxml"));
+            Parent root = loader.load();
+
+            EditarFuncionariosController controller = loader.getController();
+            controller.initialize(funcionarioExibido);
+
+            Scene janelaEdit = new Scene(root);
+            palco.setScene(janelaEdit);
+            
+            double centralizarEixoX, centralizarEixoY;
+            centralizarEixoX = (wEC.getX() + wEC.getWidth()/2) - 250;
+            centralizarEixoY = (wEC.getY() + wEC.getHeight()/2) - 300;
+            palco.setX(centralizarEixoX);
+            palco.setY(centralizarEixoY);
+            palco.showAndWait();
+
+            funcionarioExibido = controller.getFuncionarioEditar();
+            preencherCampos(funcionarioExibido);
+
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            modalsController.abrirModalFalha(e.getMessage());
+        }
+    }
 
 
 
-
+    /**
+     * <p> Fills up all the contents on screen with the {@code funcionario} data.
+     * @param funcionario which data will be shown on screen.
+     */
     private void preencherCampos(FuncionarioVO funcionario){
         try{
             exibirNome.setText(funcionario.getNome());
@@ -165,8 +163,6 @@ public class FuncionarioShowController extends BaseController{
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
-
-
 
 
 

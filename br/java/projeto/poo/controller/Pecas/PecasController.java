@@ -54,7 +54,7 @@ public class PecasController extends BaseController {
     public void initialize() {
         try {    
             super.initialize();
-            acaoDosBotoes();
+            acaoCompTela();
             msgErroBusca.setVisible(false);
             listaPecas = this.pecaBO.listar();
             pecasDisponiveis = FXCollections.observableArrayList(listaPecas);
@@ -68,10 +68,37 @@ public class PecasController extends BaseController {
 
 
 
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void acaoCompTela(){
+        novaPeca.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                abrirCadastro(); 
+            }
+            
+        });
+        buscarPeca.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarPeca();
+            }
+            
+        });
+    }
 
 
 
-    
+    /**
+     * <p> Opens up a popup screen for creating a new {@code peca}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void abrirCadastro() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/CadastrarPeca.fxml"));
@@ -99,6 +126,12 @@ public class PecasController extends BaseController {
     }
 
     
+
+    /**
+     * <p> Opens up a popup screen to edit the current {@code peca}.
+     * 
+     * @param peca to be edited.
+     */
     private void abrirEdicao(PecaVo peca) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Pecas/EditarPeca.fxml"));
@@ -129,47 +162,25 @@ public class PecasController extends BaseController {
 
 
 
+    /**
+     * <p> Opens up an exclusion warning popup screen.
+     * @param peca to be excluded.
+     * @param index of the {@code peca} on its table.
+     */
     private void abrirExclusao(PecaVo peca, int index) {
         if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir essa peça?")){
             realizarExclusao(peca, index);
         }
     }
 
-
-
-
-
-
-
-
-    private void acaoDosBotoes(){
-        novaPeca.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent arg0) {
-                abrirCadastro(); 
-            }
-            
-        });
-        buscarPeca.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent arg0) {
-                buscarPeca(arg0);
-            }
-            
-        });
-    }
-
-
-
-
-
-
     
 
-    
-    private void buscarPeca(KeyEvent event) {
+    /**
+     * <p> Searches an {@code peca} on the database by the given name in the TextField {@link br.java.projeto.poo.controller.Pecas.PecasController#buscarPeca buscaPeca}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void buscarPeca() {
         try {
             ArrayList<PecaVo> pecasVO;
             if (this.buscarPeca.getText().length() > 2) {
@@ -197,12 +208,12 @@ public class PecasController extends BaseController {
 
 
 
-
-
-
-
-
-
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Pecas.PecasController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
+     * that sets the buttons on it.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarTabela() {
         columnNome.setCellValueFactory(new PropertyValueFactory<PecaVo, String>("nome"));
         columnFab.setCellValueFactory(new PropertyValueFactory<PecaVo, String>("fabricante"));
@@ -212,6 +223,13 @@ public class PecasController extends BaseController {
         inicializarBotoesDeAcao();
     }
 
+
+
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarBotoesDeAcao() {
         columnBut.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
@@ -258,8 +276,11 @@ public class PecasController extends BaseController {
 
 
 
-
-    
+    /**
+     * <p> Excludes the {@code peca} from the database.
+     * @param peca to be excluded.
+     * @param index of the {@code peca} on tha table.
+     */
     private void realizarExclusao(PecaVo peca, int index) {
         PecaBO pecaExcluida = new PecaBO();
             if(!pecaExcluida.deletar(peca)){

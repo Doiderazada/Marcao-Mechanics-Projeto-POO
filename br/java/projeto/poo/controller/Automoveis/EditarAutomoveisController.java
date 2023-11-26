@@ -41,7 +41,7 @@ public class EditarAutomoveisController {
     @FXML
     public void initialize(VeiculoVO veiculo) {
         acaoCompTela();
-        this.msgErro.setVisible(false);
+        setInvisibleEdit();
         tipo.setItems(listaTipoVeic);
         tipo.setValue(listaTipoVeic.get(0));
         veiculoEditar = veiculo;
@@ -50,7 +50,11 @@ public class EditarAutomoveisController {
 
     
 
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela() {
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -68,13 +72,60 @@ public class EditarAutomoveisController {
             }
             
         });
+        ano.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                setInvisibleEdit();
+                ano.setStyle(null);
+            }
+            
+        });
+        cor.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                setInvisibleEdit();
+                cor.setStyle(null);
+            }
+            
+        });
+        km.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                setInvisibleEdit();
+                km.setStyle(null);
+            }
+            
+        });
+        modelo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                setInvisibleEdit();
+                modelo.setStyle(null);
+            }
+            
+        });
+        placa.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                setInvisibleEdit();
+                placa.setStyle(null);
+            }
+            
+        });
     }
 
 
 
-
-
-    
+    /**
+     * <p> Edits the current {@code veiculo} in the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void editarVeiculo() {
         try {
             if(validarCampos()){
@@ -97,27 +148,33 @@ public class EditarAutomoveisController {
         }
     }
 
+
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelar() {
         Stage stage = (Stage) this.cancelar.getScene().getWindow();
         stage.close();
     }
 
 
-
-
-
-
     
-
-    public void preencherCampos(VeiculoVO vo) {
+    /**
+     * <p> Fills up the {@code TextField}s with the data from the {@code veiculo} to be edited.
+     * @param veiculo which data will fill the {@code TextField}s.
+     */
+    public void preencherCampos(VeiculoVO veiculo) {
         try { 
 
-            ano.setText(vo.getAno());
-            placa.setText(vo.getPlaca());
-            modelo.setText(vo.getModelo());
-            tipo.setValue(vo.getTipo());
-            cor.setText(vo.getCor());
-            km.setText(String.valueOf(vo.getKm()));
+            ano.setText(veiculo.getAno());
+            placa.setText(veiculo.getPlaca());
+            modelo.setText(veiculo.getModelo());
+            tipo.setValue(veiculo.getTipo());
+            cor.setText(veiculo.getCor());
+            km.setText(String.valueOf(veiculo.getKm()));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -126,9 +183,10 @@ public class EditarAutomoveisController {
 
 
 
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         
         if(modelo.getText().isEmpty()){
@@ -224,7 +282,11 @@ public class EditarAutomoveisController {
                 return false;
             }
         }
-
         return true;
+    }
+
+    
+    private void setInvisibleEdit() {
+        this.msgErro.setVisible(false);
     }
 }

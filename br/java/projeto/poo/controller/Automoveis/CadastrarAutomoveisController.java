@@ -60,7 +60,11 @@ public class CadastrarAutomoveisController {
 
 
 
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -181,10 +185,11 @@ public class CadastrarAutomoveisController {
 
 
 
-
-
-
-    
+    /**
+     * <p> Auto-completes the filled content in the {@code TextField}s.
+     * 
+     * <p> This method has no parameters.
+     */
     private void autoComplete(){
         // auto-complete cpf
         if(cpf.getText().length() == 3){
@@ -219,11 +224,11 @@ public class CadastrarAutomoveisController {
 
 
 
-
-    
-    
-
-
+    /**
+     * <p> Searches for the current {@code cliente} in the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void buscarCliente() {
         try {
             if(cpf.getText().length() == 14) {
@@ -245,11 +250,11 @@ public class CadastrarAutomoveisController {
 
 
 
-
-    
-
-
-    
+    /**
+     * <p> Saves the current {@code veiculo} to the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cadastrarVeiculo() {
         try {
             
@@ -291,6 +296,12 @@ public class CadastrarAutomoveisController {
     }
 
     
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelar() {
         Stage stage = (Stage) this.cancelar.getScene().getWindow();
         stage.close();
@@ -298,16 +309,10 @@ public class CadastrarAutomoveisController {
 
 
 
-
-
-
-
-
-
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         
         if(nome.getText().isEmpty()){
@@ -327,7 +332,6 @@ public class CadastrarAutomoveisController {
                 return false;
             }
         }
-
 
 
         if(cpf.getText().isEmpty()){

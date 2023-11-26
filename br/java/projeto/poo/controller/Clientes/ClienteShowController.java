@@ -82,8 +82,48 @@ public class ClienteShowController extends BaseController{
     }
 
 
+
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void acaoCompTela() {
+        telaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                voltaTelaInicial();
+            }
+
+        });
+        
+        editarCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0){
+                abrirEditCli();
+            }
+            
+        });
+
+        novoVeic.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                abrirCadVeic();
+            }
+            
+        });
+    }
+
+
     
-    
+    /**
+     * <p> Opens up a popup screen to create a new {@code veiculo}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void abrirCadVeic() {
         try {
             Stage modalStage = new Stage();
@@ -118,7 +158,11 @@ public class ClienteShowController extends BaseController{
 
 
 
-    
+    /**
+     * <p> Opens up a popup screen to create a new {@code cliente}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void abrirEditCli() {
 
         try {
@@ -143,7 +187,7 @@ public class ClienteShowController extends BaseController{
             palco.setY(centralizarEixoY);
             palco.showAndWait();
 
-            clienteExibido = controller.pegarClienteEditado();
+            clienteExibido = controller.getClienteEditar();
             preencherCampos(clienteExibido);
 
 
@@ -155,9 +199,11 @@ public class ClienteShowController extends BaseController{
 
 
 
-
-
-    private void abrirEditVeic(VeiculoVO vo) {
+    /**
+     * <p> Opens up a popup screen to edit the current {@code veiculo}.
+     * @param veiculo to be edited.
+     */
+    private void abrirEditVeic(VeiculoVO veiculo) {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -166,7 +212,7 @@ public class ClienteShowController extends BaseController{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Automoveis/EditarAutomoveis.fxml"));
             Parent root = loader.load();
             EditarAutomoveisController editarController = loader.getController();
-            editarController.initialize(vo);
+            editarController.initialize(veiculo);
             
             Window wNV = novoVeic.getScene().getWindow();
             double centralizarEixoX, centralizarEixoY;
@@ -190,9 +236,11 @@ public class ClienteShowController extends BaseController{
 
 
 
-
-
-
+    /**
+     * <p> Opens up a exclusion warning popup screen.
+     * @param veiculo to be excluded from the database.
+     * @param index of the {@code veiculo} on its table.
+     */
     private void abrirExclusao(VeiculoVO veiculo, int index) {
         if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse veículo?")){
             realizarExclusao(veiculo, index);
@@ -201,48 +249,12 @@ public class ClienteShowController extends BaseController{
 
 
 
-
-
-    
-
-
-
-
-    private void acaoCompTela() {
-        telaInicial.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent arg0) {
-                voltaTelaInicial();
-            }
-
-        });
-        
-        editarCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent arg0){
-                abrirEditCli();
-            }
-            
-        });
-
-        novoVeic.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent arg0) {
-                abrirCadVeic();
-            }
-            
-        });
-    }
-
-
-
-
-
-
-
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Clientes.ClienteShowController#initActBut() initActBut()} 
+     * that sets the buttons on it.
+     * 
+     * <p> This method has no parameters.
+     */
     private void initTable() {
         columnModeloV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("modelo"));
         columnPlacaV.setCellValueFactory(new PropertyValueFactory<VeiculoVO, String>("placa"));
@@ -254,6 +266,13 @@ public class ClienteShowController extends BaseController{
         initActBut();
     }
 
+
+
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void initActBut () {
         columnButA.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
@@ -275,7 +294,7 @@ public class ClienteShowController extends BaseController{
                 btnOrc.setOnAction(event -> {
                     try {
                         VeiculoVO veiculo = getTableView().getItems().get(getIndex());
-                        novoOrcamento(veiculo.getPlaca());
+                        novoOrcamento(veiculo);
                         
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -316,16 +335,17 @@ public class ClienteShowController extends BaseController{
 
 
 
-
-
-
-    private void novoOrcamento(String placa){
+    /**
+     * <p> Switches up to the screen {@code 'NovoOrcamento'} to create a new {@code orcamento} for the current {@code veiculo}.
+     * @param veiculo of the {@code orcamento} to be created.
+     */
+    private void novoOrcamento(VeiculoVO veiculo){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Orcamentos/NovoOrcamento.fxml"));
             Parent root = loader.load();
 
             CriarOrcamentosController controller = loader.getController();
-            controller.setBuscarVeic(placa);
+            controller.setBuscarVeic(veiculo.getPlaca());
             String text = "Pressione ENTER para confirmar o veículo";
             String style = "-fx-text-fill: black;-fx-font-weight: bold;";
             controller.setDadosCliente(text, style);
@@ -338,15 +358,16 @@ public class ClienteShowController extends BaseController{
 
         }catch(Exception e){
             System.out.println(e.getMessage());
-            ModalsController modalsController = new ModalsController();
             modalsController.abrirModalFalha(e.getMessage());
         }
     }
 
 
 
-
-
+    /**
+     * <p> Fills up all the contents on screen with the {@code cliente} data.
+     * @param cliente which data will be shown on screen.
+     */
     private void preencherCampos(ClienteVO cliente){
         try{
             exibirNome.setText(cliente.getNome());
@@ -371,10 +392,11 @@ public class ClienteShowController extends BaseController{
 
 
 
-
-
-
-
+    /**
+     * <p> Excludes a {@code veiculo} from the database.
+     * @param veiculo to be excluded.
+     * @param index of the {@code veiculo} on its table.
+     */
     private void realizarExclusao(VeiculoVO veiculo, int index) {
         VeiculoBO veiculoExcluido = new VeiculoBO();
         try {
@@ -391,14 +413,7 @@ public class ClienteShowController extends BaseController{
 
 
 
-
-
-
-
-    
     private void voltaTelaInicial(){
         App.navegarEntreTelas("clientes");
     }
-
-
 }

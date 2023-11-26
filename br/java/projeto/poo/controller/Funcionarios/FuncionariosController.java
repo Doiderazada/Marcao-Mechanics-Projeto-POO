@@ -74,40 +74,38 @@ public class FuncionariosController extends BaseController{
 
 
 
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void acaoCompTela(){
+        cadastrarFuncionario.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-    
-    private void buscarFuncionario() {
-        try {
-            ArrayList<FuncionarioVO> funcionarioVOs;
-            if (this.buscar.getText().length() > 2) {
-                msgErroBusca.setVisible(false);
-                if (this.buscar.getText().matches("^\\d{3}.*")) {
-                    funcionarioVOs = funcionarioBO.buscarPorCPF(this.buscar.getText());
-                    if (funcionarioVOs.isEmpty()) {
-                        msgErroBusca.setVisible(true);
-                    }
-                    funcionariosDisponiveis.setAll(funcionarioVOs);
-                } else {
-                    funcionarioVOs = funcionarioBO.buscarPorNome(this.buscar.getText());
-                    if (funcionarioVOs.isEmpty()) {
-                        msgErroBusca.setVisible(true);
-                    }
-                    funcionariosDisponiveis.setAll(funcionarioVOs);
-                }
-            } else {
-                funcionariosDisponiveis.setAll(listaFuncionarios);
-                msgErroBusca.setVisible(false);
+            @Override
+            public void handle(MouseEvent arg0) {
+                abrirCadastro();
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            
+        });
+        buscar.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarFuncionario();
+            }
+            
+        });
     }
 
 
 
-
-    
-    private void abirModalCadastro() {
+    /**
+     * <p> Opens up a popup screen for creating a new {@code funcionario}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void abrirCadastro() {
         try{
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -135,7 +133,14 @@ public class FuncionariosController extends BaseController{
         }
     }
 
-    private void abrirModalEditar(FuncionarioVO funcionario) {
+
+
+    /**
+     * <p> Opens up a popup screen to edit the current {@code funcionario}.
+     * 
+     * @param funcionario to be edited.
+     */
+    private void abrirEdicao(FuncionarioVO funcionario) {
         try {
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -165,7 +170,14 @@ public class FuncionariosController extends BaseController{
         }
     }
 
-    private void abrirModalDeletar(FuncionarioVO funcionario, int indice) {
+
+
+    /**
+     * <p> Opens up an exclusion warning popup screen.
+     * @param funcionario to be excluded.
+     * @param index of the {@code funcionario} on its table.
+     */
+    private void abrirExclusao(FuncionarioVO funcionario, int indice) {
         if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse funcionário")){
             realizarExclusao(funcionario, indice);
         }
@@ -173,34 +185,45 @@ public class FuncionariosController extends BaseController{
 
 
 
-
-
-
-    private void acaoCompTela(){
-        cadastrarFuncionario.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent arg0) {
-                abirModalCadastro();
+    /**
+     * <p> Searches an {@code funcionario} on the database by the given name in the TextField {@link br.java.projeto.poo.controller.Funcionarios.FuncionariosController#buscar buscar}.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void buscarFuncionario() {
+        try {
+            ArrayList<FuncionarioVO> funcionarioVOs;
+            if (this.buscar.getText().length() > 2) {
+                msgErroBusca.setVisible(false);
+                if (this.buscar.getText().matches("^\\d{3}.*")) {
+                    funcionarioVOs = funcionarioBO.buscarPorCPF(this.buscar.getText());
+                    if (funcionarioVOs.isEmpty()) {
+                        msgErroBusca.setVisible(true);
+                    }
+                    funcionariosDisponiveis.setAll(funcionarioVOs);
+                } else {
+                    funcionarioVOs = funcionarioBO.buscarPorNome(this.buscar.getText());
+                    if (funcionarioVOs.isEmpty()) {
+                        msgErroBusca.setVisible(true);
+                    }
+                    funcionariosDisponiveis.setAll(funcionarioVOs);
+                }
+            } else {
+                funcionariosDisponiveis.setAll(listaFuncionarios);
+                msgErroBusca.setVisible(false);
             }
-            
-        });
-        buscar.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent arg0) {
-                buscarFuncionario();
-            }
-            
-        });
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
 
-
-
-
-
+    /**
+     * <p> Sets the action for a clicked row on the main table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void linhaSelecionada() {
         
         tabelaFuncionarios.setRowFactory(event -> {
@@ -223,7 +246,12 @@ public class FuncionariosController extends BaseController{
     }
 
 
-    
+
+    /**
+     * <p> Opens up the user information screen.
+     * 
+     * @param funcionario which data will be shown.
+     */
     private void exibirFuncionario(FuncionarioVO funcionario) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Funcionarios/ExibirFuncionario.fxml"));
@@ -245,9 +273,12 @@ public class FuncionariosController extends BaseController{
 
 
 
-
-
-    
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Funcionarios.FuncionariosController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
+     * that sets the buttons on it.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarTabela() {
         funcNome.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, String>("nome"));
         FuncNivel.setCellValueFactory(new PropertyValueFactory<FuncionarioVO, Integer>("nivel"));
@@ -260,6 +291,12 @@ public class FuncionariosController extends BaseController{
     }
 
     
+
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarBotoesDeAcao() {
         funcAcoes.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
@@ -275,12 +312,12 @@ public class FuncionariosController extends BaseController{
 
                 btnEdit.setOnAction(event -> {
                     FuncionarioVO funcionario = getTableView().getItems().get(getIndex());
-                    abrirModalEditar(funcionario);
+                    abrirEdicao(funcionario);
                 });
 
                 btnDelete.setOnAction(event -> {                    
                     FuncionarioVO funcionario = getTableView().getItems().get(getIndex());
-                    abrirModalDeletar(funcionario, getIndex());
+                    abrirExclusao(funcionario, getIndex());
                 });
             }
 
@@ -300,7 +337,11 @@ public class FuncionariosController extends BaseController{
 
 
 
-
+    /**
+     * <p> Excludes the {@code funcionario} from the database.
+     * @param funcionario to be excluded.
+     * @param index of the {@code funcionario} on tha table.
+     */
     private void realizarExclusao(FuncionarioVO funcionario, int index) {
         if(!funcionarioBO.deletar(funcionario)){
             funcionariosDisponiveis.remove(index);

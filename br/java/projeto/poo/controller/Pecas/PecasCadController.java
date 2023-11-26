@@ -35,12 +35,12 @@ public class PecasCadController {
     }
 
 
-    
 
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         cadastrarPeca.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -99,11 +99,12 @@ public class PecasCadController {
     }
 
 
-
-
-
     
-    
+    /**
+     * <p> Saves the current {@code peca} to the database.
+     * 
+     * <p> This method has no parameters.
+     */ 
     private void cadastrarPeca() {
         
         try {
@@ -130,27 +131,24 @@ public class PecasCadController {
         }
     }
 
+
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarCadastro(){
         Stage palco = (Stage)this.cancelarCadastro.getScene().getWindow();
         palco.close();
     }
 
 
-    
 
-
-
-
-
-    private void setInvisibleCad(){
-        this.mensagemErroCad.setVisible(false);
-    }
-
-
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         if (campoCadNome.getText().isEmpty()) {
             mensagemErroCad.setText("O nome não pode ser vazio");
@@ -224,5 +222,12 @@ public class PecasCadController {
             }
         }
         return true;
+    }
+
+
+
+
+    private void setInvisibleCad(){
+        this.mensagemErroCad.setVisible(false);
     }
 }

@@ -63,10 +63,11 @@ public class ClienteCadController {
 
 
 
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         campoNomeCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -187,10 +188,11 @@ public class ClienteCadController {
 
 
 
-
-
-
-    
+    /**
+     * <p> Auto-completes the filled content in the {@code TextField}s.
+     * 
+     * <p> This method has no parameters.
+     */
     private void autoComplete(){
         // auto-complete cpf
         if(campoCPFCliente.getText().length() == 3){
@@ -225,10 +227,11 @@ public class ClienteCadController {
 
 
 
-
-
-
-    
+    /**
+     * <p> Saves the current {@code cliente} to the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cadastrarCliente() {
         try{
             if (validarCampos()) {
@@ -271,6 +274,12 @@ public class ClienteCadController {
     }
     
     
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarCadastro() {
         Stage palco = (Stage) this.cancelarCadastro.getScene().getWindow();
         palco.close();
@@ -278,10 +287,10 @@ public class ClienteCadController {
     
 
 
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         
         if(campoNomeCliente.getText().isEmpty()){
@@ -301,7 +310,6 @@ public class ClienteCadController {
                 return false;
             }
         }
-
 
 
         if(campoCPFCliente.getText().isEmpty()){
@@ -455,8 +463,6 @@ public class ClienteCadController {
                 return false;
             }
         }
-
-
         return true;
     }
 

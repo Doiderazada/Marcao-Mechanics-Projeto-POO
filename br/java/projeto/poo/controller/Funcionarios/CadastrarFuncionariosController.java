@@ -48,12 +48,11 @@ public class CadastrarFuncionariosController {
 
 
 
-
-
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -155,13 +154,11 @@ public class CadastrarFuncionariosController {
 
 
 
-
-
-
-
-
-
-
+    /**
+     * <p> Auto-completes the filled content in the {@code TextField}s.
+     * 
+     * <p> This method has no parameters.
+     */
     private void autoComplete(){
         // auto-complete cpf
         if(cpf.getText().length() == 3){
@@ -180,7 +177,6 @@ public class CadastrarFuncionariosController {
         };
         
         
-        
         // auto-complete telefone
         if(telefone.getText().length() == 2){
             telefone.setText(telefone.getText() + " ");
@@ -196,13 +192,11 @@ public class CadastrarFuncionariosController {
 
 
 
-
-
-
-
-
-
-    
+    /**
+     * <p> Saves the current {@code funcionario} to the database.
+     * 
+     * <p> This method has no parameters.
+     */    
     private void cadastrarFuncionario() {
         try {
             if (validarCampos()) {
@@ -241,6 +235,11 @@ public class CadastrarFuncionariosController {
 
 
 
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void fecharModal() {
         Stage stage = (Stage) this.fechar.getScene().getWindow();
         stage.close();
@@ -248,10 +247,10 @@ public class CadastrarFuncionariosController {
 
 
 
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos() {
         if (nome.getText().isEmpty()) {
             mensagemDeErro.setText("O nome não pode ser vazio");
@@ -384,8 +383,6 @@ public class CadastrarFuncionariosController {
                 return false;
             }
         }
-
-
         return true;
     }
 

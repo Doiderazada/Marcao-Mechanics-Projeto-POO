@@ -15,10 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class EditarFuncionariosController {
-    private FuncionarioBO funcionarioBO = new FuncionarioBO();
-    private ModalsController modalsController = new ModalsController();
-    private FuncionarioVO funcEditar;
-    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
+    
     
     @FXML private Button cadastrar;
     @FXML private Button fechar;
@@ -31,10 +28,12 @@ public class EditarFuncionariosController {
     @FXML private TextField telefone;
 
 
+    private FuncionarioBO funcionarioBO = new FuncionarioBO();
+    private ModalsController modalsController = new ModalsController();
+    private FuncionarioVO funcEditar;
+    private String textFieldStyle = "-fx-border-color: red; -fx-border-radius: 3px;";
 
-
-
-
+    
     
     public void initialize(FuncionarioVO funcionario) {
         
@@ -47,6 +46,11 @@ public class EditarFuncionariosController {
 
 
 
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         cadastrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -61,7 +65,7 @@ public class EditarFuncionariosController {
 
             @Override
             public void handle(MouseEvent arg0) {
-                fecharModal();
+                cancelarEdicao();
             }
             
         });
@@ -147,11 +151,11 @@ public class EditarFuncionariosController {
 
 
 
-
-
-
-
-
+    /**
+     * <p> Auto-completes the filled content in the {@code TextField}s.
+     * 
+     * <p> This method has no parameters.
+     */
     private void autoComplete(){
         // auto-complete cpf
         if(cpf.getText().length() == 3){
@@ -170,7 +174,6 @@ public class EditarFuncionariosController {
         };
         
         
-        
         // auto-complete telefone
         if(telefone.getText().length() == 2){
             telefone.setText(telefone.getText() + " ");
@@ -186,12 +189,11 @@ public class EditarFuncionariosController {
 
 
 
-
-
-
-
-
-    
+    /**
+     * <p> Edits the current {@code funcionario} in the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void editarFuncionario() {
         try {
             if (validarCampos()) {
@@ -208,7 +210,7 @@ public class EditarFuncionariosController {
                 funcEditar.setTelefone(telefoneVO);
 
                 funcionarioBO.atualizar(funcEditar);
-                fecharModal();
+                cancelarEdicao();
                 modalsController.abrirModalSucesso("Funcionário editado com sucesso");;
                 
             }
@@ -221,26 +223,31 @@ public class EditarFuncionariosController {
     }
 
 
-    private void fecharModal() {
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void cancelarEdicao() {
         Stage stage = (Stage) this.fechar.getScene().getWindow();
         stage.close();
     }
 
 
 
-
-
-
-
-    public void preencherCampos(FuncionarioVO vo) {
+    /**
+     * <p> Fills up the {@code TextField}s with the data from the {@code funcionario} to be edited.
+     * @param funcionario which data will fill the {@code TextField}s.
+     */
+    public void preencherCampos(FuncionarioVO funcionario) {
        try {
-            
-            this.cpf.setText(vo.getCpf());
-            this.nome.setText(vo.getNome());
-            this.salario.setText(String.valueOf(vo.getSalario()));
-            this.nivel.setText(String.valueOf(vo.getNivel()));
-            this.endereco.setText(vo.getEndereco().toString());
-            this.telefone.setText(vo.getTelefone().getNumero());
+            this.cpf.setText(funcionario.getCpf());
+            this.nome.setText(funcionario.getNome());
+            this.salario.setText(String.valueOf(funcionario.getSalario()));
+            this.nivel.setText(String.valueOf(funcionario.getNivel()));
+            this.endereco.setText(funcionario.getEndereco().toString());
+            this.telefone.setText(funcionario.getTelefone().getNumero());
        } catch (Exception e) {
             System.out.println(e.getMessage());
             modalsController.abrirModalFalha(e.getMessage());
@@ -249,11 +256,10 @@ public class EditarFuncionariosController {
 
 
 
-
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos() {
         if (nome.getText().isEmpty()) {
             mensagemDeErro.setText("O nome não pode ser vazio");

@@ -41,11 +41,11 @@ public class PecasEditController {
 
 
 
-
-
-
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela(){
         salvarEdicao.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -63,7 +63,6 @@ public class PecasEditController {
             }
             
         });
-
         campoEditNome.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -100,17 +99,15 @@ public class PecasEditController {
             }
 
         });
-        
     }
 
 
 
-
-
-
-
-
-    
+    /**
+     * <p> Edits the current {@code peca} in the database.
+     * 
+     * <p> This method has no parameters.
+     */
     private void editarPeca() {
         try {
             if(validarCampos()){
@@ -139,6 +136,12 @@ public class PecasEditController {
     }
 
     
+
+    /**
+     * <p> Closes the current screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void cancelarEdicao(){
         Stage palco = (Stage)this.cancelarEdicao.getScene().getWindow();
         palco.close();
@@ -146,11 +149,10 @@ public class PecasEditController {
 
 
 
-
-
-
-
-
+    /**
+     * <p> Fills up the {@code TextField}s with the data from the {@code peca} to be edited.
+     * @param peca which data will fill the {@code TextField}s.
+     */
     private void preencherCampos(PecaVo peca){
         
         try{
@@ -166,22 +168,10 @@ public class PecasEditController {
 
 
 
-
-
-
-
-    
-    private void setInvisibleEdit(){
-        this.mensagemErroEdit.setVisible(false);
-    }
-
-
-
-
-
-
-
-
+    /**
+     * <p> Validates the contents from the {@code TextField}s on screen.
+     * @return <b>true</b> if the content of all {@code TextField} are valid. 
+     */
     private boolean validarCampos(){
         if (campoEditNome.getText().isEmpty()) {
             mensagemErroEdit.setText("O nome não pode ser vazio");
@@ -255,5 +245,10 @@ public class PecasEditController {
             }
         }
         return true;
+    }
+
+    
+    private void setInvisibleEdit(){
+        this.mensagemErroEdit.setVisible(false);
     }
 }

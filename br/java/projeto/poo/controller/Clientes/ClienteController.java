@@ -71,10 +71,37 @@ public class ClienteController extends BaseController{
 
 
 
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
+    private void acaoCompTela(){
+        novoCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                abrirCadastro();
+            }
+            
+        });
+        campoBusca.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                buscarCliente();
+            }
+            
+        });
+    }
 
     
 
-    
+    /**
+     * <p> Opens up a popup screen for creating a new {@code cliente}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void abrirCadastro() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/CadastrarCliente.fxml"));
@@ -101,6 +128,12 @@ public class ClienteController extends BaseController{
     }
 
 
+
+    /**
+     * <p> Opens up a popup screen to edit the current {@code cliente}.
+     * 
+     * @param cliente to be edited.
+     */
     private void abrirEdicao(ClienteVO cliente) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/EditarCliente.fxml"));
@@ -131,6 +164,11 @@ public class ClienteController extends BaseController{
 
 
 
+    /**
+     * <p> Opens up an exclusion warning popup screen.
+     * @param cliente to be excluded.
+     * @param index of the {@code cliente} on its table.
+     */
     private void abrirExclusao(ClienteVO cliente, int index) {
         if(modalsController.abrirModalExcluir("Tem certeza que deseja excluir esse cliente?")){
             realizarExclusao(cliente, index);
@@ -139,34 +177,11 @@ public class ClienteController extends BaseController{
 
 
 
-
-
-
-
-
-
-    private void acaoCompTela(){
-        novoCliente.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent arg0) {
-                abrirCadastro();
-            }
-            
-        });
-        campoBusca.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent arg0) {
-                buscarCliente();
-            }
-            
-        });
-    }
-
-
-
-    
+    /**
+     * <p> Searches an {@code cliente} on the database by the given name in the TextField {@link br.java.projeto.poo.controller.Clientes.ClienteController#campoBusca campoBusca}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void buscarCliente(){
         try {
             ArrayList<ClienteVO> clienteVOs;
@@ -196,9 +211,12 @@ public class ClienteController extends BaseController{
     }
 
 
-
     
-    
+    /**
+     * <p> Sets the action for a clicked row on the main table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void linhaSelecionada() {
         
         tabelaClientes.setRowFactory(event -> {
@@ -216,12 +234,15 @@ public class ClienteController extends BaseController{
             });
             return myRow;
         });
-        
-        
     }
 
 
-    
+
+    /**
+     * <p> Opens up the user information screen.
+     * 
+     * @param cliente wich data will be shown.
+     */
     private void exibirCliente(ClienteVO cliente) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Clientes/ExibirCliente.fxml"));
@@ -245,9 +266,12 @@ public class ClienteController extends BaseController{
 
 
 
-
-
-
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Clientes.ClienteController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
+     * that sets the buttons on it.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarTabela(){
         columnNome.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("nome"));
         columnCPF.setCellValueFactory(new PropertyValueFactory<ClienteVO, String>("cpf"));
@@ -258,6 +282,13 @@ public class ClienteController extends BaseController{
         inicializarBotoesDeAcao();
     }
 
+
+
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarBotoesDeAcao() {
         columnBut.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
@@ -300,10 +331,12 @@ public class ClienteController extends BaseController{
     }
 
 
-    
 
-
-
+    /**
+     * <p> Excludes the {@code cliente} from the database.
+     * @param cliente to be excluded.
+     * @param index of the {@code cliente} on tha table.
+     */
     private void realizarExclusao(ClienteVO cliente, int index) {
         ClienteBO clienteExcluido = new ClienteBO();
         if(!clienteExcluido.deletar(cliente)){

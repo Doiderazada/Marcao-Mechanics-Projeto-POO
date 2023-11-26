@@ -66,8 +66,11 @@ public class ServicosController extends BaseController{
 
 
 
-
-
+    /**
+     * <p> Sets the action from all elements on its corresponding screen.
+     * 
+     * <p> This method has no parameters.
+     */
     private void acaoCompTela() {
         novoServico.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -89,6 +92,11 @@ public class ServicosController extends BaseController{
     
 
 
+    /**
+     * <p> Opens up a popup screen for creating a new {@code servico}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void abrirCadastro() {
         try {    
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Servicos/CadastrarServico.fxml"));
@@ -114,14 +122,20 @@ public class ServicosController extends BaseController{
         }
     }
 
-    
-    private void abrirEdicao(ServicoVO servico, int index) {
+
+
+    /**
+     * <p> Opens up a popup screen to edit the current {@code servico}.
+     * 
+     * @param servico to be edited.
+     */
+    private void abrirEdicao(ServicoVO servico) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/Servicos/EditarServico.fxml"));
             Parent root = loader.load();
 
             ServicosEditController controller = loader.getController();
-            controller.initialize(servico, index);
+            controller.initialize(servico);
 
             Scene janelaCad = new Scene(root);
             Stage palco = new Stage(StageStyle.UNDECORATED);
@@ -146,6 +160,11 @@ public class ServicosController extends BaseController{
 
 
 
+    /**
+     * <p> Opens up an exclusion warning popup screen.
+     * @param servico to be excluded.
+     * @param index of the {@code servico} on its table.
+     */
     private void abrirExclusao(ServicoVO servico, int index) {
         if(modalsController.abrirModalExcluir("Tem certeza que deseja exluir esse serviço?")){
             realizarExclusao(servico, index);
@@ -154,9 +173,11 @@ public class ServicosController extends BaseController{
 
 
 
-
-
-    
+    /**
+     * <p> Searches an {@code servico} on the database by the given name in the TextField {@link br.java.projeto.poo.controller.Servicos.ServicosController#buscarServico buscaServico}.
+     * 
+     * <p> This method has no parameters.
+     */
     private void buscarServico(){
         try {
             ArrayList<ServicoVO> servicos;
@@ -182,8 +203,12 @@ public class ServicosController extends BaseController{
 
 
 
-
-
+    /**
+     * <p> Sets the main table and then calls the method {@link br.java.projeto.poo.controller.Servicos.ServicosController#inicializarBotoesDeAcao() inicializarBotoesDeAcao} 
+     * that sets the buttons on it.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarTabela() {
         columnServ.setCellValueFactory(new PropertyValueFactory<ServicoVO, String>("nome"));
         columnVal.setCellValueFactory(new PropertyValueFactory<ServicoVO, Double>("valor"));
@@ -191,6 +216,13 @@ public class ServicosController extends BaseController{
         inicializarBotoesDeAcao();
     }
 
+
+
+    /**
+     * <p> Sets the buttons on its corresponding table.
+     * 
+     * <p> This method has no parameters.
+     */
     private void inicializarBotoesDeAcao () {
         columnBut.setCellFactory(param -> new TableCell<>() {
             private final Button btnEdit = new Button();
@@ -206,7 +238,7 @@ public class ServicosController extends BaseController{
                 btnEdit.setOnAction(event -> {
                     try {
                         ServicoVO servico = getTableView().getItems().get(getIndex());
-                        abrirEdicao(servico, getIndex());
+                        abrirEdicao(servico);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -236,11 +268,13 @@ public class ServicosController extends BaseController{
         });
     }
 
-    
 
 
-
-
+    /**
+     * <p> Excludes the {@code servico} from the database.
+     * @param servico to be excluded.
+     * @param index of the {@code servico} on tha table.
+     */
     private void realizarExclusao(ServicoVO servico, int index) {
         ServicoBO servicoExcluido = new ServicoBO();
             if(!servicoExcluido.deletar(servico)){

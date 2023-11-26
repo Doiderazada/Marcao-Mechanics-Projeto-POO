@@ -32,43 +32,91 @@ public class ModalsController {
         CloseModalE();
     }
 
+    /**
+     * <p> Sets the message to display in the popup. 
+     * @param mensagem to be displayed.
+     */
     private void ExibirMensagemExcluir(String mensagem){
         mensagemExclusao.setText(mensagem);
     }
 
+
+
+    /**
+     * <p> Sets the message to display in the popup. 
+     * @param mensagem to be displayed.
+     */
     private void ExibirMensagemFalha(String mensagem){
         mensagemFalha.setText(mensagem);
     }
     
+
+
+    /**
+     * <p> Sets the message to display in the popup. 
+     * @param mensagem to be displayed.
+     */
     private void ExibirMensagemSucesso(String mensagem){
         mensagemSucesso.setText(mensagem);
     }
 
+
+
+    /**
+     * <p> Closes the current popup.
+     * 
+     * <p> This method has no parameters.
+     */
     @FXML
     private void CloseModalE(){
         Stage palco = (Stage)this.ModalExcluir.getScene().getWindow();
         palco.close();
     }
 
+
+
+    /**
+     * <p> Closes the current popup.
+     * 
+     * <p> This method has no parameters.
+     */
     @FXML
     private void CloseModalS(){
         Stage palco = (Stage)this.ModalSucess.getScene().getWindow();
         palco.close();
     }
+
+
+
+    /**
+     * <p> Closes the current popup.
+     * 
+     * <p> This method has no parameters.
+     */
     @FXML
     private void CloseModalF(){
         Stage palco = (Stage)this.ModalFail.getScene().getWindow();
         palco.close();
     }
 
+
+
     private void setExclusaoValid(){
         this.exclusaoValid = true;
     }
 
+
+    
     public boolean getExclusaoValid(){
         return this.exclusaoValid;
     }
 
+
+
+    /**
+     * <p> Opens up a confirmation popup screen.
+     * @param mensagem the message to be displayed.
+     */
     public void abrirModalSucesso(String mensagem) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Modals/ModalSucesso.fxml"));
@@ -90,6 +138,12 @@ public class ModalsController {
         }
     }
 
+
+
+    /**
+     * <p> Opens up an error popup screen.
+     * @param mensagem the message to be displayed.
+     */
     public void abrirModalFalha(String mensagem) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Modals/ModalFalha.fxml"));
@@ -110,6 +164,12 @@ public class ModalsController {
         }
     }
 
+
+
+    /**
+     * <p> Opens up an exclusion popup screen.
+     * @param mensagem the message to be displayed.
+     */
     public boolean abrirModalExcluir(String mensagem) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Modals/ModalExcluir.fxml"));
