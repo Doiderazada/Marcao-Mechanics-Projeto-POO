@@ -73,7 +73,7 @@ public class ClienteDao extends BaseDao <ClienteVO>{
         }
     }
 
-    public ClienteVO atualizar(ClienteVO cliente) throws SQLException {
+    public boolean atualizar(ClienteVO cliente) throws SQLException {
         String query = "UPDATE clientes SET nome = ?, cpf = ? WHERE id = ?";
         PreparedStatement ps = null;
 
@@ -96,7 +96,7 @@ public class ClienteDao extends BaseDao <ClienteVO>{
             }
 
             ps.executeUpdate();
-            return cliente;
+            return true;
 
         } catch (SQLException e) {
             e.getMessage();

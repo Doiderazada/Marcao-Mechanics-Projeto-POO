@@ -95,9 +95,14 @@ public class ServicosEditController {
                 servicoEditar.setNome(nome);
                 servicoEditar.setValor(valor);
 
-                servicoBO.atualizar(servicoEditar);
-                cancelarEdicao();
-                modalsController.abrirModalSucesso("Peça editada com sucesso.");
+                if(servicoBO.atualizar(servicoEditar)){
+                    cancelarEdicao();
+                    modalsController.abrirModalSucesso("Serviço editado com sucesso.");
+                } else {
+                    cancelarEdicao();
+                    modalsController.abrirModalFalha("Não foi possível editar o serviço.");
+                }
+                
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

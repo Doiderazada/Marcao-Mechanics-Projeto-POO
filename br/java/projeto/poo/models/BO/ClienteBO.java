@@ -80,7 +80,7 @@ public class ClienteBO {
         }     
     }
 
-    public ClienteVO atualizar(ClienteVO vo) throws Exception {
+    public boolean atualizar(ClienteVO vo) throws Exception {
         try {
             
             ClienteDao cliente = new ClienteDao();

@@ -8,6 +8,6 @@ public interface BasicInterfaceDao <VOData> {
     public boolean deletar(VOData id) throws SQLException;
     public ResultSet buscarPorId(VOData id) throws SQLException;
     public ResultSet listar() throws SQLException;
-    public VOData atualizar(VOData data) throws SQLException;
+    public boolean atualizar(VOData data) throws SQLException;
     
 }

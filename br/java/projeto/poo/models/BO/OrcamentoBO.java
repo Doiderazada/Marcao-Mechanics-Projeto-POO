@@ -72,7 +72,7 @@ public class OrcamentoBO {
 
 
 
-    public OrcamentoVO atualizar(OrcamentoVO VO) throws Exception {
+    public boolean atualizar(OrcamentoVO VO) throws Exception {
         try {
            return orcamentoDao.atualizar(VO);
         } catch (Exception e) {

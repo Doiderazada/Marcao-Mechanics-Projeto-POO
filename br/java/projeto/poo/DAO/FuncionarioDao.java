@@ -64,7 +64,7 @@ public class FuncionarioDao extends BaseDao <FuncionarioVO> {
         }
     }
 
-    public FuncionarioVO atualizar(FuncionarioVO funcionario) throws SQLException {
+    public boolean atualizar(FuncionarioVO funcionario) throws SQLException {
         String query = "UPDATE funcionarios SET nome = ?, cpf = ?, salario = ?, dataDeAdmissao = ?, nivel = ?, senha = ? WHERE id = ?";
         PreparedStatement ps = null;
 
@@ -89,7 +89,7 @@ public class FuncionarioDao extends BaseDao <FuncionarioVO> {
                 telefone.atualizar(funcionario.getTelefone());
             }
 
-            return funcionario;
+            return true;
 
         } catch (SQLException e) {
             throw e;

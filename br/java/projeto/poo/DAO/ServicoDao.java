@@ -46,7 +46,7 @@ public class ServicoDao <VO extends ServicoVO> extends BaseDao <VO>{
         }
     }
 
-    public VO atualizar(VO Servico) throws SQLException {
+    public boolean atualizar(VO Servico) throws SQLException {
         String query = "UPDATE servicos SET nome = ?, preco = ? WHERE id = ?";
         PreparedStatement ps = null;
 
@@ -56,7 +56,7 @@ public class ServicoDao <VO extends ServicoVO> extends BaseDao <VO>{
             ps.setString(1, Servico.getNome());
             ps.setDouble(2, Servico.getValor());
             ps.executeUpdate();
-            return Servico;
+            return true;
 
         } catch (SQLException e) {
             throw e;

@@ -53,7 +53,7 @@ public class VeiculoDao extends BaseDao <VeiculoVO>{
         }
     }
 
-    public VeiculoVO atualizar(VeiculoVO veiculo) throws SQLException {
+    public boolean atualizar(VeiculoVO veiculo) throws SQLException {
         String query = "UPDATE veiculos SET cor = ?, modelo = ?, placa = ?, cpfDono = ?, tipo = ?, ano = ?, km = ? WHERE id = ?";
         PreparedStatement ps = null;
 
@@ -68,7 +68,7 @@ public class VeiculoDao extends BaseDao <VeiculoVO>{
             ps.setString(6, veiculo.getAno());
             ps.setDouble(7, veiculo.getKm());
             ps.executeUpdate();
-            return veiculo; 
+            return true; 
 
         } catch (SQLException e) {
             throw e;

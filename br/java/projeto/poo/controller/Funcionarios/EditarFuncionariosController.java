@@ -209,9 +209,13 @@ public class EditarFuncionariosController {
                 funcEditar.setSalario(Double.parseDouble(salario.getText()));
                 funcEditar.setTelefone(telefoneVO);
 
-                funcionarioBO.atualizar(funcEditar);
-                cancelarEdicao();
-                modalsController.abrirModalSucesso("Funcionário editado com sucesso");;
+                if(funcionarioBO.atualizar(funcEditar)){
+                    cancelarEdicao();
+                    modalsController.abrirModalSucesso("Funcionário editado com sucesso");
+                } else {
+                    cancelarEdicao();
+                    modalsController.abrirModalFalha("Não foi possível editar o funcionário.");
+                }
                 
             }
             

@@ -125,9 +125,14 @@ public class PecasEditController {
                 pecaEditar.setFabricante(fabricante);
                 pecaEditar.setQuantidade(quantidade);
                 pecaEditar.setValor(valor);
-                pecaBO.atualizar(pecaEditar);
-                cancelarEdicao();
-                modalsController.abrirModalSucesso("Peça editada com sucesso.");
+                if(pecaBO.atualizar(pecaEditar)){
+                    cancelarEdicao();
+                    modalsController.abrirModalSucesso("Peça editada com sucesso.");
+                } else {
+                    cancelarEdicao();
+                    modalsController.abrirModalFalha("Não foi possível editar a peça.");
+                }
+                
             }
         } catch(Exception ex) {
             cancelarEdicao();

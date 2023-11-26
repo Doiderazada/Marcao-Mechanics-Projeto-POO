@@ -63,10 +63,10 @@ public class ServicoBO implements BaseInterfaceBO<ServicoVO>{
     }
 
     @Override
-    public ServicoVO atualizar(ServicoVO vo) throws Exception {
+    public boolean atualizar(ServicoVO vo) throws Exception {
         try{return servicoDao.atualizar(vo);}
         catch(Exception e){e.printStackTrace();}
-        return vo;
+        return false;
     }
 
     @Override

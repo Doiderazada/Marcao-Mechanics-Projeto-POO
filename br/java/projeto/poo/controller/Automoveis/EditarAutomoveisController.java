@@ -136,10 +136,13 @@ public class EditarAutomoveisController {
                 veiculoEditar.setPlaca(placa.getText());
                 veiculoEditar.setTipo(tipo.getValue());
                 
-                veiculoBO.atualizar(veiculoEditar);
-                
-                cancelar();
-                modalsController.abrirModalSucesso("Veículo editado com sucesso.");
+                if(veiculoBO.atualizar(veiculoEditar)){
+                    cancelar();
+                    modalsController.abrirModalSucesso("Veículo editado com sucesso.");
+                } else {
+                    cancelar();
+                    modalsController.abrirModalFalha("Não foi possível editar o veículo.");
+                }
             }
 
         } catch (Exception e) {

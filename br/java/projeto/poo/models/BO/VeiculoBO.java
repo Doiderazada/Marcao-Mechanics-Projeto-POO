@@ -89,7 +89,7 @@ public class VeiculoBO {
         return false;
     }
 
-    public VeiculoVO atualizar(VeiculoVO vo) throws Exception {
+    public Boolean atualizar(VeiculoVO vo) throws Exception {
         try {
             ResultSet verificarVeiculo = veiculoDao.buscarPorId(vo);
 

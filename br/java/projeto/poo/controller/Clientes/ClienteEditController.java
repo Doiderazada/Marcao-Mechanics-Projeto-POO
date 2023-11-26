@@ -188,10 +188,14 @@ public class ClienteEditController {
                 clienteEditar.setEndereco(enderecoVO);
                 clienteEditar.setTelefone(telefoneVO);
 
-                clienteBO.atualizar(clienteEditar);
+                if(clienteBO.atualizar(clienteEditar)){
+                    cancelarEdicao();
+                    modalsController.abrirModalSucesso("Cliente editado com sucesso!");
+                } else {
+                    cancelarEdicao();
+                    modalsController.abrirModalFalha("Não foi possível editar o cliente.");
+                }
                 
-                cancelarEdicao();
-                modalsController.abrirModalSucesso("Cliente editado com sucesso!");
             }
 
         }

@@ -96,7 +96,7 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
         }
     }
 
-    public OrcamentoVO atualizar(OrcamentoVO orcamento) throws SQLException {
+    public boolean atualizar(OrcamentoVO orcamento) throws SQLException {
         String query = "UPDATE orcamentos SET valor = ? WHERE id = ?";
         String queryPecas = "INSERT INTO pecas_orcamentos (idOrcamento, idPeca, quantidade) VALUES (?, ?, ?)";
         String queryServicos = "INSERT INTO servicos_orcamentos (idOrcamento, idServico) values (?, ?)";
@@ -144,7 +144,7 @@ public class OrcamentoDao extends BaseDao <OrcamentoVO>{
             }
             orcamento.setPecas(pecas);
             orcamento.setServicos(servicos);
-            return orcamento;
+            return true;
 
         } catch (SQLException e) {
             throw e;

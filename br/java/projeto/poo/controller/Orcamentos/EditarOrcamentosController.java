@@ -159,9 +159,14 @@ public class EditarOrcamentosController extends BaseController {
             orcamentoEditado.setPecas(pecas);
             orcamentoEditado.setServicos(servicos);
             orcamentoEditado.setValor(valor);
-            orcamentoBO.atualizar(orcamentoEditado);
-            modalsController.abrirModalSucesso("Orcamento editado com sucesso.");
-            App.navegarEntreTelas("orcamentos");
+            if(orcamentoBO.atualizar(orcamentoEditado)){
+                modalsController.abrirModalSucesso("Orcamento editado com sucesso.");
+                App.navegarEntreTelas("orcamentos");
+            } else {
+                modalsController.abrirModalFalha("Não foi possível editar o orçamento.");
+                App.navegarEntreTelas("orcamentos");
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
             modalsController.abrirModalFalha("Erro ao editar: " + e.getMessage());

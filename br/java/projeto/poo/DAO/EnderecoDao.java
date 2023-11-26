@@ -67,7 +67,7 @@ public class EnderecoDao extends BaseDao <EnderecoVO>{
         }
     }
 
-    public EnderecoVO atualizar(EnderecoVO endereco) throws SQLException {
+    public boolean atualizar(EnderecoVO endereco) throws SQLException {
         String query = "UPDATE enderecos SET cpfCliente = ?, cpfFuncionario = ?, rua = ?, bairro = ?, cidade = ?, num_casa = ? WHERE id = ?";
         PreparedStatement ps = null;
 
@@ -81,7 +81,7 @@ public class EnderecoDao extends BaseDao <EnderecoVO>{
             ps.setString(5, endereco.getCidade());
             ps.setString(6, endereco.getNumero());
             ps.executeUpdate();
-            return endereco; 
+            return true; 
 
         } catch (SQLException e) {
             throw e;

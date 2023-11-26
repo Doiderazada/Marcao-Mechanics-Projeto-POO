@@ -98,7 +98,7 @@ public class PecaBO implements BaseInterfaceBO<PecaVo>{
     }
 
     @Override
-    public PecaVo atualizar(PecaVo vo) throws Exception{
+    public boolean atualizar(PecaVo vo) throws Exception{
         try {
             PecaDao<PecaVo> pecaDao = new PecaDao<PecaVo>();
             return pecaDao.atualizar(vo);
@@ -106,7 +106,7 @@ public class PecaBO implements BaseInterfaceBO<PecaVo>{
             System.out.println(e.getMessage() + "\n");
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override

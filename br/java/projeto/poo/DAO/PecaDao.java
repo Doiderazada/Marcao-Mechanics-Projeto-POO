@@ -48,7 +48,7 @@ public class PecaDao <VO extends PecaVo> extends BaseDao <VO>{
         }
     }
 
-    public VO atualizar(VO peca) throws SQLException {
+    public boolean atualizar(VO peca) throws SQLException {
         String query = "UPDATE pecas SET nome = ?, fabricante = ?, preco = ?, quantidade = ? WHERE id = ?";
         PreparedStatement ps = null;
 
@@ -60,7 +60,7 @@ public class PecaDao <VO extends PecaVo> extends BaseDao <VO>{
             ps.setInt(4,peca.getQuantidade());
             ps.setLong(5, peca.getId());
             ps.executeUpdate();
-            return peca;
+            return true;
 
         } catch (SQLException e) {
             throw e;

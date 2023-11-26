@@ -114,7 +114,7 @@ public class FuncionarioBO {
         }
     }
 
-    public FuncionarioVO atualizar(FuncionarioVO vo) throws Exception {
+    public boolean atualizar(FuncionarioVO vo) throws Exception {
         try {
             return funcionarioDao.atualizar(vo);
         } 
