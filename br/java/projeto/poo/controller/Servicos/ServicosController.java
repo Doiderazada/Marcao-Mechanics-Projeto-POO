@@ -199,7 +199,10 @@ public class ServicosController extends BaseController{
 
             {
                 btnEdit.getStyleClass().add("btn-edit");
+                btnEdit.setPrefSize(25, 25);
                 btnDelete.getStyleClass().add("btn-delete");
+                btnDelete.setPrefSize(25, 25);
+                
                 btnEdit.setOnAction(event -> {
                     try {
                         ServicoVO servico = getTableView().getItems().get(getIndex());

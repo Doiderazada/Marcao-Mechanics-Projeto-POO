@@ -245,6 +245,8 @@ public class EditarOrcamentosController extends BaseController {
 
             {
                 btnDelete.getStyleClass().add("btn-delete");
+                btnDelete.setPrefSize(25, 25);
+
                 btnDelete.setOnAction(event -> {
                     try {
                         PecaVo peca = getTableView().getItems().get(getIndex());
@@ -345,6 +347,8 @@ public class EditarOrcamentosController extends BaseController {
 
             {
                 btnDelete.getStyleClass().add("btn-delete");
+                btnDelete.setPrefSize(25, 25);
+                
                 btnDelete.setOnAction(event -> {
                     try {
                         ServicoVO servicoVo = getTableView().getItems().get(getIndex());

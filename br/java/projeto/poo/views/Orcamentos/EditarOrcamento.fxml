@@ -56,7 +56,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Serviços" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
@@ -268,10 +268,10 @@
                                                 <ListView fx:id="pecasBuscadas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
                                                 <TableView fx:id="tbPecas" editable="true" layoutX="220.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="198.0" prefWidth="650.0">
                                                   <columns>
-                                                    <TableColumn fx:id="nomePeca" prefWidth="220.0" text="Peça" />
-                                                    <TableColumn fx:id="valorPeca" maxWidth="150.0" minWidth="0.0" prefWidth="220.0" text="Valor" />
-                                                      <TableColumn fx:id="quantidade" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="200.0" text="Quantidade" />
-                                                      <TableColumn fx:id="acaoPeca" maxWidth="1.7976931348623157E308" text="Ação" />
+                                                    <TableColumn fx:id="nomePeca" minWidth="-Infinity" prefWidth="220.0" text="Peça" />
+                                                    <TableColumn fx:id="valorPeca" maxWidth="150.0" minWidth="-Infinity" prefWidth="220.0" text="Valor" />
+                                                      <TableColumn fx:id="quantidade" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" text="Quantidade" />
+                                                      <TableColumn fx:id="acaoPeca" maxWidth="1.7976931348623157E308" minWidth="-Infinity" resizable="false" text="Ação" />
                                                       <TableColumn fx:id="quantidadeBanco" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="200.0" text="QuantidadeNoBanco" visible="false" />
                                                   </columns>
                                                    <stylesheets>
@@ -295,9 +295,9 @@
                                                 <ListView fx:id="servicosBuscados" prefHeight="200.0" prefWidth="200.0" />
                                                 <TableView fx:id="tbServicos" layoutX="222.0" prefHeight="198.0" prefWidth="650.0">
                                                    <columns>
-                                                      <TableColumn fx:id="servicoNome" prefWidth="390.0" text="Serviço" />
-                                                      <TableColumn fx:id="servicoValor" prefWidth="180.0" text="Valor" />
-                                                      <TableColumn fx:id="acaoServico" text="Ação" />
+                                                      <TableColumn fx:id="servicoNome" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="390.0" text="Serviço" />
+                                                      <TableColumn fx:id="servicoValor" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="180.0" text="Valor" />
+                                                      <TableColumn fx:id="acaoServico" maxWidth="1.7976931348623157E308" minWidth="-Infinity" resizable="false" text="Ação" />
                                                    </columns>
                                                    <stylesheets>
                                                       <URL value="@../css/tabela.css" />

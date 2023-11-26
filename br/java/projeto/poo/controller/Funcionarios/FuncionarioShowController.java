@@ -44,10 +44,11 @@ public class FuncionarioShowController extends BaseController{
 
     public void initialize(FuncionarioVO funcionario){
         
+        acaoCompTela();
         funcionarioExibido = new FuncionarioVO();
         funcionarioExibido = funcionario;
         verSenhaTF.setVisible(false);
-        acaoCompTela();
+        verSenha.getStyleClass().setAll("btn-senha-shown");
         preencherCampos(funcionarioExibido);
     
     }
@@ -128,12 +129,12 @@ public class FuncionarioShowController extends BaseController{
                     senhaTF.setVisible(false);
                     verSenhaTF.setText(funcionarioExibido.getSenha());
                     verSenhaTF.setVisible(true);
-                    verSenha.getStyleClass().setAll("btn-senha-shown");
+                    verSenha.getStyleClass().setAll("btn-senha-hiden");
                 }else {
                     senhaTF.setVisible(true);
                     verSenhaTF.setText(null);
                     verSenhaTF.setVisible(false);
-                    verSenha.getStyleClass().setAll("btn-senha-hiden");
+                    verSenha.getStyleClass().setAll("btn-senha-shown");
                 }
             }
             

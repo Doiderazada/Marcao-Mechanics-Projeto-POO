@@ -54,7 +54,7 @@ public class AutomoveisController extends BaseController{
 
 
     @FXML
-    public void initialize () {
+    public void initialize() {
         try {
             super.initialize();
             acaoCompTela();

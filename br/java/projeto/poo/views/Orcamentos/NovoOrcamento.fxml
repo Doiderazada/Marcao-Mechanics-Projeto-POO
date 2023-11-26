@@ -56,7 +56,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Serviços" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
@@ -254,7 +254,7 @@
                                                     <TableColumn fx:id="nomePeca" prefWidth="220.0" text="Peça" />
                                                     <TableColumn fx:id="valorPeca" maxWidth="150.0" minWidth="0.0" prefWidth="220.0" text="Valor" />
                                                       <TableColumn fx:id="quantidade" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="200.0" text="Quantidade" />
-                                                      <TableColumn fx:id="acaoPeca" maxWidth="1.7976931348623157E308" text="Ação" />
+                                                      <TableColumn fx:id="acaoPeca" maxWidth="1.7976931348623157E308" minWidth="-Infinity" resizable="false" text="Ação" />
                                                       <TableColumn fx:id="quantidadeBanco" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="200.0" text="QuantidadeNoBanco" visible="false" />
                                                   </columns>
                                                    <stylesheets>
@@ -280,7 +280,7 @@
                                                    <columns>
                                                       <TableColumn fx:id="servicoNome" prefWidth="390.0" text="Serviço" />
                                                       <TableColumn fx:id="servicoValor" prefWidth="180.0" text="Valor" />
-                                                      <TableColumn fx:id="acaoServico" text="Ação" />
+                                                      <TableColumn fx:id="acaoServico" maxWidth="1.7976931348623157E308" minWidth="-Infinity" resizable="false" text="Ação" />
                                                    </columns>
                                                    <stylesheets>
                                                       <URL value="@../css/tabela.css" />

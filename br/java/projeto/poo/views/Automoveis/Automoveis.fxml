@@ -31,10 +31,10 @@
                            <children>
                               <Label text="Início" />
                               <Label text=" &gt; " />
-                              <Label text="Automoveis" />
+                              <Label text="Automóveis" />
                            </children>
                         </HBox>
-                        <Label text="Lista de Automoveis">
+                        <Label text="Lista de Automóveis">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -51,12 +51,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="buscar" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por placa ou dono" styleClass="searchField" stylesheets="@../css/buttons.css">
+                        <TextField fx:id="buscar" focusTraversable="false" prefHeight="40.0" prefWidth="300.0" promptText="Buscar por placa ou dono" styleClass="searchField" stylesheets="@../css/buttons.css">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <Button fx:id="cadastrar" alignment="CENTER_RIGHT" ellipsisString="" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" stylesheets="@../css/buttons.css" text="Novo Veiculo" textOverrun="CLIP" HBox.hgrow="ALWAYS">
+                        <Button fx:id="cadastrar" alignment="CENTER_RIGHT" ellipsisString="" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" stylesheets="@../css/buttons.css" text="Novo Veículo" textOverrun="CLIP" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -86,7 +86,7 @@
                 <TableColumn fx:id="proprietario" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Proprietário" />
                 <TableColumn fx:id="placa" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Placa" />
                   <TableColumn fx:id="modelo" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Modelo do automóvel" />
-                  <TableColumn fx:id="acoes" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Açoes" />
+                  <TableColumn fx:id="acoes" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Ações" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -137,7 +137,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Serviços" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>

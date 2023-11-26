@@ -41,6 +41,7 @@ public class LoginController {
             }
             
         });
+
         nomeUsuario.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -50,6 +51,15 @@ public class LoginController {
             }
             
         });
+        nomeUsuario.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent arg0) {
+                autoComplete();
+            }
+            
+        });
+
         password.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -64,14 +74,33 @@ public class LoginController {
             @Override
             public void handle(KeyEvent arg0) {
                 if (arg0.getCode() == KeyCode.ENTER) {
+                    logar.requestFocus();
                     logarUsuario();
                 }
             }
             
-        });;
+        });
     }
 
+
+    private void autoComplete(){
+        if(nomeUsuario.getText().length() == 3){
+            nomeUsuario.setText(nomeUsuario.getText() + ".");
+            nomeUsuario.end();
+        };
+
+        if(nomeUsuario.getText().length() == 7){
+            nomeUsuario.setText(nomeUsuario.getText() + ".");
+            nomeUsuario.end();
+        };
+        
+        if(nomeUsuario.getText().length() == 11){
+            nomeUsuario.setText(nomeUsuario.getText() + "-");
+            nomeUsuario.end();
+        };
+    }
     
+
     private void logarUsuario() {
         try {
             if(validarCampos()) {    

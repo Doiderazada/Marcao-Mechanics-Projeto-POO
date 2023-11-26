@@ -2,14 +2,13 @@
     -fx-background-color: #064EB9;
     -fx-text-fill: #FFF;
 }
-
 .btn-primary:hover {
     -fx-background-color: #0E65CC;
 }
-
 .btn-primary:pressed {
     -fx-background-color: #185bcf;
 }
+
 
 .btn-user-icon {
     -fx-background-image:url('../../public/userAdd.png');
@@ -53,18 +52,19 @@
     -fx-font-size: 13px;
 }
 
+
 .btn-back{
     -fx-background-color: transparent;
     -fx-text-fill: #064eb9;
     -fx-border-color: #064eb9;
     -fx-border-radius: 5px;
 }
-
 .btn-back:hover{
     -fx-background-color: #064eb9;
     -fx-text-fill: #ffffff;
 
 }
+
 
 .btn-edit{
     -fx-background-image:url('../../public/EditButtonOriginal.png');
@@ -74,7 +74,6 @@
     -fx-background-repeat:no-repeat;
     -fx-border-color:transparent;
 }
-
 .btn-edit:hover{
     -fx-background-image:url('../../public/EditButtonHover.png');
     -fx-background-position:center;
@@ -84,6 +83,7 @@
     -fx-border-color:transparent;
 }
 
+
 .btn-encerrar{
     -fx-background-image:url('../../public/ButtonCheck.png');
     -fx-background-position:center;
@@ -92,7 +92,6 @@
     -fx-background-repeat:no-repeat;
     -fx-border-color:transparent;
 }
-
 .btn-encerrar:hover{
     -fx-background-image:url('../../public/ButtonCheck.png');
     -fx-background-position:center;
@@ -102,6 +101,7 @@
     -fx-border-color:transparent;
 }
 
+
 .btn-logout{
     -fx-background-image:url('../../public/iconeSair.png');
     -fx-background-color:transparent;
@@ -110,7 +110,6 @@
     -fx-border-color:transparent;
     -fx-background-size: 15px;
 }
-
 .btn-logout:hover{
     -fx-background-image:url('../../public/iconeSairHover.png');
     -fx-background-color:transparent;
@@ -119,29 +118,29 @@
     -fx-text-fill: #ff0000;
 }
 
+
 .searchField {
     -fx-background-image:url('../../public/searchRegular.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: right 10px center;
     -fx-font-size: 13px;
 }
-
 .searchField:focused {
     -fx-background-image: none;
 }
+
 
 .btn-primary {
     -fx-background-color: #064eb9;
     -fx-text-fill: #FFF;
 }
-
 .btn-primary:hover {
     -fx-background-color: #0E65CC;
 }
-
 .btn-primary:pressed {
     -fx-background-color: #185bcf;
 }
+
 
 .btn-delete {
     -fx-background-image: url("../../public/DeleteButtonOriginal.png");
@@ -150,12 +149,12 @@
     -fx-background-size: 32px, 32px;
     -fx-background-position: center;
 }
-
 .btn-delete:hover {
     -fx-background-image: url("../../public/DeleteButtonHover.png");
     -fx-background-size: 32px, 32px;
     -fx-background-color: #ff707070;
 }
+
 
 .btn-edit {
     -fx-background-image: url("../../public/EditButtonOriginal.png");
@@ -163,13 +162,13 @@
     -fx-background-size: 32px, 32px;
     -fx-background-repeat: no-repeat;
 }
-
 .btn-edit:hover {
     -fx-background-image: url("../../public/EditButtonHover.png");
     -fx-background-color: #0077ff70;
     -fx-background-size: 32px, 32px;
     -fx-background-repeat: no-repeat;
 }
+
 
 .btn-orc {
     -fx-background-image:url('../../public/ButtonCash.png');
@@ -180,7 +179,6 @@
     -fx-background-repeat:no-repeat;
     -fx-border-color:transparent;
 }
-
 .btn-orc:hover {
     -fx-background-image:url('../../public/ButtonCash.png');
     -fx-background-position:center;
@@ -189,6 +187,7 @@
     -fx-background-repeat:no-repeat;
     -fx-border-color:transparent;
 }
+
 
 .btn-senha-shown {
     -fx-background-image: url('../../public/show-25px.png');
@@ -200,12 +199,33 @@
     -fx-border-radius:5px;
     -fx-border-width:2px;
 }
+.btn-senha-shown:hover {
+    -fx-background-image: url('../../public/show-25px.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets:2px;
+    -fx-background-color: #0066ff25;
+    -fx-background-position: center;
+    -fx-border-color:#064eb9;
+    -fx-border-radius:5px;
+    -fx-border-width:2px;
+}
+
 
 .btn-senha-hiden {
     -fx-background-image: url('../../public/hide-25px.png');
     -fx-background-repeat: no-repeat;
     -fx-background-insets:2px;
     -fx-background-color: #0066ff60;
+    -fx-background-position: center;
+    -fx-border-color:#064eb9;
+    -fx-border-radius:5px;
+    -fx-border-width:2px;
+}
+.btn-senha-hiden:hover {
+    -fx-background-image: url('../../public/hide-25px.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets:2px;
+    -fx-background-color: #0066ff25;
     -fx-background-position: center;
     -fx-border-color:#064eb9;
     -fx-border-radius:5px;

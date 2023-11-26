@@ -53,7 +53,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Servicos" textOverrun="CLIP">
+                  <Label fx:id="nServ" onMouseClicked="#carregarServicos" text="Serviços" textOverrun="CLIP">
                      <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </padding>
@@ -162,7 +162,7 @@
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button id="NovoOrcamento" fx:id="novoOrcamento" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" stylesheets="@../css/buttons.css" text="Novo Orcamento">
+                        <Button id="NovoOrcamento" fx:id="novoOrcamento" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" stylesheets="@../css/buttons.css" text="Novo Orçamento">
                            <styleClass>
                               <String fx:value="btn-primary" />
                               <String fx:value="btn-cash-icon" />
@@ -171,7 +171,7 @@
                               <Insets left="30.0" right="5.0" />
                            </padding>
                         </Button>
-                        <Button id="GerarRelatorio" fx:id="gerarRelatorio" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" stylesheets="@../css/buttons.css" text="Gerar Relatorio    ">
+                        <Button id="GerarRelatorio" fx:id="gerarRelatorio" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" stylesheets="@../css/buttons.css" text="Gerar Relatório    ">
                            <styleClass>
                               <String fx:value="btn-primary" />
                               <String fx:value="btn-doc-icon" />
@@ -212,7 +212,7 @@
                 <TableColumn fx:id="placa" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Placa" />
                   <TableColumn fx:id="valor" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" text="Valor" />
                   <TableColumn fx:id="situacao" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Situação" />
-                  <TableColumn fx:id="acoes" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Açoes" />
+                  <TableColumn fx:id="acoes" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Ações" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -111,7 +111,7 @@ public class OrcamentosController extends BaseController {
             }
             
         });
-
+        
         cbSituacao.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -129,6 +129,7 @@ public class OrcamentosController extends BaseController {
                     inicializarTabela(i);
                 }catch(Exception e){
                     System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
             }
             
